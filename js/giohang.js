@@ -133,26 +133,26 @@ function addProductToTable(listProduct) {
   TotalPrice = totalPrice;
 
   s += `
-			<tr>
-				<td colspan="3">TỔNG TIỀN: </td>
+      <tr>
+        <td colspan="3">TỔNG TIỀN: </td>
         <td
           class="alignRight"
           style="color:red; font-size: 1.5em">
           ${numToString(totalPrice)} ₫</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td colspan="5">
-					<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="thanhToan()">
-						<i class="fa fa-usd"></i> Thanh Toán
-					</button>
-					<button class="btn btn-danger" onclick="xoaHet()">
-						<i class="fa fa-trash-o"></i> Xóa hết
-					</button>
-				</td>
-			</tr>
-		</tbody>
-	`;
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="5">
+          <button class="btn btn-primary" onclick="thanhToan()">
+            <i class="fa fa-usd"></i> Thanh Toán
+          </button>
+          <button class="btn btn-danger" onclick="xoaHet()">
+            <i class="fa fa-trash-o"></i> Xóa hết
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  `;
 
   table.innerHTML = s;
 }
@@ -222,6 +222,7 @@ function thanhToan() {
       } else {
         UserHienTai = user; // biến toàn cục
         htmlThanhToan(user);
+        $('#exampleModal').modal('show'); // Chỉ mở modal khi đã đăng nhập
       }
     },
     (error) => {

@@ -56,41 +56,97 @@ switch ($_POST['request']) {
 
         //thêm
     case 'add':
-        $data = $_POST['dataAdd'];
-        $base64_string = $data['img'];
-        $img_data = explode(',', $base64_string);
-        $file_type = str_replace("data:image/", "", $img_data[0]);
-        $file_type = str_replace(";base64", "", $file_type);
-        $image_path = "img/products/image_" . $data['masp'] . ".$file_type";
-        if (file_exists("../" . $image_path)) unlink("../$image_path");
-        $ifp = fopen("../$image_path", 'wb');
-        fwrite($ifp, base64_decode($img_data[1]));
-        fclose($ifp);
-        $spAddArr = array(
-            'MaSP' => $data['masp'],
-            'MaLSP' => $data['company'],
-            'TenSP' => $data['name'],
-            'DonGia' => $data['price'],
-            'SoLuong' => $data['amount'],
-            'HinhAnh' => $image_path,
-            'MaKM' => $data['promo']['name'],
-            'ThoiLuongPin' => $data['detail']['pin'],
-            'CongSac' => $data['detail']['port'],
-            'TuongThich' => $data['detail']['compatible'],
-            'KetNoiCungLuc' => $data['detail']['connect'],
-            'CongNgheKetNoi' => $data['detail']['technology'],
-            'DieuKhien' => $data['detail']['conduct'],
-            'KichThuoc' => $data['detail']['size'],
-            'KhoiLuong' => $data['detail']['volume'],
-            'SanXuatTai' => $data['detail']['produce'],
-            'SoSao' => $data['star'],
-            'SoDanhGia' => $data['rateCount'],
-            'TrangThai' => $data['TrangThai']
-        );
+    $data = $_POST['dataAdd'] ?? [];
 
-        $spBUS = new SanPhamBUS();
-        die(json_encode($spBUS->add_new($spAddArr)));
-        break;
+    // ===== Parse ảnh base64 an toàn =====
+    $imgRelPath = null; // đường dẫn lưu vào DB (tương đối)
+    if (!empty($data['img'])) {
+        $base64_string = $data['img'];
+
+        // Bóc tách data URI: data:image/<ext>;base64,<payload>
+        $matched = preg_match('#^data:image/([a-zA-Z0-9]+);base64,(.+)$#', $base64_string, $m);
+        if ($matched === 1) {
+            $ext = strtolower($m[1]);
+            $payload = $m[2];
+
+            // Chuẩn hóa phần mở rộng
+            $map = [
+                'jpg' => 'jpg',
+                'jpeg' => 'jpg',
+                'png' => 'png',
+                'gif' => 'gif',
+                'webp' => 'webp',
+            ];
+            if (!isset($map[$ext])) {
+                die(json_encode(['success' => false, 'msg' => 'Định dạng ảnh không hợp lệ (chỉ jpg, jpeg, png, gif, webp)']));
+            }
+            $ext = $map[$ext];
+
+            // Tạo tên file an toàn: image_<MaSP>.<ext>
+            $masp = preg_replace('/[^A-Za-z0-9_-]/', '', (string)$data['masp']);
+            if ($masp === '') {
+                die(json_encode(['success' => false, 'msg' => 'Mã sản phẩm không hợp lệ']));
+            }
+
+            $imgFileName = "image_{$masp}.{$ext}";
+            $imgRelPath  = "img/products/{$imgFileName}";
+
+            // Thư mục đích (tuyệt đối)
+            $destDir = __DIR__ . '/../img/products/';
+            if (!is_dir($destDir)) {
+                // 0775 trên *nix; Windows dùng NTFS permission—OK
+                @mkdir($destDir, 0775, true);
+            }
+
+            $absPath = $destDir . $imgFileName;
+
+            // Xoá file cũ nếu tồn tại
+            if (file_exists($absPath)) {
+                @unlink($absPath);
+            }
+
+            // Ghi file
+            $binary = base64_decode($payload, true);
+            if ($binary === false) {
+                die(json_encode(['success' => false, 'msg' => 'Base64 không hợp lệ']));
+            }
+
+            if (file_put_contents($absPath, $binary) === false) {
+                die(json_encode(['success' => false, 'msg' => 'Không thể lưu ảnh (kiểm tra quyền thư mục img/products)']));
+            }
+        } else {
+            // data URI không đúng chuẩn
+            die(json_encode(['success' => false, 'msg' => 'Chuỗi ảnh không đúng định dạng data:image/...;base64,...']));
+        }
+    }
+
+    // ===== Chuẩn bị dữ liệu thêm sản phẩm =====
+    $spAddArr = array(
+        'MaSP'            => $data['masp'],
+        'MaLSP'           => $data['company'],
+        'TenSP'           => $data['name'],
+        'DonGia'          => $data['price'],
+        'SoLuong'         => $data['amount'],
+        'HinhAnh'         => $imgRelPath ?? null, // có thể null nếu không gửi ảnh
+        'MaKM'            => $data['promo']['name'] ?? null,
+        'ThoiLuongPin'    => $data['detail']['pin'] ?? null,
+        'CongSac'         => $data['detail']['port'] ?? null,
+        'TuongThich'      => $data['detail']['compatible'] ?? null,
+        'KetNoiCungLuc'   => $data['detail']['connect'] ?? null,
+        'CongNgheKetNoi'  => $data['detail']['technology'] ?? null,
+        'DieuKhien'       => $data['detail']['conduct'] ?? null,
+        'KichThuoc'       => $data['detail']['size'] ?? null,
+        'KhoiLuong'       => $data['detail']['volume'] ?? null,
+        'SanXuatTai'      => $data['detail']['produce'] ?? null,
+        'SoSao'           => $data['star'] ?? 0,
+        'SoDanhGia'       => $data['rateCount'] ?? 0,
+        'TrangThai'       => $data['TrangThai'] ?? 1
+    );
+
+    $spBUS = new SanPhamBUS();
+    die(json_encode($spBUS->add_new($spAddArr)));
+    break;
+
 
         // sua
     case 'change':

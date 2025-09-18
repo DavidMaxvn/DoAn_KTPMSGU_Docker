@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1:3307
--- Thời gian đã tạo: Th9 12, 2025 lúc 06:25 PM
+-- Thời gian đã tạo: Th9 18, 2025 lúc 08:03 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -100,7 +100,15 @@ INSERT INTO `chitiethoadon` (`MaHD`, `MaSP`, `SoLuong`, `DonGia`) VALUES
 (11, 15, 1, 380000),
 (11, 14, 1, 90000),
 (11, 7, 1, 1100000),
-(11, 12, 1, 100000);
+(11, 12, 1, 100000),
+(12, 4, 1, 2500000),
+(12, 2, 1, 640000),
+(13, 1, 1, 1500000),
+(13, 7, 1, 1100000),
+(14, 6, 1, 400000),
+(14, 2, 1, 640000),
+(14, 18, 1, 200000),
+(14, 23, 1, 250000);
 
 -- --------------------------------------------------------
 
@@ -165,7 +173,10 @@ INSERT INTO `hoadon` (`MaHD`, `MaND`, `NgayLap`, `NguoiNhan`, `SDT`, `DiaChi`, `
 (8, 9, '2024-05-13 14:46:44', 'Hoàng Minh Tuấn', '0956781234', '484 Nguyễn Văn Linh, Tân Phú, Q.7', 'Trực tiếp khi nhận h', 6550000, '4'),
 (9, 10, '2024-05-13 14:50:14', 'Lê Minh Đức', '0978123456', '376 Huỳnh Tấn Phát, Bình Thuận, Q.7', 'Qua thẻ ngân hàng', 1190000, '-1'),
 (10, 11, '2025-09-12 16:02:45', 'Huỳnh Phúc Hưng', '0796864189', '23/9E lô C CC Hòa Bình, phường Khánh Hội, tp.hcm ', 'Trực tiếp khi nhận h', 3480000, '4'),
-(11, 11, '2025-09-12 16:03:09', 'Huỳnh Phúc Hưng', '0796864189', '23/9E lô C CC Hòa Bình, phường Khánh Hội, tp.hcm ', 'Qua thẻ ngân hàng', 1670000, '-1');
+(11, 11, '2025-09-12 16:03:09', 'Huỳnh Phúc Hưng', '0796864189', '23/9E lô C CC Hòa Bình, phường Khánh Hội, tp.hcm ', 'Qua thẻ ngân hàng', 1670000, '-1'),
+(12, 2, '2025-09-18 01:47:12', 'Nguyễn Ngọc Huyền', '0123456789', '273 An Dương Vương P.3, Q.5', 'Trực tiếp khi nhận h', 3140000, '4'),
+(13, 4, '2025-09-18 01:48:54', 'Lương Thị Thùy Quyên', '01207764668', '28 Nguyễn Thông, Q.3', 'Trực tiếp khi nhận h', 2600000, '3'),
+(14, 13, '2025-09-18 01:54:36', 'Lê Song Nhật Quyền', '0362631410', '325 Nguyễn Duy Dương P.4, Q.10', 'Trực tiếp khi nhận h', 1490000, '2');
 
 -- --------------------------------------------------------
 
@@ -187,9 +198,9 @@ CREATE TABLE `khuyenmai` (
 --
 
 INSERT INTO `khuyenmai` (`MaKM`, `TenKM`, `LoaiKM`, `GiaTriKM`, `NgayBD`, `NgayKT`) VALUES
-(1, 'Không khuyến mãi', 'Nothing', 0, '2024-05-08 00:00:00', '2024-05-17 00:00:00'),
-(2, 'Giảm giá', 'GiamGia', 50000, '2024-05-01 00:00:00', '2024-05-05 00:00:00'),
-(3, 'Giá rẻ online', 'GiaReOnline', 100000, '2024-05-25 00:00:00', '2024-05-30 00:00:00'),
+(1, 'Không', 'Nothing', 0, '2024-05-08 00:00:00', '2024-05-17 00:00:00'),
+(2, 'Giảm giá', 'GiamGia', 500000, '2024-05-01 00:00:00', '2024-05-05 00:00:00'),
+(3, 'Giá rẻ online', 'GiaReOnline', 650000, '2024-05-25 00:00:00', '2024-05-30 00:00:00'),
 (4, 'Trả góp', 'TraGop', 0, '2024-05-01 00:00:00', '2024-05-31 00:00:00'),
 (5, 'Mới ra mắt', 'MoiRaMat', 0, '2024-05-01 00:00:00', '2024-05-31 00:00:00');
 
@@ -247,6 +258,7 @@ CREATE TABLE `nguoidung` (
 --
 
 INSERT INTO `nguoidung` (`MaND`, `Ho`, `Ten`, `GioiTinh`, `SDT`, `Email`, `DiaChi`, `TaiKhoan`, `MatKhau`, `MaQuyen`, `TrangThai`) VALUES
+(1, 'Lê Song', 'Nhật Quyền', '', '0993246149', 'lesongnhatquyen@gmail.com', '273 An Dương Vương P.3, Q.5, TP.HCM', 'admin', '202cb962ac59075b964b07152d234b70', 2, 1),
 (2, 'Nguyễn', 'Ngọc Huyền', 'Nữ', '0123456789', '3121411090@sv.sgu.edu.vn', '273 An Dương Vương P.3, Q.5', 'HuyenNguyen', '202cb962ac59075b964b07152d234b70', 1, 1),
 (4, 'Lương Thị', 'Thùy Quyên', 'Nữ', '01207764668', '3122411172@sv.sgu.edu.vn', '28 Nguyễn Thông, Q.3', 'thuyquyen', '202cb962ac59075b964b07152d234b70', 1, 1),
 (5, 'Nguyễn Lê', 'Nhật Minh', '', '0719235566', 'minhnhat019@gmail.com', '218A/39', 'NhatMinhDev', '827ccb0eea8a706c4c34a16891f84e7b', 1, 1),
@@ -255,7 +267,8 @@ INSERT INTO `nguoidung` (`MaND`, `Ho`, `Ten`, `GioiTinh`, `SDT`, `Email`, `DiaCh
 (8, 'Đặng', 'Hồng Phúc', '', '0965437890', 'hongphuc@outlook.com.vn', '123 Lê Văn Quới, Bình Khánh, Q.7', 'hongphuc333', '17eb29cb2cdb4e5e30f125cc7ff0d57e', 1, 1),
 (9, 'Hoàng', 'Minh Tuấn', '', '0956781234', 'minhtuan@hotmail.com', '484 Nguyễn Văn Linh, Tân Phú, Q.7', 'minhtuan222', '93753dd37ea268111ca8d061554cdd0e', 1, 1),
 (10, 'Lê', 'Minh Đức', '', '0978123456', 'minhduc@outlook.com', '376 Huỳnh Tấn Phát, Bình Thuận, Q.7', 'minhduc789', 'f610f781e3d8e3863df3986d0b373b0e', 1, 1),
-(11, 'Huỳnh', 'Phúc Hưng', '', '0796864189', 'phuchung2004@gmail.com', '23/9E lô C CC Hòa Bình, phường Khánh Hội, tp.hcm ', 'HungRollRoy', '7ba7528b56d712f62d77799a362c6448', 1, 1);
+(11, 'Huỳnh', 'Phúc Hưng', '', '0796864189', 'phuchung2004@gmail.com', '23/9E lô C CC Hòa Bình, phường Khánh Hội, tp.hcm ', 'HungRollRoy', '7ba7528b56d712f62d77799a362c6448', 1, 1),
+(13, 'Lê Song', 'Nhật Quyền', '', '0362631410', 'nhatquyendev@outlook.com.vn', '325 Nguyễn Duy Dương P.4, Q.10', 'NhatQuyenDev', 'e10adc3949ba59abbe56e057f20f883e', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -333,7 +346,7 @@ INSERT INTO `sanpham` (`MaSP`, `MaLSP`, `TenSP`, `DonGia`, `SoLuong`, `HinhAnh`,
 (46, 4, 'Tai nghe Bluetooth Chụp Tai HAVIT H663BT', 450000, 10, 'https://cdn.tgdd.vn/Products/Images/54/320249/tai-nghe-bluetooth-chup-tai-havit-h663bt-tb-600x600.jpg', 3, 'Dùng 26 giờ', 'Type-C ', 'macOS,Android, iOS, Windows', '1 thiết bị ', 'Bluetooth 5.3  ', 'Phím  nhấn', 'Dài 17.5 cm - Rộng 18.5 cm - Cao 8.2 cm', '215 g', 'Trung Quốc ', 3, 2, 1),
 (47, 1, 'Tai nghe Có Dây Apple MTJY3', 550000, 10, 'https://cdn.tgdd.vn/Products/Images/54/315072/tai-nghe-co-day-apple-mtjy3-thumb-1-600x600.jpg', 1, 'Không ', 'Type-C', 'macOS(Macbook,iMac),iOS(iPhone),iPadOS(iPad)', '1  thiết bị  ', 'Không ', 'Tăng/giảm âm lượng, Nhận/Ngắt cuộc gọi', 'Dài 1.2 m ', 'Không', 'Việt Nam / Trung Quốc (tùy lô hàng)', 0, 0, 1),
 (48, 7, 'Tai nghe Có Dây OPPO MH320', 300000, 10, 'https://cdn.tgdd.vn/Products/Images/54/236050/co-day-ep-oppo-mh320-11-600x600.jpg', 3, 'Không ', 'Jack cắm 3.5 mm', 'Android, Windows ', '1 thiết bị  ', 'Không', 'Phím nhấn ', 'Dài 1.2 m', '12.3 g', 'Trung Quốc ', 0, 0, 1),
-(49, 8, 'Tai nghe Bluetooth True Wireless Samsung Galaxy Buds 3 Pro', 3990000, 100, 'img/products/image_49.webp', 1, 'Tai nghe: 7 giờ (Tắt ANC) / 6 giờ (Bật ANC) Hộp sạ', 'Type C', 'Windows, MacOS, iOS, Android, Chromebook, Linux', 'Có', 'Bluetooth', 'Cảm ứng chạm Nhấn thanh bar', 'Tai nghe: 18.1 x 19.8 x 33.2mm Hộp sạc:58.9 x 48.7', 'Tai nghe: 5.4g Hộp sạc: 46.5g', 'Trung Quốc, Việt Nam, Hàn Quốc', 0, 0, 0);
+(49, 8, 'Tai nghe TWS Samsung Galaxy Buds3 Pro R630N', 3990000, 100, 'img/products/image_49.jpg', 4, '5000 mAh', 'Type C', 'macOS Android, iOS, Windows', '1 thiết bị', 'Bluetooth 5.4', 'Cảm ứng chạm/vuốt Giọng nói (Tiếng Anh, Hàn)', 'Dài 3.2 cm - Rộng 2.02 cm - Cao 1.8 cm', '5.4 g', 'Việt Nam', 0, 0, 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -400,7 +413,7 @@ ALTER TABLE `sanpham`
 -- AUTO_INCREMENT cho bảng `hoadon`
 --
 ALTER TABLE `hoadon`
-  MODIFY `MaHD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `MaHD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT cho bảng `khuyenmai`
@@ -418,7 +431,7 @@ ALTER TABLE `loaisanpham`
 -- AUTO_INCREMENT cho bảng `nguoidung`
 --
 ALTER TABLE `nguoidung`
-  MODIFY `MaND` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `MaND` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT cho bảng `phanquyen`
