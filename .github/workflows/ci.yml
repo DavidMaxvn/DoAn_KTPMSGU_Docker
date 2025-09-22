@@ -1,0 +1,171 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, nhatquyen ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+# Quyền tối thiểu (có thể tăng sau nếu cần tạo release, comment PR, v.v.)
+permissions:
+  contents: read
+
+# Tránh dẫm run khi push nhiều lần liên tiếp
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # =========================
+  # 1. Build front-end (React)
+  # =========================
+  web:
+    name: Web (React) • ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    defaults:
+      run:
+        working-directory: frontend   # đổi nếu bạn dùng thư mục khác
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Lint (optional)
+        run: npm run lint --if-present
+
+      - name: Test
+        run: npm test --if-present -- --ci
+
+      - name: Build
+        run: npm run build --if-present
+
+      - name: Upload web artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-dist-${{ matrix.os }}
+          path: |
+            frontend/build
+            frontend/dist
+          if-no-files-found: ignore
+
+  # ==============================================
+  # 2. Build back-end (Spring Boot - Maven/Gradle)
+  # ==============================================
+  backend:
+    name: Backend (Spring) • ${{ matrix.os }} • ${{ matrix.build }}
+    runs-on: ${{ matrix.os }}
+    needs: [web]   # nếu backend không phụ thuộc web thì có thể bỏ
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        build: [maven, gradle]
+
+    defaults:
+      run:
+        working-directory: backend     # đổi nếu thư mục backend khác
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: ${{ matrix.build }}   # 'maven' hoặc 'gradle'
+
+      # ----- Maven -----
+      - name: Build & Test (Maven)
+        if: matrix.build == 'maven'
+        run: mvn -B -DskipTests=false verify
+
+      # ----- Gradle (dùng action để auto gọi wrapper đúng trên Windows/Ubuntu) -----
+      - name: Build & Test (Gradle)
+        if: matrix.build == 'gradle'
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+
+      - name: Upload JAR/WAR
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-artifacts-${{ matrix.os }}-${{ matrix.build }}
+          path: |
+            backend/**/target/*.jar
+            backend/**/build/libs/*.jar
+          if-no-files-found: ignore
+
+  # =========================
+  # 3. Docker build (Ubuntu)
+  # =========================
+  docker:
+    name: Docker Build (Ubuntu only)
+    runs-on: ubuntu-latest
+    needs: [web, backend]
+    if: ${{ always() && needs.web.result == 'success' && needs.backend.result == 'success' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Thiết lập Buildx để build image hiệu quả
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # (Tuỳ chọn) lấy artifact web/backend nếu Dockerfile cần copy sẵn build output
+      - name: Download web artifact (Ubuntu sample)
+        uses: actions/download-artifact@v4
+        with:
+          name: web-dist-ubuntu-latest
+          path: frontend/.ci-dist
+        continue-on-error: true
+
+      - name: Download backend artifact (Maven Ubuntu sample)
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-artifacts-ubuntu-latest-maven
+          path: backend/.ci-artifacts
+        continue-on-error: true
+
+      # Build image FRONTEND (đổi context/Dockerfile cho phù hợp)
+      - name: Build FE image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: false
+          load: true
+          tags: local/web:ci
+
+      # Build image BACKEND (đổi context/Dockerfile cho phù hợp)
+      - name: Build BE image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: false
+          load: true
+          tags: local/backend:ci
