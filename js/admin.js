@@ -1,5 +1,6 @@
 var TONGTIEN = 0;
 var TATCA_DONHANG = [];
+var DANHSACH_KHUYENMAI = [];
 
 window.onload = function () {
   document.getElementById("btnDangXuat").onclick = function () {
@@ -138,6 +139,7 @@ function ajaxKhuyenMai() {
       request: "getall",
     },
     success: function (data, status, xhr) {
+      DANHSACH_KHUYENMAI = data; // Lưu vào biến global
       showKhuyenMai(data);
       showGTKM(data);
     },
@@ -146,52 +148,31 @@ function ajaxKhuyenMai() {
 }
 
 function showKhuyenMai(data) {
-  var s =
-    `
-        <option selected="selected" value="` +
-    data[0].MaKM +
-    `">Không</option>
-        <option value="` +
-    data[1].MaKM +
-    `">Trả góp</option>
-        <option value="` +
-    data[2].MaKM +
-    `">Giảm giá</option>
-        <option value="` +
-    data[3].MaKM +
-    `">Giá rẻ online</option>
-        <option value="` +
-    data[4].MaKM +
-    `">Mới ra mắt</option>`;
+  var s = "";
+  
+  // Tạo options động từ dữ liệu database
+  for (var i = 0; i < data.length; i++) {
+    var km = data[i];
+    var selected = (i === 0) ? 'selected="selected"' : ''; // Chọn item đầu tiên làm mặc định
+    s += `<option value="${km.MaKM}" ${selected}>${km.TenKM}</option>`;
+  }
+  
   document.getElementsByName("chonKhuyenMai")[0].innerHTML = s;
 }
 
-function showGTKM() {
+function showGTKM(dataKhuyenMai) {
   var giaTri = document.getElementsByName("chonKhuyenMai")[0].value;
-  switch (giaTri) {
-    // lấy tất cả khuyến mãi
-    case "1":
-      document.getElementById("giatrikm").value = 0;
-      break;
-
-    case "2":
-      document.getElementById("giatrikm").value = 500000;
-      break;
-
-    case "3":
-      document.getElementById("giatrikm").value = 650000;
-      break;
-
-    case "4":
-      document.getElementById("giatrikm").value = 0;
-      break;
-
-    case "5":
-      document.getElementById("giatrikm").value = 0;
-      break;
-
-    default:
-      break;
+  
+  // Sử dụng tham số truyền vào hoặc biến global
+  var data = dataKhuyenMai || DANHSACH_KHUYENMAI;
+  
+  // Tìm khuyến mãi theo MaKM
+  var khuyenMai = data.find(km => km.MaKM == giaTri);
+  
+  if (khuyenMai) {
+    document.getElementById("giatrikm").value = khuyenMai.GiaTriKM;
+  } else {
+    document.getElementById("giatrikm").value = 0;
   }
 }
 
@@ -247,6 +228,9 @@ function openTab(nameTab) {
       break;
     case "Sản Phẩm":
       document.getElementsByClassName("sanpham")[0].style.display = "block";
+      // Load dữ liệu khuyến mãi và loại sản phẩm khi mở tab Sản Phẩm
+      ajaxKhuyenMai();
+      ajaxLoaiSanPham();
       break;
     case "Đơn Hàng":
       document.getElementsByClassName("donhang")[0].style.display = "block";
@@ -661,7 +645,13 @@ function addKhungSuaSanPham(masp) {
     else selectCompany += `<option value="${masp}">${c}</option>`;
   }
 
-  let selectIndex = 1;
+  // Tạo select khuyến mãi từ dữ liệu database
+  let selectKhuyenMai = "";
+  for (var i = 0; i < DANHSACH_KHUYENMAI.length; i++) {
+    var km = DANHSACH_KHUYENMAI[i];
+    var selected = (sp.MaKM == km.MaKM) ? 'selected="selected"' : '';
+    selectKhuyenMai += `<option value="${km.MaKM}" ${selected}>${km.TenKM}</option>`;
+  }
 
   let s = `<span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
   <form 
@@ -730,11 +720,7 @@ function addKhungSuaSanPham(masp) {
                 <td>Khuyến mãi:</td>
                 <td>
                     <select name="chonKhuyenMai" onchange="showGTKM()">
-                      <option value="${selectIndex++}">Không</option>
-                      <option value="${selectIndex++}">Giảm giá</option>
-                      <option value="${selectIndex++}">Giá rẻ online</option>
-                      <option value="${selectIndex++}">Trả góp</option>
-                      <option value="${selectIndex}">Mới ra mắt</option>
+                      ${selectKhuyenMai}
                     </select>
                 </td>
             </tr>
