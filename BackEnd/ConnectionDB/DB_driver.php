@@ -6,7 +6,7 @@ class DB_driver
   // link : https://scotch.io/@phalconVee/using-mysql-on-heroku
     // Biến lưu trữ kết nối
     public $__conn,
-        $host = 'localhost',
+        $host = 'localhost:3307',
         $DbName = 'web2',
         $user = 'root',
         $pass = '';
