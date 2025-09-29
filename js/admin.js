@@ -166,13 +166,66 @@ function showGTKM(dataKhuyenMai) {
   // Sử dụng tham số truyền vào hoặc biến global
   var data = dataKhuyenMai || DANHSACH_KHUYENMAI;
   
-  // Tìm khuyến mãi theo MaKM
-  var khuyenMai = data.find(km => km.MaKM == giaTri);
+  // Tìm khuyến mãi theo MaKM - so sánh cả số và string
+  var khuyenMai = data.find(km => km.MaKM == giaTri || km.MaKM == String(giaTri) || String(km.MaKM) == giaTri);
   
   if (khuyenMai) {
     document.getElementById("giatrikm").value = khuyenMai.GiaTriKM;
   } else {
     document.getElementById("giatrikm").value = 0;
+  }
+}
+
+// Function riêng cho form sửa sản phẩm
+function hienThiGiaTriKhuyenMaiSua(maKM) {
+  // Debug: kiểm tra dữ liệu
+  console.log("Tìm khuyến mãi với MaKM:", maKM);
+  console.log("Danh sách khuyến mãi:", DANHSACH_KHUYENMAI);
+  
+  // Tìm khuyến mãi theo MaKM trong dữ liệu global - so sánh cả số và string
+  var khuyenMai = DANHSACH_KHUYENMAI.find(km => km.MaKM == maKM || km.MaKM == String(maKM) || String(km.MaKM) == maKM);
+  
+  console.log("Khuyến mãi tìm được:", khuyenMai);
+  
+  if (khuyenMai) {
+    // Cập nhật giá trị vào input trong form sửa
+    var giaTriInput = document.getElementById("giatrikm_2");
+    if (giaTriInput) {
+      console.log("Thông tin khuyến mãi chi tiết:");
+      console.log("- TenKM:", khuyenMai.TenKM);
+      console.log("- MaKM:", khuyenMai.MaKM);
+      console.log("- GiaTriKM:", khuyenMai.GiaTriKM);
+      console.log("- LoaiKM:", khuyenMai.LoaiKM);
+      
+      giaTriInput.value = khuyenMai.GiaTriKM;
+      console.log("Đã cập nhật giá trị:", khuyenMai.GiaTriKM);
+    } else {
+      console.log("Không tìm thấy input giatrikm_2");
+    }
+  } else {
+    console.log("Không tìm thấy khuyến mãi");
+    var giaTriInput = document.getElementById("giatrikm_2");
+    if (giaTriInput) {
+      giaTriInput.value = 0;
+    }
+  }
+}
+
+// Function xử lý onchange cho select khuyến mãi trong form sửa
+function showGTKMSua() {
+  // Tìm select trong form sửa sản phẩm (khung overlay)
+  var khungSua = document.getElementById("khungSuaSanPham");
+  if (khungSua) {
+    var selectElement = khungSua.querySelector('select[name="chonKhuyenMai"]');
+    if (selectElement) {
+      var maKM = selectElement.value;
+      console.log("showGTKMSua được gọi với MaKM:", maKM);
+      hienThiGiaTriKhuyenMaiSua(maKM);
+    } else {
+      console.log("Không tìm thấy select chonKhuyenMai trong form sửa");
+    }
+  } else {
+    console.log("Không tìm thấy khungSuaSanPham");
   }
 }
 
@@ -719,14 +772,14 @@ function addKhungSuaSanPham(masp) {
             <tr>
                 <td>Khuyến mãi:</td>
                 <td>
-                    <select name="chonKhuyenMai" onchange="showGTKM()">
+                    <select name="chonKhuyenMai" onchange="showGTKMSua()">
                       ${selectKhuyenMai}
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Giá trị khuyến mãi:</td>
-                <td><input id="giatrikm" type="number" value="0"></td>
+                <td><input id="giatrikm_2" type="number" value="0"></td>
             </tr>
             <tr>
                 <th colspan="2">Thông số kĩ thuật</th>
@@ -775,6 +828,20 @@ function addKhungSuaSanPham(masp) {
   var khung = document.getElementById("khungSuaSanPham");
   khung.innerHTML = s;
   khung.style.transform = "scale(1)";
+  
+  // Đảm bảo dữ liệu khuyến mãi đã được load
+  if (DANHSACH_KHUYENMAI.length === 0) {
+    // Nếu chưa có dữ liệu, load lại
+    ajaxKhuyenMai();
+    setTimeout(() => {
+      hienThiGiaTriKhuyenMaiSua(sp.MaKM);
+    }, 500); // Delay lâu hơn để đợi ajax load xong
+  } else {
+    // Hiển thị giá trị khuyến mãi sau khi form được tạo
+    setTimeout(() => {
+      hienThiGiaTriKhuyenMaiSua(sp.MaKM);
+    }, 100); // Delay nhỏ để đảm bảo DOM đã render xong
+  }
 }
 
 // Cập nhật ảnh sản phẩm
