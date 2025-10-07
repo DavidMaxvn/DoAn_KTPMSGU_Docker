@@ -485,7 +485,7 @@ namespace AppData.Migrations
                             DiaChi = "Ha Noi",
                             Email = "admin@gmail.com",
                             IDVaiTro = new Guid("b4996b2d-a343-434b-bfe9-09f8efbb3852"),
-                            PassWord = "$2a$10$SkimxxBIlrv/l33hTFvbkutV/.jF4rlwd9APgp1ZZjNEgVDYXvHa6",
+                            PassWord = "$2a$10$VMoYAxJqzUe6qY61FaRLSOe.o8xjY1wX1NrQsoZkhoJD.kBSkXM5O",
                             SDT = "0985143915",
                             Ten = "Admin",
                             TrangThai = 1
