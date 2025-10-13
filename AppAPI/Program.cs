@@ -1,3 +1,4 @@
+using System;
 using AppAPI.IServices;
 using AppAPI.Services;
 using AppData.Models;
@@ -7,38 +8,55 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ---------- CORS (cho WebUI gọi API) ----------
 var AllowSpecificOrigins = "_allowSpecificOrigins";
+var allowedOrigins = new[]
+{
+    "http://localhost:8080",  // nếu UI chạy cổng này
+    "https://localhost:8443", // nếu UI chạy HTTPS cổng này
+    "http://localhost:8081",  // nếu bạn tách UI sang 8081
+    "https://localhost:8444"  // nếu bạn tách UI sang 8444
+};
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: AllowSpecificOrigins,
-        policy =>
-        {
-            policy.WithOrigins("https://:5001").AllowAnyHeader()
-            .AllowAnyMethod();
-        });
+    options.AddPolicy(name: AllowSpecificOrigins, policy =>
+    {
+        policy.WithOrigins(allowedOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+        // Nếu dùng cookie/credentials: thêm .AllowCredentials() và giữ origins cụ thể (không dùng *)
+    });
 });
-builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// ---------- MVC / Controllers ----------
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling =
+            Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+// ---------- Swagger ----------
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Example API",
         Version = "v1",
         Description = "An example of an ASP.NET Core Web API",
         Contact = new OpenApiContact
         {
-            Name = "Example Contact",
+            Name  = "Example Contact",
             Email = "example@example.com",
-            Url = new Uri("https://example.com/contact"),
+            Url   = new Uri("https://example.com/contact"),
         },
     });
 });
-builder.Services.AddDbContext<AssignmentDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DBContext")));
-//builder.Services.AddScoped<IChiTietKhuyenMaiServices,ChiTietKhuyenMaiServices>();
+
+// ---------- EF Core ----------
+builder.Services.AddDbContext<AssignmentDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DBContext")));
+
+// ---------- DI các service ----------
 builder.Services.AddScoped<IChiTietGioHangServices, ChiTietGioHangServices>();
 builder.Services.AddScoped<IGioHangServices, GioHangServices>();
 builder.Services.AddScoped<IQuyDoiDiemServices, QuyDoiDiemServices>();
@@ -57,31 +75,26 @@ builder.Services.AddScoped<IVaiTroService, VaiTroSevice>();
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<IMailServices, MailServices>();
 
-builder.Services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(option =>
-    {
-        option.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    });
-}
-
+// ---------- Middleware pipeline ----------
 app.UseSwagger();
-app.UseSwaggerUI(option =>
+app.UseSwaggerUI(opt =>
 {
-    option.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    opt.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
 });
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
+app.UseCors(AllowSpecificOrigins);
+
 app.UseAuthorization();
 
 app.MapControllers();
-app.UseCors(AllowSpecificOrigins);
 
+// Redirect "/" sang Swagger cho tiện truy cập
 app.MapGet("/", () => Results.Redirect("/swagger", permanent: false));
+
 app.Run();

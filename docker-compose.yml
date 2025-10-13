@@ -1,5 +1,31 @@
 services:
-  web:
+  # Website UI (Razor MVC)
+  webui:
+    build:
+      context: .
+      dockerfile: AppView/Dockerfile
+    image: doan_ktpm_appview:latest
+    container_name: doan_appview
+    ports:
+      - "8080:80"      # HTTP -> UI
+      - "8443:443"     # HTTPS -> UI
+    environment:
+      # Bật cả HTTP và HTTPS trong container
+      - ASPNETCORE_URLS=http://+:80;https://+:443
+      - ASPNETCORE_ENVIRONMENT=Development
+      # Mount dev cert từ Windows vào container (Cách B)
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/AppAPI.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=123  # đổi đúng mật khẩu bạn đã export
+      # (nếu UI cần gọi API bằng HttpClient, bạn có thể đặt BASE_URL nội bộ)
+      # - Api__BaseUrl=http://webapi:80
+    volumes:
+      - ${USERPROFILE}\.aspnet\https:/https:ro
+    depends_on:
+      - db
+      - webapi
+
+  # Web API
+  webapi:
     build:
       context: .
       dockerfile: AppAPI/Dockerfile
@@ -7,37 +33,39 @@ services:
       args:
         - CONFIGURATION=Release
     image: doan_ktpm_appapi:latest
+    container_name: doan_appapi
+    # Có thể không expose ra ngoài, chỉ cho UI gọi nội bộ.
+    # Nếu cần test ngoài, mở port khác để tránh trùng UI:
     ports:
-      - "8080:80"      # HTTP ->  http://localhost:8080
-      - "8443:443"     # HTTPS -> https://localhost:8443
+      - "5080:80"
+      - "5443:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      # Kestrel lắng nghe cả HTTP/HTTPS trong container
       - ASPNETCORE_URLS=http://+:80;https://+:443
-      # Chỉ ra đường dẫn & password của cert bên trong container
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/AppAPI.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=123  # <= TRÙNG với bước export
-      # KẾT NỐI DB: NHỚ đồng bộ mật khẩu với db.SA_PASSWORD bên dưới!
-      - ConnectionStrings__DBContext=Server=db;Database=AppDb;User=sa;Password=123;
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=123
+      - ConnectionStrings__DBContext=Server=db;Database=AppDb;User=sa;Password=123;TrustServerCertificate=True;
     volumes:
-      # Mount cert PFX từ Windows host vào container /https
       - ${USERPROFILE}\.aspnet\https:/https:ro
-      # Lưu DataProtection Keys để cookie/antiforgery không reset mỗi lần recreate
-      - dpkeys:/root/.aspnet/DataProtection-Keys
     depends_on:
       - db
 
+  # SQL Server
   db:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: doan_db
     environment:
       - ACCEPT_EULA=Y
-      # SQL Server yêu cầu mật khẩu mạnh (>=8 ký tự, hoa/thường/số/ký tự đặc biệt)
-      - SA_PASSWORD='S3cure!Pass2025'
+      - SA_PASSWORD=S3cure!Pass2025
     ports:
       - "1433:1433"
     volumes:
       - dbdata:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'S3cure!Pass2025' -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
 volumes:
   dbdata:
-  dpkeys:

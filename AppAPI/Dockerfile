@@ -27,4 +27,9 @@ RUN dotnet publish "AppAPI/AppAPI.csproj" \
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
+# copy UI tĩnh vào wwwroot
+# Giả sử Docker build context là thư mục gốc repo (đúng theo docker-compose.yml của bạn)
+COPY ../AppView/ /app/wwwroot/
+COPY ../img/ /app/wwwroot/img/
+COPY ../js/ /app/wwwroot/js/
 ENTRYPOINT ["dotnet", "AppAPI.dll"]
