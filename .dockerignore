@@ -1,0 +1,11 @@
+bin
+obj
+**/bin
+**/obj
+.git
+.gitignore
+*.user
+*.suo
+*.csproj.user
+Dockerfile*
+docker-compose*
