@@ -8,7 +8,7 @@
     <div class="col-lg-4 col-md-6 col-sm-6">
     <div class="product__item">
     <div class="product__item__pic set-bg">
-    <a asp-action="ProductDetail" asp-route-idSanPham="@item.ID"><img style="width:260px;height:265px;" src="/img/product/@item.Image"></a>
+    <a asp-action="ProductDetail" asp-route-idSanPham="@item.ID"><img style="width:260px;height:265px;" src="@($"{apiPublic}/img/product/{item.Image}")"></a>
     </div>
     <div class="product__item__text">
     <h6>@item.Ten</h6>
@@ -49,7 +49,7 @@
                 $("#filtered-products").empty();
                 console.log(response);
                 $.each(response.data, function (i, item) {
-                    $("#filtered-products").append("<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg'><a href='/Home/ProductDetail?idSanPham=" + item.id + "' > <img style='width:260px;height:265px;' src='/img/product/" + item.image + "'></a></div><div class='product__item__text'><h6>" + item.ten + "</h6><a onclick=\"addCart('" + item.idChiTietSanPham + "')\" class='add-cart' style='cursor:pointer'> + Thêm vào giỏ hàng </a><h5 style='color:red'> " + item.giaBan + " </h5></div></div></div>");
+                    $("#filtered-products").append("<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg'><a href='/Home/ProductDetail?idSanPham=" + item.id + "' > <img style='width:260px;height:265px;' src='" + apiPublic + "/img/product/" + item.image + "'></a></div><div class='product__item__text'><h6>" + item.ten + "</h6><a onclick=\"addCart('" + item.idChiTietSanPham + "')\" class='add-cart' style='cursor:pointer'> + Thêm vào giỏ hàng </a><h5 style='color:red'> " + item.giaBan + " </h5></div></div></div>");
                 });
                 pagingsp(response.total, function () {
                     loadsp();

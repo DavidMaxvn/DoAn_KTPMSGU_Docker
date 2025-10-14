@@ -20,7 +20,7 @@ namespace AppView.Controllers
         {
             _httpClient = new HttpClient();
             dBContext = new AssignmentDBContext();
-            _httpClient.BaseAddress = new Uri("http://appapi/api/");
+            _httpClient.BaseAddress = new Uri("http://webapi/api/");
         }
         public int PageSize = 8;
 
@@ -28,7 +28,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiUrl = $"http://appapi/api/NhanVien/GetAll";
+                string apiUrl = $"http://webapi/api/NhanVien/GetAll";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<NhanVien>>(apiData);
@@ -60,7 +60,7 @@ namespace AppView.Controllers
                     ViewData["SearchError"] = "Vui lòng nhập tên để tìm kiếm";
                     return RedirectToAction("Show");
                 }
-                string apiUrl = $"http://appapi/api/NhanVien/TimKiemNhanVien?name={Ten}";
+                string apiUrl = $"http://webapi/api/NhanVien/TimKiemNhanVien?name={Ten}";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<NhanVien>>(apiData);
@@ -97,7 +97,7 @@ namespace AppView.Controllers
             {
                 nhanVien.TrangThai = 1;
                 var vt = dBContext.VaiTros.FirstOrDefault(x => x.Ten == "Nhân viên");
-                string apiUrl = $"http://appapi/api/NhanVien/DangKyNhanVien?ten={nhanVien.Ten}&email={nhanVien.Email}&password={nhanVien.PassWord}&sdt={nhanVien.SDT}&diachi={nhanVien.DiaChi}";
+                string apiUrl = $"http://webapi/api/NhanVien/DangKyNhanVien?ten={nhanVien.Ten}&email={nhanVien.Email}&password={nhanVien.PassWord}&sdt={nhanVien.SDT}&diachi={nhanVien.DiaChi}";
                 var reponsen = await _httpClient.PostAsync(apiUrl, null);
                 if (reponsen.IsSuccessStatusCode)
                 {
@@ -120,7 +120,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiUrl = $"http://appapi/api/NhanVien/GetById?id={id}";
+                string apiUrl = $"http://webapi/api/NhanVien/GetById?id={id}";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
 
@@ -134,7 +134,7 @@ namespace AppView.Controllers
 
         public IActionResult Edit(Guid id)
         {
-            string apiUrl = $"http://appapi/api/NhanVien/GetById?id={id}";
+            string apiUrl = $"http://webapi/api/NhanVien/GetById?id={id}";
             var response = _httpClient.GetAsync(apiUrl).Result;
             var apiData = response.Content.ReadAsStringAsync().Result;
             var user = JsonConvert.DeserializeObject<NhanVien>(apiData);
@@ -148,7 +148,7 @@ namespace AppView.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    string apiUrl = $"http://appapi/api/NhanVien/{id}?ten={nv.Ten}&email={nv.Email}&password={nv.PassWord}&sdt={nv.SDT}&diachi={nv.DiaChi}&trangthai={nv.TrangThai}&idvaitro={nv.IDVaiTro}";
+                    string apiUrl = $"http://webapi/api/NhanVien/{id}?ten={nv.Ten}&email={nv.Email}&password={nv.PassWord}&sdt={nv.SDT}&diachi={nv.DiaChi}&trangthai={nv.TrangThai}&idvaitro={nv.IDVaiTro}";
 
                     var reponsen = await _httpClient.PutAsync(apiUrl, null);
                     if (reponsen.IsSuccessStatusCode)
@@ -163,7 +163,7 @@ namespace AppView.Controllers
         }
         public async Task<IActionResult> Delete(Guid id)
         {
-            string apiUrl = $"http://appapi/api/NhanVien/{id}";
+            string apiUrl = $"http://webapi/api/NhanVien/{id}";
             var reposen = await _httpClient.DeleteAsync(apiUrl);
             if (reposen.IsSuccessStatusCode)
             {
@@ -259,7 +259,7 @@ namespace AppView.Controllers
                 khachhang.vaiTro = JsonConvert.DeserializeObject<LoginViewModel>(session).vaiTro;
                 khachhang.IsAccountLocked = JsonConvert.DeserializeObject<LoginViewModel>(session).IsAccountLocked;
                 khachhang.Message = "lmao";
-                var response = _httpClient.PutAsJsonAsync("http://appapi/api/" + "QuanLyNguoiDung/UpdateProfile1", khachhang).Result;
+                var response = _httpClient.PutAsJsonAsync("http://webapi/api/" + "QuanLyNguoiDung/UpdateProfile1", khachhang).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     HttpContext.Session.Remove("LoginInfor");

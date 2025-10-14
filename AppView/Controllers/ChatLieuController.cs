@@ -19,7 +19,7 @@ namespace AppView.Controllers
         {
             _httpClient = new HttpClient();
             dBContext = new AssignmentDBContext();
-            _httpClient.BaseAddress = new Uri("http://appapi/api/");
+            _httpClient.BaseAddress = new Uri("http://webapi/api/");
         }
         // GET: ChatLieuController
         public int PageSize = 8;
@@ -28,7 +28,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiUrl = $"http://appapi/api/ChatLieu/GetAllChatLieu";
+                string apiUrl = $"http://webapi/api/ChatLieu/GetAllChatLieu";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<ChatLieu>>(apiData);
@@ -57,7 +57,7 @@ namespace AppView.Controllers
                     ViewData["SearchError"] = "Vui lòng nhập tên để tìm kiếm";
                     return RedirectToAction("Show");
                 }
-                string apiUrl = $"http://appapi/api/ChatLieu/TimKiemChatLieu?name={Ten}";
+                string apiUrl = $"http://webapi/api/ChatLieu/TimKiemChatLieu?name={Ten}";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<ChatLieu>>(apiData);
@@ -93,7 +93,7 @@ namespace AppView.Controllers
             try
             {
                 mauSac.TrangThai = 1;
-                string apiUrl = $"http://appapi/api/ChatLieu/ThemChatLieu?ten={mauSac.Ten}";
+                string apiUrl = $"http://webapi/api/ChatLieu/ThemChatLieu?ten={mauSac.Ten}";
                 var reponsen = await _httpClient.PostAsync(apiUrl, null);
                 if (reponsen.IsSuccessStatusCode)
                 {
@@ -116,7 +116,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            string apiUrl = $"http://appapi/api/ChatLieu/GetChatLieuById?id={id}";
+            string apiUrl = $"http://webapi/api/ChatLieu/GetChatLieuById?id={id}";
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
 
@@ -126,7 +126,7 @@ namespace AppView.Controllers
         [HttpGet]
         public IActionResult Edit(Guid id)
         {
-            string apiUrl = $"http://appapi/api/ChatLieu/GetChatLieuById?id={id}";
+            string apiUrl = $"http://webapi/api/ChatLieu/GetChatLieuById?id={id}";
             var response = _httpClient.GetAsync(apiUrl).Result;
             var apiData = response.Content.ReadAsStringAsync().Result;
             var user = JsonConvert.DeserializeObject<ChatLieu>(apiData);
@@ -138,7 +138,7 @@ namespace AppView.Controllers
             try
             {
                 nv.TrangThai = 1;
-                string apiUrl = $"http://appapi/api/ChatLieu/{id}?ten={nv.Ten}";
+                string apiUrl = $"http://webapi/api/ChatLieu/{id}?ten={nv.Ten}";
                 var content = new StringContent(JsonConvert.SerializeObject(nv), Encoding.UTF8, "application/json");
                 var reponsen = await _httpClient.PutAsync(apiUrl, content);
 
@@ -158,7 +158,7 @@ namespace AppView.Controllers
         }
         public async Task<IActionResult> Delete(Guid id)
         {
-            string apiUrl = $"http://appapi/api/ChatLieu/{id}";
+            string apiUrl = $"http://webapi/api/ChatLieu/{id}";
             var reposen = await _httpClient.DeleteAsync(apiUrl);
             if (reposen.IsSuccessStatusCode)
             {

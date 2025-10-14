@@ -15,7 +15,7 @@ namespace AppView.Controllers
         public BanHangTaiQuayController()
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("http://appapi/api/");
+            _httpClient.BaseAddress = new Uri("http://webapi/api/");
 
         }
         //Giao diện bán hàng
@@ -187,7 +187,7 @@ namespace AppView.Controllers
 
                 if (ghichu != null)
                 {
-                    var stringURL = $"http://appapi/api/HoaDon/UpdateGhichu?idhd={idhd}&idnv={loginInfor.Id}&ghichu={ghichu}";
+                    var stringURL = $"http://webapi/api/HoaDon/UpdateGhichu?idhd={idhd}&idnv={loginInfor.Id}&ghichu={ghichu}";
                     var response = await _httpClient.PutAsync(stringURL, null);
                     if (response.IsSuccessStatusCode)
                     {
@@ -350,7 +350,7 @@ namespace AppView.Controllers
                 var lstcthd = await _httpClient.GetFromJsonAsync<List<HoaDonChiTietViewModel>>($"ChiTietHoaDon/getByIdHD/{id}");
                 lstcthd = lstcthd.Where(c => c.SoLuong > 0).ToList();
                 //Voucher
-                string apiURL = $"http://appapi/api/Voucher";
+                string apiURL = $"http://webapi/api/Voucher";
                 var listvc = await _httpClient.GetFromJsonAsync<List<Voucher>>(apiURL);
                 //Quy đổi điểm
                 var qdd = await _httpClient.GetFromJsonAsync<List<QuyDoiDiem>>("QuyDoiDiem");
@@ -473,7 +473,7 @@ namespace AppView.Controllers
                 }
                 else
                 {
-                    var url = $"http://appapi/api/QuanLyNguoiDung/AddNhanhKH";
+                    var url = $"http://webapi/api/QuanLyNguoiDung/AddNhanhKH";
                     var response = await _httpClient.PostAsJsonAsync(url, khview);
                     if (response.IsSuccessStatusCode) // Thêm khách hàng thành công -> tạo lịch sử tích điểm
                     {
@@ -497,7 +497,7 @@ namespace AppView.Controllers
                             var lstdexist = await _httpClient.GetFromJsonAsync<LichSuTichDiem>($"HoaDon/LichSuGiaoDich/{IDHD}");
                             var deletelstd = await _httpClient.DeleteAsync($"LichSuTichDiem/{lstdexist.ID}");
                         }
-                        string apiUrl = $"http://appapi/api/LichSuTichDiem?diem=0&trangthai=1&IdKhachHang={kh.IDKhachHang}&IdQuyDoiDiem={idqdd}&IdHoaDon={IDHD}";
+                        string apiUrl = $"http://webapi/api/LichSuTichDiem?diem=0&trangthai=1&IdKhachHang={kh.IDKhachHang}&IdQuyDoiDiem={idqdd}&IdHoaDon={IDHD}";
                         var lstdresponse = await _httpClient.PostAsync(apiUrl, null);
                         return Json(new { success = true, message = "Thêm khách hàng thành công" });
 
@@ -522,12 +522,12 @@ namespace AppView.Controllers
                 if (checkexist == true) // Tồn tại-> sửa
                 {
                     var lstd = await _httpClient.GetFromJsonAsync<LichSuTichDiem>($"HoaDon/LichSuGiaoDich/{idhd}");
-                    string apiUrl = $"http://appapi/api/LichSuTichDiem/{lstd.ID}?diem={lstd.Diem}&trangthai={lstd.TrangThai}&IdKhachHang={idkh}&IdQuyDoiDiem={lstd.IDQuyDoiDiem}&IdHoaDon={idhd}";
+                    string apiUrl = $"http://webapi/api/LichSuTichDiem/{lstd.ID}?diem={lstd.Diem}&trangthai={lstd.TrangThai}&IdKhachHang={idkh}&IdQuyDoiDiem={lstd.IDQuyDoiDiem}&IdHoaDon={idhd}";
                     var response = await _httpClient.PutAsync(apiUrl, null);
                 }
                 else // Chưa có lstd-> tạo mới
                 {
-                    string apiUrl = $"http://appapi/api/LichSuTichDiem?diem=0&trangthai=1&IdKhachHang={idkh}&IdQuyDoiDiem={idqdd}&IdHoaDon={idhd}";
+                    string apiUrl = $"http://webapi/api/LichSuTichDiem?diem=0&trangthai=1&IdKhachHang={idkh}&IdQuyDoiDiem={idqdd}&IdHoaDon={idhd}";
                     var lstdresponse = await _httpClient.PostAsync(apiUrl, null);
                 }
                 return Json(new { success = true });

@@ -34,7 +34,7 @@ namespace AppView.Controllers
         {
             _logger = logger;
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("http://appapi/api/");
+            _httpClient.BaseAddress = new Uri("http://webapi/api/");
         }
         public async Task<IActionResult> Index()
         {
@@ -302,28 +302,43 @@ namespace AppView.Controllers
             }
         }
         [HttpGet]
-        public IActionResult Shop()
+        public async Task<IActionResult> Shop()
         {
-            HttpResponseMessage responseLoaiSP = _httpClient.GetAsync(_httpClient.BaseAddress + "LoaiSP/getAll").Result;
+            // LoaiSP
+            HttpResponseMessage responseLoaiSP = await _httpClient.GetAsync(_httpClient.BaseAddress + "LoaiSP/getAll");
             if (responseLoaiSP.IsSuccessStatusCode)
             {
-                ViewData["listLoaiSP"] = JsonConvert.DeserializeObject<List<LoaiSP>>(responseLoaiSP.Content.ReadAsStringAsync().Result);
+                ViewData["listLoaiSP"] = JsonConvert.DeserializeObject<List<LoaiSP>>(await responseLoaiSP.Content.ReadAsStringAsync());
             }
-            HttpResponseMessage responseMauSac = _httpClient.GetAsync(_httpClient.BaseAddress + "SanPham/GetAllMauSac").Result;
+
+            // MauSac
+            HttpResponseMessage responseMauSac = await _httpClient.GetAsync(_httpClient.BaseAddress + "SanPham/GetAllMauSac");
             if (responseMauSac.IsSuccessStatusCode)
             {
-                ViewData["listMauSac"] = JsonConvert.DeserializeObject<List<MauSac>>(responseMauSac.Content.ReadAsStringAsync().Result);
+                ViewData["listMauSac"] = JsonConvert.DeserializeObject<List<MauSac>>(await responseMauSac.Content.ReadAsStringAsync());
             }
-            HttpResponseMessage responseKichCo = _httpClient.GetAsync(_httpClient.BaseAddress + "SanPham/GetAllKichCo").Result;
+
+            // KichCo (the snippet requested)
+            var responseKichCo = await _httpClient.GetAsync(_httpClient.BaseAddress + "SanPham/GetAllKichCo");
+            List<KichCo> listKichCo = null;
             if (responseKichCo.IsSuccessStatusCode)
             {
-                ViewData["listKichCo"] = JsonConvert.DeserializeObject<List<KichCo>>(responseKichCo.Content.ReadAsStringAsync().Result);
+                listKichCo = JsonConvert.DeserializeObject<List<KichCo>>(await responseKichCo.Content.ReadAsStringAsync());
             }
-            HttpResponseMessage responseChatLieu = _httpClient.GetAsync(_httpClient.BaseAddress + "SanPham/GetAllChatLieu").Result;
+            // coalesce to empty list if null
+            listKichCo ??= new List<KichCo>();
+
+            // if you use a strong ViewModel, put it into the model;
+            // if still using ViewBag / ViewData, set it here
+            ViewBag.ListKichCo = listKichCo;
+
+            // ChatLieu
+            HttpResponseMessage responseChatLieu = await _httpClient.GetAsync(_httpClient.BaseAddress + "SanPham/GetAllChatLieu");
             if (responseChatLieu.IsSuccessStatusCode)
             {
-                ViewData["listChatLieu"] = JsonConvert.DeserializeObject<List<ChatLieu>>(responseChatLieu.Content.ReadAsStringAsync().Result);
+                ViewData["listChatLieu"] = JsonConvert.DeserializeObject<List<ChatLieu>>(await responseChatLieu.Content.ReadAsStringAsync());
             }
+
             return View();
         }
         [HttpGet]
@@ -1626,7 +1641,7 @@ namespace AppView.Controllers
                     }
 
                     // Implement the code to save the new password in your QuanLyNguoiDungService
-                    string apiUrl = "http://appapi/api/QuanLyNguoiDung/ResetPassword";
+                    string apiUrl = "http://webapi/api/QuanLyNguoiDung/ResetPassword";
                     var response = await _httpClient.PostAsync(apiUrl, new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
                     if (response.IsSuccessStatusCode)
                     {

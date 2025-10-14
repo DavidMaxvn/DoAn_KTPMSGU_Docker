@@ -23,13 +23,13 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllQLKhuyenMaiSP(int ProductPage = 1)
         {// list khuyen mai view
-            string apiURL = $"http://appapi/api/KhuyenMai";
+            string apiURL = $"http://webapi/api/KhuyenMai";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<KhuyenMaiView>>(apiData);
             ViewBag.KhuyenMaiView = roles;       
             // // list AllViewsp
-            string apiURL1 = $"http://appapi/api/KhuyenMai/GetAllSP";
+            string apiURL1 = $"http://webapi/api/KhuyenMai/GetAllSP";
             var response1 = await _httpClient.GetAsync(apiURL1);
             var apiData1 = await response1.Content.ReadAsStringAsync();
             var qlsanphams = JsonConvert.DeserializeObject<List<AllViewSp>>(apiData1);
@@ -50,13 +50,13 @@ namespace AppView.Controllers
         // Tim kiem theo Id khuyen mai, id loai sp, id chat lieu
         public async Task<IActionResult> TimKiemSPByKM(Guid? idkhuyenmai,Guid? idloaisp,Guid? idchatlieu, int ProductPage = 1)
         {// list khuyen mai view
-            string apiURL = $"http://appapi/api/KhuyenMai";
+            string apiURL = $"http://webapi/api/KhuyenMai";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<KhuyenMaiView>>(apiData);
             ViewBag.KhuyenMaiView = roles;
             // // list AllViewsp
-            string apiURL1 = $"http://appapi/api/KhuyenMai/GetAllSPByKmLoaiSPChatLieu?idkm={idkhuyenmai}&idLoaiSP={idloaisp}&idChatLieu={idchatlieu}";
+            string apiURL1 = $"http://webapi/api/KhuyenMai/GetAllSPByKmLoaiSPChatLieu?idkm={idkhuyenmai}&idLoaiSP={idloaisp}&idChatLieu={idchatlieu}";
             var response1 = await _httpClient.GetAsync(apiURL1);
             var apiData1 = await response1.Content.ReadAsStringAsync();
             var qlsanphams = JsonConvert.DeserializeObject<List<AllViewSp>>(apiData1);
@@ -79,13 +79,13 @@ namespace AppView.Controllers
         public async Task<IActionResult> AddKHuyenMaiVoSP(Guid id, int ProductPage = 1)
         {           
             // list khuyen mai view
-            string apiURL = $"http://appapi/api/KhuyenMai";
+            string apiURL = $"http://webapi/api/KhuyenMai";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<KhuyenMaiView>>(apiData);
             ViewBag.KhuyenMaiView = roles;
             // list AllCTSP by SP
-            string apiURL1 = $"http://appapi/api/KhuyenMai/GetAllCTSPBySP?idSanPham={id}";
+            string apiURL1 = $"http://webapi/api/KhuyenMai/GetAllCTSPBySP?idSanPham={id}";
             var response1 = await _httpClient.GetAsync(apiURL1);
             var apiData1 = await response1.Content.ReadAsStringAsync();
             var bienthes = JsonConvert.DeserializeObject<List<AllViewCTSP>>(apiData1);
@@ -106,7 +106,7 @@ namespace AppView.Controllers
         [HttpPost]
         public async Task<IActionResult> AddKHuyenMaiVoSP(Guid idKhuyenMai, List<Guid> bienthes)
         {
-            var response = await _httpClient.PutAsJsonAsync($"http://appapi/api/KhuyenMai/AddKmVoBT?IdKhuyenMai={idKhuyenMai}", bienthes);
+            var response = await _httpClient.PutAsJsonAsync($"http://webapi/api/KhuyenMai/AddKmVoBT?IdKhuyenMai={idKhuyenMai}", bienthes);
             if (response.IsSuccessStatusCode) return Json(new { success = true, message = "Cập nhật thành công!" });
             return Json(new { success = false });
         }
@@ -115,13 +115,13 @@ namespace AppView.Controllers
         public async Task<IActionResult> AddCTSPByIdKMLayTuSession(Guid id, int ProductPage = 1)
         {
             // list khuyen mai view
-            string apiURL = $"http://appapi/api/KhuyenMai";
+            string apiURL = $"http://webapi/api/KhuyenMai";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<KhuyenMaiView>>(apiData);
             ViewBag.KhuyenMaiView = roles;
             // list AllCTSP by SP
-            string apiURL1 = $"http://appapi/api/KhuyenMai/GetAllCTSPBySP?idSanPham={id}";
+            string apiURL1 = $"http://webapi/api/KhuyenMai/GetAllCTSPBySP?idSanPham={id}";
             var response1 = await _httpClient.GetAsync(apiURL1);
             var apiData1 = await response1.Content.ReadAsStringAsync();
             var bienthes = JsonConvert.DeserializeObject<List<AllViewCTSP>>(apiData1);
@@ -147,7 +147,7 @@ namespace AppView.Controllers
             try
             {
                 var idkhuyenmai = Guid.Parse(HttpContext.Session.GetString("IdKhuyenMai"));
-                var response = await _httpClient.PutAsJsonAsync($"http://appapi/api/KhuyenMai/AddKmVoBT?IdKhuyenMai={idkhuyenmai}", bienthes);
+                var response = await _httpClient.PutAsJsonAsync($"http://webapi/api/KhuyenMai/AddKmVoBT?IdKhuyenMai={idkhuyenmai}", bienthes);
 
                 if (response.IsSuccessStatusCode) return Json(new { success = true, message = "Cập nhật thành công!" });
                 return Json(new { success = false });
@@ -163,7 +163,7 @@ namespace AppView.Controllers
         {
             try
             {
-                var response = await _httpClient.PutAsJsonAsync($"http://appapi/api/KhuyenMai/XoaKmRaBT", bienthes);
+                var response = await _httpClient.PutAsJsonAsync($"http://webapi/api/KhuyenMai/XoaKmRaBT", bienthes);
                 if (response.IsSuccessStatusCode) return Json(new { success = true, message = "Xóa Khuyến Mãi ra  thành công!" });
                 return Json(new { success = false });
             }
@@ -176,7 +176,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllKM(int ProductPage = 1)
         {// list khuyen mai view
-            string apiURL = $"http://appapi/api/KhuyenMai";
+            string apiURL = $"http://webapi/api/KhuyenMai";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<KhuyenMaiView>>(apiData);
@@ -201,7 +201,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> TimKiemTenKM(string TenKM, int ProductPage = 1)
         {// list khuyen mai view
-            string apiURL = $"http://appapi/api/KhuyenMai";
+            string apiURL = $"http://webapi/api/KhuyenMai";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<KhuyenMaiView>>(apiData);
@@ -233,7 +233,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiURL = $"http://appapi/api/KhuyenMai";
+                string apiURL = $"http://webapi/api/KhuyenMai";
                 var response1 = await _httpClient.GetAsync(apiURL);
                 var apiData = await response1.Content.ReadAsStringAsync();
                 var roles = JsonConvert.DeserializeObject<List<KhuyenMaiView>>(apiData);
@@ -272,7 +272,7 @@ namespace AppView.Controllers
                             if (kmv.GiaTri > 0 && kmv.NgayKetThuc >= kmv.NgayApDung && timkiem == null)
                             {
                                 var response = await
-                      _httpClient.PostAsJsonAsync("http://appapi/api/KhuyenMai", kmv);
+                      _httpClient.PostAsJsonAsync("http://webapi/api/KhuyenMai", kmv);
                                 if (response.IsSuccessStatusCode) return RedirectToAction("GetAllKM");
                                 return View();
                             }
@@ -290,7 +290,7 @@ namespace AppView.Controllers
                             if (kmv.GiaTri > 0 && kmv.NgayKetThuc >= kmv.NgayApDung && timkiem == null)
                             {
                                 var response = await
-                      _httpClient.PostAsJsonAsync("http://appapi/api/KhuyenMai", kmv);
+                      _httpClient.PostAsJsonAsync("http://webapi/api/KhuyenMai", kmv);
                                 if (response.IsSuccessStatusCode) return RedirectToAction("GetAllKM");
                                 return View();
                             }
@@ -310,7 +310,7 @@ namespace AppView.Controllers
         // update
         public  IActionResult Update(Guid id)
         {           
-            var url = $"http://appapi/api/KhuyenMai/{id}";
+            var url = $"http://webapi/api/KhuyenMai/{id}";
             var response = _httpClient.GetAsync(url).Result;
             var result = response.Content.ReadAsStringAsync().Result;
             var KhuyenMais = JsonConvert.DeserializeObject<KhuyenMaiView>(result);
@@ -324,7 +324,7 @@ namespace AppView.Controllers
             {
                 if (kmv.NgayKetThuc >= kmv.NgayApDung)
                 {
-                    var response = await _httpClient.PutAsJsonAsync($"http://appapi/api/KhuyenMai/{kmv.ID}", kmv);
+                    var response = await _httpClient.PutAsJsonAsync($"http://webapi/api/KhuyenMai/{kmv.ID}", kmv);
                     if (response.IsSuccessStatusCode) return RedirectToAction("GetAllKM");
                     return View();
                 }
@@ -434,23 +434,23 @@ namespace AppView.Controllers
         //}
         public async Task<IActionResult> Delete(Guid id)
         {
-            var url = $"http://appapi/api/KhuyenMai/{id}";
+            var url = $"http://webapi/api/KhuyenMai/{id}";
             var response = await _httpClient.DeleteAsync(url);
             if (response.IsSuccessStatusCode) return RedirectToAction("GetAllKM");
             return BadRequest();
         }
         // Get CTSP by Id Khuyen Mai
-        // http://appapi/api/KhuyenMai/GetCTSPByIdKm?idkm=03327098-cd91-4764-b905-358873673882
+        // http://webapi/api/KhuyenMai/GetCTSPByIdKm?idkm=03327098-cd91-4764-b905-358873673882
         public async Task<IActionResult> GetCTSPByIdKM(Guid id, int ProductPage = 1)
         {
             // list khuyen mai view
-            string apiURL = $"http://appapi/api/KhuyenMai";
+            string apiURL = $"http://webapi/api/KhuyenMai";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<KhuyenMaiView>>(apiData);
             ViewBag.KhuyenMaiView = roles;
             // list AllCTSP by SP
-            string apiURL1 = $"http://appapi/api/KhuyenMai/GetCTSPByIdKm?idkm={id}";
+            string apiURL1 = $"http://webapi/api/KhuyenMai/GetCTSPByIdKm?idkm={id}";
             var response1 = await _httpClient.GetAsync(apiURL1);
             var apiData1 = await response1.Content.ReadAsStringAsync();
             var bienthes = JsonConvert.DeserializeObject<List<AllViewCTSP>>(apiData1);
@@ -470,7 +470,7 @@ namespace AppView.Controllers
         public async Task<IActionResult> GetSPByIdKM(Guid id, int ProductPage = 1)
         {
             // list khuyen mai view
-            string apiURL = $"http://appapi/api/KhuyenMai";
+            string apiURL = $"http://webapi/api/KhuyenMai";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<KhuyenMaiView>>(apiData);
@@ -480,7 +480,7 @@ namespace AppView.Controllers
             var KhuyenMai = roles.FirstOrDefault(x=>x.ID==id);
 
             HttpContext.Session.SetString("IdKhuyenMai", KhuyenMai.ID.ToString());
-            string apiURL1 = $"http://appapi/api/KhuyenMai/GetAllSPByKhuyenMai?idkm={id}";
+            string apiURL1 = $"http://webapi/api/KhuyenMai/GetAllSPByKhuyenMai?idkm={id}";
             var response1 = await _httpClient.GetAsync(apiURL1);
             var apiData1 = await response1.Content.ReadAsStringAsync();
             var bienthes = JsonConvert.DeserializeObject<List<AllViewSp>>(apiData1);
@@ -508,7 +508,7 @@ namespace AppView.Controllers
             var idkhuyenmai = Guid.Parse(HttpContext.Session.GetString("IdKhuyenMai"));          
             ViewBag.IdKhuyenMai = idkhuyenmai;
             // // list AllViewsp
-            string apiURL1 = $"http://appapi/api/KhuyenMai/GetAllSPNoKM?id={idkhuyenmai}";
+            string apiURL1 = $"http://webapi/api/KhuyenMai/GetAllSPNoKM?id={idkhuyenmai}";
             var response1 = await _httpClient.GetAsync(apiURL1);
             var apiData1 = await response1.Content.ReadAsStringAsync();
             var qlsanphams = JsonConvert.DeserializeObject<List<AllViewSp>>(apiData1);
@@ -525,13 +525,13 @@ namespace AppView.Controllers
 
             });
         }
-        //http://appapi/api/KhuyenMai/GetAllSPNoKMByLoaiSPChatLieu?id=a034b1a2-1f42-43f2-b87a-138f8722cdcb&idLoaiSP=49ed4761-81c4-4f7d-a5c6-b051ed1ecdb6&idChatLieu=276b52d1-ce55-4027-b185-f6d5db4017b3
+        //http://webapi/api/KhuyenMai/GetAllSPNoKMByLoaiSPChatLieu?id=a034b1a2-1f42-43f2-b87a-138f8722cdcb&idLoaiSP=49ed4761-81c4-4f7d-a5c6-b051ed1ecdb6&idChatLieu=276b52d1-ce55-4027-b185-f6d5db4017b3
         [HttpGet]
         public async Task<IActionResult> GetSPNoKMLoaiSPCL(Guid? idloaisp, Guid? idchatlieu, int ProductPage = 1)
         {
             var idkhuyenmai = Guid.Parse(HttpContext.Session.GetString("IdKhuyenMai"));
             // // list AllViewsp
-            string apiURL1 = $"http://appapi/api/KhuyenMai/GetAllSPNoKMByLoaiSPChatLieu?id={idkhuyenmai}&idLoaiSP={idloaisp}&idChatLieu={idchatlieu}";
+            string apiURL1 = $"http://webapi/api/KhuyenMai/GetAllSPNoKMByLoaiSPChatLieu?id={idkhuyenmai}&idLoaiSP={idloaisp}&idChatLieu={idchatlieu}";
             var response1 = await _httpClient.GetAsync(apiURL1);
             var apiData1 = await response1.Content.ReadAsStringAsync();
             var qlsanphams = JsonConvert.DeserializeObject<List<AllViewSp>>(apiData1);

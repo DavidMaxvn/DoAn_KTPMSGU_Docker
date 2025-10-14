@@ -8,6 +8,10 @@
     var listChatLieu = ViewData["listChatLieu"] as List<ChatLieu>;
     Layout = "_Layout";
 }
+@{
+    var apiPublic = "http://localhost:5080"; // host public của API để render ảnh
+}
+
 <style>
     .stars-outer {
         position: relative;
@@ -95,7 +99,7 @@
                 <div class="breadcrumb__text">
                     <h4>Cửa hàng</h4>
                     <div class="breadcrumb__links">
-                        <a href="https://localhost:5001/">Trang chủ</a>
+                        <a href="http://localhost:8080/">Trang chủ</a>
                         <span>Cửa hàng</span>
                     </div>
                 </div>
@@ -182,14 +186,24 @@
                                 </div>
                                 <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
                                     <div class="card-body">
-                                        <div @*class="shop__sidebar__size"*@ id="filter-size" onchange="LocSort()">
-                                            @foreach (var item in listKichCo)
+                                        <div id="filter-size" onchange="LocSort()">
+                                            @{
+                                                var sizes = listKichCo ?? Enumerable.Empty<AppData.Models.KichCo>();
+                                            }
+                                            @foreach (var kc in sizes)
                                             {
-                                                <label>
-                                                    <input type="checkbox" class="btn-check" id="btn-check-outlined_@item.Ten" autocomplete="off" val="@item.ID">
-                                                    <span class="btn btn-outline-primary" for="btn-check-outlined_@item.Ten">@item.Ten</span>
+                                                var safeId = $"kc_{kc.ID}";
+                                                <input type="checkbox"
+                                                       class="btn-check"
+                                                       id="@safeId"
+                                                       name="Sizes"
+                                                       value="@kc.ID"
+                                                       autocomplete="off" />
+                                                <label class="btn btn-outline-primary me-1 mb-1" for="@safeId">
+                                                    @kc.Ten
                                                 </label>
                                             }
+                                        </div>
 
                                             @*<label for="xs">
                                             xs
@@ -238,7 +252,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
                                 <div class="product__item__pic set-bg">
-                                    <a asp-action="ProductDetail" asp-route-idSanPham="@item.ID"><img style="width:260px;height:265px;" src="/img/product/@item.Image"></a>
+                                    <a asp-action="ProductDetail" asp-route-idSanPham="@item.ID"><img style="width:260px;height:265px;" src="@($"{apiPublic}/img/product/{item.Image}")"></a>
                                 </div>
                                 <div class="product__item__text">
                                     <h6>@item.Ten</h6>
@@ -262,6 +276,7 @@
 <!-- Shop Section End -->
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+    const apiPublic = '@apiPublic';
     var pageIndex = 1;
     var pagesize = 12;
     $(document).ready(function () {
@@ -291,21 +306,63 @@
                 console.log(response);
                 $.each(response.data, function (i, item) {
                     const id = item.id.substring(0, 8);
-                    if(item.soLuong > 0){
-                        if (item.trangThaiKM == 0) {
-                            $("#filtered-products").append("<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item "+id+"'><div class='product__item__pic set-bg' style='height:300px!important'><span style='background-color:black;color:white;'class='label'>" + '-' + Intl.NumberFormat().format(item.giaTriKM) + ' ' + 'VNĐ' + "</span><a href='/Home/ProductDetail?idSanPham=" + item.id + "' > <img style='width:260px;height:300px;' src='/img/product/" + item.image + "'></a></div><div class='product__item__text'><h6>" + item.ten + "</h6><a onclick=\"addCart('" + item.idChiTietSanPham + "')\" class='add-cart' style='cursor:pointer'> + Thêm vào giỏ hàng </a><div class='stars-outer'> <div class='stars-inner'></div> <span class='number-rating'></span> </div><h5> " + Intl.NumberFormat().format(item.giaBan) + ' ' + 'VNĐ' + " </h5><span style='font - size: 14px; color:#3a3b3c; '> <del>" + Intl.NumberFormat().format(item.giaGoc) + ' ' + 'VNĐ' + "</del> </span></div></div></div>");
-                        } else if (item.trangThaiKM == 1) {
-                            $("#filtered-products").append("<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item "+id+"'><div class='product__item__pic set-bg' style='height:300px!important'><span style='background-color:black;color:white;'class='label'>" + '-' + item.giaTriKM + '%' + "</span><a href='/Home/ProductDetail?idSanPham=" + item.id + "' > <img style='width:260px;height:300px;' src='/img/product/" + item.image + "'></a></div><div class='product__item__text'><h6>" + item.ten + "</h6><a onclick=\"addCart('" + item.idChiTietSanPham + "')\" class='add-cart' style='cursor:pointer'> + Thêm vào giỏ hàng </a><div class='stars-outer'> <div class='stars-inner'></div> <span class='number-rating'></span> </div><h5> " + Intl.NumberFormat().format(item.giaBan) + ' ' + 'VNĐ' + " </h5><span style='font - size: 14px; color:#3a3b3c; '> <del>" + Intl.NumberFormat().format(item.giaGoc) + ' ' + 'VNĐ' + "</del> </span></div></div></div>");
-                        }else{
-                            $("#filtered-products").append("<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item "+id+"'><div class='product__item__pic set-bg' style='height:300px!important'><a href='/Home/ProductDetail?idSanPham=" + item.id + "' > <img style='width:260px;height:300px;' src='/img/product/" + item.image + "'></a></div><div class='product__item__text'><h6>" + item.ten + "</h6><a onclick=\"addCart('" + item.idChiTietSanPham + "')\" class='add-cart' style='cursor:pointer'> + Thêm vào giỏ hàng </a><div class='stars-outer'> <div class='stars-inner'></div> <span class='number-rating'></span> </div><h5> " + Intl.NumberFormat().format(item.giaBan) + ' ' + 'VNĐ' + " </h5></div></div></div>");
-                        }
-                    }else{
-                        $("#filtered-products").append("<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item " + id + "'><div class='product__item__pic set-bg' style='height:300px!important'><span style='background-color:black;color:white;'class='label'>" + 'Hết hàng' + "</span><a href='/Home/ProductDetail?idSanPham=" + item.id + "' > <img style='width:260px;height:300px;' src='/img/product/" + item.image + "'></a></div><div class='product__item__text'><h6>" + item.ten + "</h6><a onclick=\"addCartSoLuongBangKhong()\" class='add-cart' style='cursor:pointer'> + Thêm vào giỏ hàng </a><div class='stars-outer'> <div class='stars-inner'></div> <span class='number-rating'></span> </div><h5> " + Intl.NumberFormat().format(item.giaBan) + ' ' + 'VNĐ' + " </h5><span style='font - size: 14px; color:#3a3b3c; '> </span></div></div></div>");
+                    if (item.soLuong > 0) {
+                    // Nhãn khuyến mại (tiền/%) nếu có
+                    let badgeHtml = "";
+                    if (item.trangThaiKM === 0) {
+                        badgeHtml = `<span class="label" style="background-color:black;color:white;">-${Intl.NumberFormat().format(item.giaTriKM)} VNĐ</span>`;
+                    } else if (item.trangThaiKM === 1) {
+                        badgeHtml = `<span class="label" style="background-color:black;color:white;">-${item.giaTriKM}%</span>`;
                     }
-                    
-                    getRatings(id, item.soSao);
-                });
-                pagingsp(response.total, function () {
+
+                    $("#filtered-products").append(`
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item ${id}">
+                                <div class="product__item__pic set-bg" style="height:300px!important">
+                                    ${badgeHtml}
+                                    <a href="/Home/ProductDetail?idSanPham=${item.id}">
+                                        <img style="width:260px;height:300px;" src="${apiPublic}/img/product/${item.image}">
+                                    </a>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6>${item.ten}</h6>
+                                    <a onclick="addCart('${item.idChiTietSanPham}')" class="add-cart" style="cursor:pointer">+ Thêm vào giỏ hàng</a>
+                                    <div class="stars-outer"><div class="stars-inner"></div><span class="number-rating"></span></div>
+                                    <h5>${Intl.NumberFormat().format(item.giaBan)} VNĐ</h5>
+                                    ${
+                                        (item.trangThaiKM === 0 || item.trangThaiKM === 1)
+                                        ? `<span style="font-size:14px;color:#3a3b3c;"><del>${Intl.NumberFormat().format(item.giaGoc)} VNĐ</del></span>`
+                                        : ``
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                } else {
+                    // Hết hàng
+                    $("#filtered-products").append(`
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item ${id}">
+                                <div class="product__item__pic set-bg" style="height:300px!important">
+                                    <span class="label" style="background-color:black;color:white;">Hết hàng</span>
+                                    <a href="/Home/ProductDetail?idSanPham=${item.id}">
+                                        <img style="width:260px;height:300px;" src="${apiPublic}/img/product/${item.image}">
+                                    </a>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6>${item.ten}</h6>
+                                    <a onclick="addCartSoLuongBangKhong()" class="add-cart" style="cursor:pointer">+ Thêm vào giỏ hàng</a>
+                                    <div class="stars-outer"><div class="stars-inner"></div><span class="number-rating"></span></div>
+                                    <h5>${Intl.NumberFormat().format(item.giaBan)} VNĐ</h5>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                }
+
+                getRatings(id, item.soSao);
+            });
+            pagingsp(response.total, function () {
                     loadsp();
                 });
             },

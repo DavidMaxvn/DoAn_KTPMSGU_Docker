@@ -12,7 +12,7 @@ namespace AppView.Controllers
         public TrangChuController()
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("http://appapi/api/");
+            _httpClient.BaseAddress = new Uri("http://webapi/api/");
         }
         public async Task<IActionResult> Index()
         {

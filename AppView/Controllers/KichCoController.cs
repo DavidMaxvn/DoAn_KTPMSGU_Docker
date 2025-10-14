@@ -18,14 +18,14 @@ namespace AppView.Controllers
         {
             _httpClient = new HttpClient();
             dBContext = new AssignmentDBContext();
-            _httpClient.BaseAddress = new Uri("http://appapi/api/");
+            _httpClient.BaseAddress = new Uri("http://webapi/api/");
         }
 
         public async Task<IActionResult> Show(int ProductPage = 1)
         {
             try
             {
-                string apiUrl = $"http://appapi/api/KichCo/GetAllKichCo";
+                string apiUrl = $"http://webapi/api/KichCo/GetAllKichCo";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<KichCo>>(apiData);
@@ -54,7 +54,7 @@ namespace AppView.Controllers
                     ViewData["SearchError"] = "Vui lòng nhập tên để tìm kiếm";
                     return RedirectToAction("Show");
                 }
-                string apiUrl = $"http://appapi/api/KichCo/TimKiemKichCo?name={Ten}";
+                string apiUrl = $"http://webapi/api/KichCo/TimKiemKichCo?name={Ten}";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<KichCo>>(apiData);
@@ -89,7 +89,7 @@ namespace AppView.Controllers
             try
             {
                 kc.TrangThai = 1;
-                string apiUrl = $"http://appapi/api/KichCo/ThemKichCo?ten={kc.Ten}";
+                string apiUrl = $"http://webapi/api/KichCo/ThemKichCo?ten={kc.Ten}";
                 var reponsen = await _httpClient.PostAsync(apiUrl, null);
                 if (reponsen.IsSuccessStatusCode)
                 {
@@ -111,7 +111,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            string apiUrl = $"http://appapi/api/KichCo/GetKichCoById?id={id}";
+            string apiUrl = $"http://webapi/api/KichCo/GetKichCoById?id={id}";
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
             var user = JsonConvert.DeserializeObject<KichCo>(apiData);
@@ -122,7 +122,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiUrl = $"http://appapi/api/KichCo/GetKichCoById?id={id}";
+                string apiUrl = $"http://webapi/api/KichCo/GetKichCoById?id={id}";
                 var response = _httpClient.GetAsync(apiUrl).Result;
                 var apiData = response.Content.ReadAsStringAsync().Result;
                 var user = JsonConvert.DeserializeObject<KichCo>(apiData);
@@ -139,7 +139,7 @@ namespace AppView.Controllers
             try
             {
                 nv.TrangThai = 1;
-                string apiUrl = $"http://appapi/api/KichCo/{id}?ten={nv.Ten}";
+                string apiUrl = $"http://webapi/api/KichCo/{id}?ten={nv.Ten}";
                 var content = new StringContent(JsonConvert.SerializeObject(nv), Encoding.UTF8, "application/json");
                 var reponsen = await _httpClient.PutAsync(apiUrl, content);
                 if (reponsen.IsSuccessStatusCode)
@@ -160,7 +160,7 @@ namespace AppView.Controllers
         }
         public async Task<IActionResult> Delete(Guid id)
         {
-            string apiUrl = $"http://appapi/api/KichCo/{id}";
+            string apiUrl = $"http://webapi/api/KichCo/{id}";
             var reposen = await _httpClient.DeleteAsync(apiUrl);
             if (reposen.IsSuccessStatusCode)
             {

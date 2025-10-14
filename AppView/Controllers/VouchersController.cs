@@ -21,7 +21,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllVoucher(int ProductPage = 1)
         {
-            string apiURL = $"http://appapi/api/Voucher";
+            string apiURL = $"http://webapi/api/Voucher";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<VoucherView>>(apiData);
@@ -44,7 +44,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> TimKiemTenVC(string Ten, int ProductPage = 1)
         {
-            string apiURL = $"http://appapi/api/Voucher";
+            string apiURL = $"http://webapi/api/Voucher";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<VoucherView>>(apiData);
@@ -75,7 +75,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiURL = $"http://appapi/api/Voucher";
+                string apiURL = $"http://webapi/api/Voucher";
                 var response1 = await _httpClient.GetAsync(apiURL);
                 var apiData = await response1.Content.ReadAsStringAsync();
                 var roles = JsonConvert.DeserializeObject<List<VoucherView>>(apiData);
@@ -118,7 +118,7 @@ namespace AppView.Controllers
                             {
                                 if (voucher.SoTienCan >= 0 && voucher.GiaTri > 0 && voucher.SoLuong > 0 && voucher.NgayKetThuc >= voucher.NgayApDung && timkiem == null)
                                 {
-                                    var response = await _httpClient.PostAsJsonAsync($"http://appapi/api/Voucher", voucher);
+                                    var response = await _httpClient.PostAsJsonAsync($"http://webapi/api/Voucher", voucher);
                                     if (response.IsSuccessStatusCode)
                                     {
                                         return RedirectToAction("GetAllVoucher");
@@ -135,7 +135,7 @@ namespace AppView.Controllers
                                 {
                                     if (voucher.SoTienCan >= 0 && voucher.GiaTri > 0 && voucher.SoLuong > 0 && voucher.NgayKetThuc >= voucher.NgayApDung && timkiem == null)
                                     {
-                                        var response = await _httpClient.PostAsJsonAsync($"http://appapi/api/Voucher", voucher);
+                                        var response = await _httpClient.PostAsJsonAsync($"http://webapi/api/Voucher", voucher);
                                         if (response.IsSuccessStatusCode)
                                         {
                                             return RedirectToAction("GetAllVoucher");
@@ -173,7 +173,7 @@ namespace AppView.Controllers
                             {
                                 if (voucher.SoTienCan >= 0 && voucher.GiaTri > 0 && voucher.SoLuong > 0 && voucher.NgayKetThuc >= voucher.NgayApDung && timkiem == null)
                                 {
-                                    var response = await _httpClient.PostAsJsonAsync($"http://appapi/api/Voucher", voucher);
+                                    var response = await _httpClient.PostAsJsonAsync($"http://webapi/api/Voucher", voucher);
                                     if (response.IsSuccessStatusCode)
                                     {
                                         return RedirectToAction("GetAllVoucher");
@@ -195,7 +195,7 @@ namespace AppView.Controllers
                                 {
                                     if (voucher.SoTienCan >= 0 && voucher.GiaTri > 0 && voucher.SoLuong > 0 && voucher.NgayKetThuc >= voucher.NgayApDung && timkiem == null)
                                     {
-                                        var response = await _httpClient.PostAsJsonAsync($"http://appapi/api/Voucher", voucher);
+                                        var response = await _httpClient.PostAsJsonAsync($"http://webapi/api/Voucher", voucher);
                                         if (response.IsSuccessStatusCode)
                                         {
                                             return RedirectToAction("GetAllVoucher");
@@ -229,7 +229,7 @@ namespace AppView.Controllers
         {
             try
             {
-                var url = $"http://appapi/api/Voucher/{id}";
+                var url = $"http://webapi/api/Voucher/{id}";
                 var response = _httpClient.GetAsync(url).Result;
                 var result = response.Content.ReadAsStringAsync().Result;
                 var KhuyenMais = JsonConvert.DeserializeObject<VoucherView>(result);
@@ -252,7 +252,7 @@ namespace AppView.Controllers
                 {
                     if (voucher.SoLuong > 0 && voucher.NgayKetThuc >= voucher.NgayApDung)
                     {
-                        var response = await _httpClient.PutAsJsonAsync($"http://appapi/api/Voucher/{voucher.Id}", voucher);
+                        var response = await _httpClient.PutAsJsonAsync($"http://webapi/api/Voucher/{voucher.Id}", voucher);
                         if (response.IsSuccessStatusCode)
                         {
                             return RedirectToAction("GetAllVoucher");
@@ -278,7 +278,7 @@ namespace AppView.Controllers
                     {
                         if (voucher.SoLuong > 0 && voucher.NgayKetThuc >= voucher.NgayApDung)
                         {
-                            var response = await _httpClient.PutAsJsonAsync($"http://appapi/api/Voucher/{voucher.Id}", voucher);
+                            var response = await _httpClient.PutAsJsonAsync($"http://webapi/api/Voucher/{voucher.Id}", voucher);
                             if (response.IsSuccessStatusCode)
                             {
                                 return RedirectToAction("GetAllVoucher");
@@ -313,7 +313,7 @@ namespace AppView.Controllers
         // delete
         //public async Task<IActionResult> Delete(Guid id)
         //{
-        //    string apiURL = $"http://appapi/api/Voucher/{id}";
+        //    string apiURL = $"http://webapi/api/Voucher/{id}";
 
         //    var response = await _httpClient.DeleteAsync(apiURL);
         //    if (response.IsSuccessStatusCode)

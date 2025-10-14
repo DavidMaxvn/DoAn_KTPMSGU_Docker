@@ -294,7 +294,7 @@
     async function loadHDCHO(callback) {
         try {
             const data = await $.ajax({
-                url: "http://appapi/api/HoaDon/GetAllHDCho",
+                url: "http://webapi/api/HoaDon/GetAllHDCho",
                 type: "GET",
                 dataType: "json"
             });
@@ -357,7 +357,7 @@
         var ans = confirm("Bạn có chắc chắn xóa Đơn Nháp này?");
         if (ans) {
             $.ajax({
-                url: "http://appapi/api/HoaDon/deleteHoaDon/" + idhd,
+                url: "http://webapi/api/HoaDon/deleteHoaDon/" + idhd,
                 type: "DELETE",
                 dataType: 'json',
                 contentType: 'application/json',
