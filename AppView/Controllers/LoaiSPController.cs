@@ -27,7 +27,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiUrl = "https://localhost:7095/api/LoaiSP/getAll";
+                string apiUrl = "http://appapi/api/LoaiSP/getAll";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var LoaiSPs = JsonConvert.DeserializeObject<List<LoaiSP>>(apiData);
@@ -60,7 +60,7 @@ namespace AppView.Controllers
                     ViewData["SearchError"] = "Vui lòng nhập tên để tìm kiếm";
                     return RedirectToAction("Show");
                 }
-                string apiUrl = $"https://localhost:7095/api/LoaiSP/TimKiemLoaiSP?name={ten}";
+                string apiUrl = $"http://appapi/api/LoaiSP/TimKiemLoaiSP?name={ten}";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<LoaiSP>>(apiData);
@@ -90,7 +90,7 @@ namespace AppView.Controllers
         {
             try
             {
-                var responseLoaiSP = _httpClient.GetAsync(_httpClient.BaseAddress + $"https://localhost:7095/api/LoaiSP/getAll").Result;
+                var responseLoaiSP = _httpClient.GetAsync(_httpClient.BaseAddress + $"http://appapi/api/LoaiSP/getAll").Result;
                 if (responseLoaiSP.IsSuccessStatusCode)
                 {
                     ViewData["listLoaiSP"] = JsonConvert.DeserializeObject<List<LoaiSP>>(responseLoaiSP.Content.ReadAsStringAsync().Result);
@@ -110,7 +110,7 @@ namespace AppView.Controllers
             {
                 lsp.ID = Guid.NewGuid();
                 lsp.TrangThai = 1;
-                string apiURL = $"https://localhost:7095/api/LoaiSP/save";
+                string apiURL = $"http://appapi/api/LoaiSP/save";
                 var content = new StringContent(JsonConvert.SerializeObject(lsp), Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync(apiURL, content);
                 if (response.IsSuccessStatusCode)
@@ -129,7 +129,7 @@ namespace AppView.Controllers
         public async Task<IActionResult> Details(Guid id)
         {
 
-            string apiUrl = $"https://localhost:7095/api/LoaiSP/getById/{id}";
+            string apiUrl = $"http://appapi/api/LoaiSP/getById/{id}";
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
             var LoaiSPs = JsonConvert.DeserializeObject<LoaiSP>(apiData);
@@ -141,7 +141,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiUrl = $"https://localhost:7095/api/LoaiSP/getById/{id}";
+                string apiUrl = $"http://appapi/api/LoaiSP/getById/{id}";
                 var response = await _httpClient.GetAsync(apiUrl);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -165,7 +165,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiUrl = $"https://localhost:7095/api/LoaiSP/save";
+                string apiUrl = $"http://appapi/api/LoaiSP/save";
                 var content = new StringContent(JsonConvert.SerializeObject(lsp), Encoding.UTF8, "application/json");
 
                 var response = await _httpClient.PutAsync(apiUrl, content);
@@ -197,7 +197,7 @@ namespace AppView.Controllers
             // list loai san pham con
             try
             {
-                string apiUrl = $"https://localhost:7095/api/LoaiSP?id={id}";
+                string apiUrl = $"http://appapi/api/LoaiSP?id={id}";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var LoaiSPs = JsonConvert.DeserializeObject<List<LoaiSP>>(apiData);
@@ -222,7 +222,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiUrl = $"https://localhost:7095/api/LoaiSP/getById/{id}";
+                string apiUrl = $"http://appapi/api/LoaiSP/getById/{id}";
                 var response = await _httpClient.GetAsync(apiUrl);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -241,7 +241,7 @@ namespace AppView.Controllers
             try
             {
                 lsp.TrangThai = 1;
-                string apiUrl = $"https://localhost:7095/api/LoaiSP/save";
+                string apiUrl = $"http://appapi/api/LoaiSP/save";
                 var content = new StringContent(JsonConvert.SerializeObject(lsp), Encoding.UTF8, "application/json");
                 var reponsen = await _httpClient.PutAsync(apiUrl, content);
                 if (reponsen.IsSuccessStatusCode)
@@ -263,7 +263,7 @@ namespace AppView.Controllers
         }
         public async Task<IActionResult> CreateLoaiSPCon()
         {
-            var responseLoaiSP = _httpClient.GetAsync(_httpClient.BaseAddress + $"https://localhost:7095/api/LoaiSP/getAll").Result;
+            var responseLoaiSP = _httpClient.GetAsync(_httpClient.BaseAddress + $"http://appapi/api/LoaiSP/getAll").Result;
             if (responseLoaiSP.IsSuccessStatusCode)
             {
                 ViewData["listLoaiSP"] = JsonConvert.DeserializeObject<List<LoaiSP>>(responseLoaiSP.Content.ReadAsStringAsync().Result);
@@ -274,7 +274,7 @@ namespace AppView.Controllers
         public async Task<IActionResult> CreateLoaiSPCon(LoaiSP lsp)
         {
             lsp.TrangThai = 1;
-            string apiURL = $"https://localhost:7095/api/LoaiSP/save";
+            string apiURL = $"http://appapi/api/LoaiSP/save";
             var content = new StringContent(JsonConvert.SerializeObject(lsp), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(apiURL, content);
             if (response.IsSuccessStatusCode)

@@ -22,7 +22,7 @@ namespace AppView.Controllers
 
         public async Task<IActionResult> ThongKeSP()
         {
-            string apiUrl = $"https://localhost:7095/api/ThongKeView/ThongKeMSSanPhamBan";
+            string apiUrl = $"http://appapi/api/ThongKeView/ThongKeMSSanPhamBan";
 
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
@@ -34,7 +34,7 @@ namespace AppView.Controllers
         public async Task<IActionResult> ThongKeSPTheoThang(DateTime? ngay, DateTime? thang, DateTime? nam)
         {
 
-            string apiUrl = $"https://localhost:7095/api/ThongKeView/ThongKeMSSanPhamBan";
+            string apiUrl = $"http://appapi/api/ThongKeView/ThongKeMSSanPhamBan";
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
             var ChatLieus = JsonConvert.DeserializeObject<List<ThongKeMSSanPhamTheoSoLuong>>(apiData);
@@ -62,7 +62,7 @@ namespace AppView.Controllers
 
         public async Task<IActionResult> ThongKeKH(int ProductPage = 1)
         {
-            string apiUrl = $"https://localhost:7095/api/ThongKeView/ThongKeKHTheoSoLuongHoaDon";
+            string apiUrl = $"http://appapi/api/ThongKeView/ThongKeKHTheoSoLuongHoaDon";
 
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
@@ -86,7 +86,7 @@ namespace AppView.Controllers
         public async Task<IActionResult> ThongKeSPKHTheoThang(DateTime ThangStart, DateTime ThangEnd, int ProductPage = 1)
         {
 
-            string apiUrl = $"https://localhost:7095/api/ThongKeView/ThongKeKHTheoSoLuongHoaDon";
+            string apiUrl = $"http://appapi/api/ThongKeView/ThongKeKHTheoSoLuongHoaDon";
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
             var ChatLieus = JsonConvert.DeserializeObject<List<ThongKeKHMuaNhieu>>(apiData);
@@ -112,7 +112,7 @@ namespace AppView.Controllers
         public async Task<IActionResult> GetAllLSTDByIDKH(Guid id,int ProductPage = 1)
         {
             //
-            string apiURL = $"https://localhost:7095/api/LichSuTichDiem/GetLSTDByIdKH?idkh={id}";
+            string apiURL = $"http://appapi/api/LichSuTichDiem/GetLSTDByIdKH?idkh={id}";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<LichSuTichDiemView>>(apiData);
@@ -136,7 +136,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> ThongKeDoanhThuTheoNgay()
         {
-            string apiUrl = $"https://localhost:7095/api/ThongKeView/ThongKeDoanhThuTheoNgay";
+            string apiUrl = $"http://appapi/api/ThongKeView/ThongKeDoanhThuTheoNgay";
 
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
@@ -147,7 +147,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> LocThongKeDoanhThuTheoNgay(DateTime NgayStart,DateTime NgayEnd)
         {
-            string apiUrl = $"https://localhost:7095/api/ThongKeView/ThongKeDoanhThuTheoNgay";
+            string apiUrl = $"http://appapi/api/ThongKeView/ThongKeDoanhThuTheoNgay";
 
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
@@ -159,7 +159,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> ThongKeDoanhThuTheoThang()
         {
-            string apiUrl = $"https://localhost:7095/api/ThongKeView/ThongKeDoanhThuTheoThang";
+            string apiUrl = $"http://appapi/api/ThongKeView/ThongKeDoanhThuTheoThang";
 
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
@@ -170,7 +170,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> LocThongKeDoanhThuTheoThang(DateTime NgayStart, DateTime NgayEnd)
         {
-            string apiUrl = $"https://localhost:7095/api/ThongKeView/ThongKeDoanhThuTheoThang";
+            string apiUrl = $"http://appapi/api/ThongKeView/ThongKeDoanhThuTheoThang";
 
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
@@ -183,7 +183,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> ThongKeDoanhThuTheoNam()
         {
-            string apiUrl = $"https://localhost:7095/api/ThongKeView/ThongKeDoanhThuTheoNam";
+            string apiUrl = $"http://appapi/api/ThongKeView/ThongKeDoanhThuTheoNam";
 
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
@@ -194,7 +194,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> LocThongKeDoanhThuTheoNam(DateTime NgayStart, DateTime NgayEnd)
         {
-            string apiUrl = $"https://localhost:7095/api/ThongKeView/ThongKeDoanhThuTheoNam";
+            string apiUrl = $"http://appapi/api/ThongKeView/ThongKeDoanhThuTheoNam";
 
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
@@ -208,7 +208,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> ThongKe()
         {
-            string apiUrl = $"https://localhost:7095/api/ThongKeView/ThongKeSLCTSPBan";
+            string apiUrl = $"http://appapi/api/ThongKeView/ThongKeSLCTSPBan";
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
             var ThongKeSLSPBan = JsonConvert.DeserializeObject<ThongKeSLSPDaBan>(apiData);
@@ -217,7 +217,7 @@ namespace AppView.Controllers
                 ViewBag.ThongKeSLSPDaBan = ThongKeSLSPBan;
             }
 
-            string apiUrl8 = $"https://localhost:7095/api/ThongKeView/ThongKeSLCTSPBanOffline";
+            string apiUrl8 = $"http://appapi/api/ThongKeView/ThongKeSLCTSPBanOffline";
             var response8 = await _httpClient.GetAsync(apiUrl8);
             string apiData8 = await response8.Content.ReadAsStringAsync();
             var ThongKeSLSPBanOffline = JsonConvert.DeserializeObject<ThongKeSLSPDaBan>(apiData8);
@@ -227,7 +227,7 @@ namespace AppView.Controllers
             }
 
 
-            string apiUrl1 = $"https://localhost:7095/api/ThongKeView/ThongKeSLCTSP";
+            string apiUrl1 = $"http://appapi/api/ThongKeView/ThongKeSLCTSP";
 
             var response1 = await _httpClient.GetAsync(apiUrl1);
             string apiData1 = await response1.Content.ReadAsStringAsync();
@@ -238,7 +238,7 @@ namespace AppView.Controllers
             }
 
 
-            string apiUrl2 = $"https://localhost:7095/api/ThongKeView/ThongKeTongDTTrongThang";
+            string apiUrl2 = $"http://appapi/api/ThongKeView/ThongKeTongDTTrongThang";
             var response2 = await _httpClient.GetAsync(apiUrl2);
             string apiData2 = await response2.Content.ReadAsStringAsync();
             var ThongKeDTTrongThang = JsonConvert.DeserializeObject<ThongKeDTTrongThang>(apiData2);
@@ -247,7 +247,7 @@ namespace AppView.Controllers
                 ViewBag.ThongKeDTTrongThang = ThongKeDTTrongThang;
             }
 
-            string apiUrl9 = $"https://localhost:7095/api/ThongKeView/ThongKeTongDTTrongThangOffline";
+            string apiUrl9 = $"http://appapi/api/ThongKeView/ThongKeTongDTTrongThangOffline";
             var response9 = await _httpClient.GetAsync(apiUrl9);
             string apiData9 = await response9.Content.ReadAsStringAsync();
             var ThongKeDTTrongThangOffline = JsonConvert.DeserializeObject<ThongKeDTTrongThang>(apiData9);
@@ -257,7 +257,7 @@ namespace AppView.Controllers
             }
 
 
-            string apiUrl3 = $"https://localhost:7095/api/ThongKeView/ThongKeSoDonTrongThang";
+            string apiUrl3 = $"http://appapi/api/ThongKeView/ThongKeSoDonTrongThang";
             var response3 = await _httpClient.GetAsync(apiUrl3);
             string apiData3 = await response3.Content.ReadAsStringAsync();
             var ThongKeSDonTrongThang = JsonConvert.DeserializeObject<ThongKeSDonTrongThang>(apiData3);
@@ -266,7 +266,7 @@ namespace AppView.Controllers
                 ViewBag.ThongKeSDonTrongThang = ThongKeSDonTrongThang;
             }
 
-            string apiUrl10 = $"https://localhost:7095/api/ThongKeView/ThongKeSoDonTrongThangOffline";
+            string apiUrl10 = $"http://appapi/api/ThongKeView/ThongKeSoDonTrongThangOffline";
             var response10 = await _httpClient.GetAsync(apiUrl10);
             string apiData10 = await response10.Content.ReadAsStringAsync();
             var ThongKeSDonTrongThangOffline = JsonConvert.DeserializeObject<ThongKeSDonTrongThang>(apiData10);
@@ -276,7 +276,7 @@ namespace AppView.Controllers
             }
 
 
-            string apiUrl4 = $"https://localhost:7095/api/ThongKeView/ThongKeKHTheoSoLuongHoaDon";
+            string apiUrl4 = $"http://appapi/api/ThongKeView/ThongKeKHTheoSoLuongHoaDon";
             var response4 = await _httpClient.GetAsync(apiUrl4);
             string apiData4 = await response4.Content.ReadAsStringAsync();
             var ChatLieus = JsonConvert.DeserializeObject<List<ThongKeKHMuaNhieu>>(apiData4);
@@ -285,35 +285,35 @@ namespace AppView.Controllers
             timkiem = timkiem.Where(x => x.Ngay.Month == DateTime.Now.Month).Take(7).ToList();
             ViewBag.ThongKeKHMuaNhieu = timkiem;
 
-            string apiUrl5 = $"https://localhost:7095/api/ThongKeView/ThongKeDoanhThuTheoNgay";
+            string apiUrl5 = $"http://appapi/api/ThongKeView/ThongKeDoanhThuTheoNgay";
 
             var response5 = await _httpClient.GetAsync(apiUrl5);
             string apiData5 = await response5.Content.ReadAsStringAsync();
             var ThongKeDoanhThuTheoNgay = JsonConvert.DeserializeObject<List<ThongKeDoanhThu>>(apiData5);
             ViewBag.ThongKeDoanhThuTheoNgay = ThongKeDoanhThuTheoNgay;
 
-            string apiUrl11 = $"https://localhost:7095/api/ThongKeView/ThongKeDoanhThuTheoNgayOffline";
+            string apiUrl11 = $"http://appapi/api/ThongKeView/ThongKeDoanhThuTheoNgayOffline";
 
             var response11 = await _httpClient.GetAsync(apiUrl11);
             string apiData11 = await response11.Content.ReadAsStringAsync();
             var ThongKeDoanhThuTheoNgayOffline = JsonConvert.DeserializeObject<List<ThongKeDoanhThu>>(apiData11);
             ViewBag.ThongKeDoanhThuTheoNgayOffline = ThongKeDoanhThuTheoNgayOffline;
 
-            string apiUrl6 = $"https://localhost:7095/api/ThongKeView/ThongKeDoanhThuTheoThang";
+            string apiUrl6 = $"http://appapi/api/ThongKeView/ThongKeDoanhThuTheoThang";
 
             var response6 = await _httpClient.GetAsync(apiUrl6);
             string apiData6 = await response6.Content.ReadAsStringAsync();
             var ThongKeDoanhThuTheoThang = JsonConvert.DeserializeObject<List<ThongKeDoanhThu>>(apiData6);
             ViewBag.ThongKeDoanhThuTheoThang = ThongKeDoanhThuTheoThang;
 
-            string apiUrl12 = $"https://localhost:7095/api/ThongKeView/ThongKeDoanhThuTheoThangOffline";
+            string apiUrl12 = $"http://appapi/api/ThongKeView/ThongKeDoanhThuTheoThangOffline";
 
             var response12 = await _httpClient.GetAsync(apiUrl12);
             string apiData12 = await response12.Content.ReadAsStringAsync();
             var ThongKeDoanhThuTheoThangOffline = JsonConvert.DeserializeObject<List<ThongKeDoanhThu>>(apiData12);
             ViewBag.ThongKeDoanhThuTheoThangOffline = ThongKeDoanhThuTheoThangOffline;
 
-            string apiUrl7 = $"https://localhost:7095/api/ThongKeView/ThongKeMSSanPhamBan";
+            string apiUrl7 = $"http://appapi/api/ThongKeView/ThongKeMSSanPhamBan";
 
             var response7 = await _httpClient.GetAsync(apiUrl7);
             string apiData7 = await response7.Content.ReadAsStringAsync();
@@ -336,7 +336,7 @@ namespace AppView.Controllers
                     startDate = DateTime.Now.AddDays(-7).ToString();
                     endDate = DateTime.Now.ToString();
                 }
-                var response = await _httpClient.GetAsync("https://localhost:7095/api/ThongKe/ThongKe?startDate=" + startDate + "&endDate=" + endDate);
+                var response = await _httpClient.GetAsync("http://appapi/api/ThongKe/ThongKe?startDate=" + startDate + "&endDate=" + endDate);
                 var lst = JsonConvert.DeserializeObject<ThongKeViewModel>(response.Content.ReadAsStringAsync().Result);
                 return View(lst);
             }
@@ -347,7 +347,7 @@ namespace AppView.Controllers
         }
         public async Task<FileResult> ExportExcel()
         {
-            var response = await _httpClient.GetAsync("https://localhost:7095/api/ThongKe/ThongKeSanPham");
+            var response = await _httpClient.GetAsync("http://appapi/api/ThongKe/ThongKeSanPham");
             var lst = JsonConvert.DeserializeObject<List<ThongKeSanPham>>(await response.Content.ReadAsStringAsync());
             var fileName = "thongKeSanPham.xlsx";
             DataTable dataTable = new DataTable("SanPham");

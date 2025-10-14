@@ -20,7 +20,7 @@ namespace AppView.Controllers
         public QuanLyHoaDonController(IServiceProvider serviceProvider, ITempDataProvider tempDataProvider)
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
+            _httpClient.BaseAddress = new Uri("http://appapi/api/");
             _serviceProvider = serviceProvider;
             _tempDataProvider = tempDataProvider;
         }
@@ -178,7 +178,7 @@ namespace AppView.Controllers
                     var response = await _httpClient.PutAsync(url, null);
                     if (response.IsSuccessStatusCode)
                     {
-                        var stringURL = $"https://localhost:7095/api/HoaDon/UpdateGhichu?idhd={idhd}&idnv={loginInfor.Id}&ghichu={ghichu}";
+                        var stringURL = $"http://appapi/api/HoaDon/UpdateGhichu?idhd={idhd}&idnv={loginInfor.Id}&ghichu={ghichu}";
                         var responseghichu = await _httpClient.PutAsync(stringURL, null);
                         if (responseghichu.IsSuccessStatusCode)
                         {
@@ -211,7 +211,7 @@ namespace AppView.Controllers
                 var response = await _httpClient.PutAsync(url, null);
                 if (response.IsSuccessStatusCode)
                 {
-                    var stringURL = $"https://localhost:7095/api/HoaDon/UpdateGhichu?idhd={idhd}&idnv={loginInfor.Id}&ghichu={ghichu}";
+                    var stringURL = $"http://appapi/api/HoaDon/UpdateGhichu?idhd={idhd}&idnv={loginInfor.Id}&ghichu={ghichu}";
                     var responseghichu = await _httpClient.PutAsync(stringURL, null);
                     if (responseghichu.IsSuccessStatusCode)
                     {

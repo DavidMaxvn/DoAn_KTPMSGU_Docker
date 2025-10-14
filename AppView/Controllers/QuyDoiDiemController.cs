@@ -19,7 +19,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllQuyDoiDiem(int ProductPage = 1)
         {
-            string apiURL = $"https://localhost:7095/api/QuyDoiDiem";
+            string apiURL = $"http://appapi/api/QuyDoiDiem";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<QuyDoiDiem>>(apiData);                             
@@ -92,7 +92,7 @@ namespace AppView.Controllers
 
                                 }
                                 dbcontext.SaveChangesAsync();
-                                var response = await _httpClient.PostAsync($" https://localhost:7095/api/QuyDoiDiem?TiLeTichDiem={qdd.TiLeTichDiem}&TiLeTieuDiem={qdd.TiLeTieuDiem}&TrangThai={qdd.TrangThai}", null);
+                                var response = await _httpClient.PostAsync($" http://appapi/api/QuyDoiDiem?TiLeTichDiem={qdd.TiLeTichDiem}&TiLeTieuDiem={qdd.TiLeTieuDiem}&TrangThai={qdd.TrangThai}", null);
 
                                 if (response.IsSuccessStatusCode)
                                 {
@@ -125,7 +125,7 @@ namespace AppView.Controllers
 
                                 }
                                 dbcontext.SaveChangesAsync();
-                                var response = await _httpClient.PostAsync($" https://localhost:7095/api/QuyDoiDiem?TiLeTichDiem={qdd.TiLeTichDiem}&TiLeTieuDiem={qdd.TiLeTieuDiem}&TrangThai={qdd.TrangThai}", null);
+                                var response = await _httpClient.PostAsync($" http://appapi/api/QuyDoiDiem?TiLeTichDiem={qdd.TiLeTichDiem}&TiLeTieuDiem={qdd.TiLeTieuDiem}&TrangThai={qdd.TrangThai}", null);
 
                                 if (response.IsSuccessStatusCode)
                                 {
@@ -149,7 +149,7 @@ namespace AppView.Controllers
 
                         }
                         dbcontext.SaveChangesAsync();
-                        var response = await _httpClient.PostAsync($" https://localhost:7095/api/QuyDoiDiem?TiLeTichDiem={qdd.TiLeTichDiem}&TiLeTieuDiem={qdd.TiLeTieuDiem}&TrangThai={qdd.TrangThai}", null);
+                        var response = await _httpClient.PostAsync($" http://appapi/api/QuyDoiDiem?TiLeTichDiem={qdd.TiLeTichDiem}&TiLeTieuDiem={qdd.TiLeTieuDiem}&TrangThai={qdd.TrangThai}", null);
 
                         if (response.IsSuccessStatusCode)
                         {
@@ -173,7 +173,7 @@ namespace AppView.Controllers
         public IActionResult Updates(Guid id)
         {
 
-            var url = $"https://localhost:7095/api/QuyDoiDiem/{id}";
+            var url = $"http://appapi/api/QuyDoiDiem/{id}";
             var response = _httpClient.GetAsync(url).Result;
             var result = response.Content.ReadAsStringAsync().Result;
             var KhuyenMais = JsonConvert.DeserializeObject<QuyDoiDiem>(result);
@@ -199,11 +199,11 @@ namespace AppView.Controllers
                     dbcontext.SaveChangesAsync();
 
                 }
-                var response = await _httpClient.PutAsync($"https://localhost:7095/api/QuyDoiDiem/{qdd.ID}?TrangThai={qdd.TrangThai}", null);
+                var response = await _httpClient.PutAsync($"http://appapi/api/QuyDoiDiem/{qdd.ID}?TrangThai={qdd.TrangThai}", null);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string apiURL1 = $"https://localhost:7095/api/QuyDoiDiem";
+                    string apiURL1 = $"http://appapi/api/QuyDoiDiem";
                     var response1 = await _httpClient.GetAsync(apiURL1);
                     var apiData1 = await response1.Content.ReadAsStringAsync();
                     var roles = JsonConvert.DeserializeObject<List<QuyDoiDiem>>(apiData1);
@@ -237,7 +237,7 @@ namespace AppView.Controllers
         // delete
         public async Task<IActionResult> Delete(Guid id)
         {
-            string apiURL = $"https://localhost:7095/api/QuyDoiDiem/{id}";
+            string apiURL = $"http://appapi/api/QuyDoiDiem/{id}";
 
             var response = await _httpClient.DeleteAsync(apiURL);
             if (response.IsSuccessStatusCode)

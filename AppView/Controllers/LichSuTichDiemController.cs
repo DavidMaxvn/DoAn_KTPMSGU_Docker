@@ -17,8 +17,8 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllLSTDByID(int ProductPage = 1)
         {
-        //https://localhost:7095/api/LichSuTichDiem/GetLSTDByIdKH?idkh=8ba92174-c33b-4766-aad0-945166e776fc
-            string apiURL = $"https://localhost:7095/api/LichSuTichDiem/GetLSTDByIdKH";
+        //http://appapi/api/LichSuTichDiem/GetLSTDByIdKH?idkh=8ba92174-c33b-4766-aad0-945166e776fc
+            string apiURL = $"http://appapi/api/LichSuTichDiem/GetLSTDByIdKH";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<LichSuTichDiemView>>(apiData);
@@ -40,7 +40,7 @@ namespace AppView.Controllers
         // delete 
         public async Task<IActionResult> Delete(Guid id)
         {
-            string apiURL = $"https://localhost:7095/api/Voucher/{id}";
+            string apiURL = $"http://appapi/api/Voucher/{id}";
 
             var response = await _httpClient.DeleteAsync(apiURL);
             if (response.IsSuccessStatusCode)

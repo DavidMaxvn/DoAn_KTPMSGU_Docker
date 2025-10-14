@@ -19,7 +19,7 @@ namespace AppView.Controllers
         // lam them
         public async Task<IActionResult> GetAllVaiTro(int ProductPage = 1)
         {
-            string apiURL = $"https://localhost:7095/api/VaiTro";
+            string apiURL = $"http://appapi/api/VaiTro";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<VaiTro>>(apiData);
@@ -42,7 +42,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> TimKiemVTTheoTen(string Ten,int ProductPage = 1)
         {
-            string apiURL = $"https://localhost:7095/api/VaiTro";
+            string apiURL = $"http://appapi/api/VaiTro";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<VaiTro>>(apiData);
@@ -66,7 +66,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid Id)
         {
-            string apiURL = $"https://localhost:7095/api/VaiTro/{Id}";
+            string apiURL = $"http://appapi/api/VaiTro/{Id}";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<VaiTro>(apiData);
@@ -83,7 +83,7 @@ namespace AppView.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VaiTro vaiTro)
         {
-            string apiURL = $"https://localhost:7095/api/VaiTro?ten={vaiTro.Ten}&Status={vaiTro.TrangThai = 1}";
+            string apiURL = $"http://appapi/api/VaiTro?ten={vaiTro.Ten}&Status={vaiTro.TrangThai = 1}";
             var content = new StringContent(JsonConvert.SerializeObject(vaiTro), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(apiURL, content);
             if (response.IsSuccessStatusCode)
@@ -95,7 +95,7 @@ namespace AppView.Controllers
 
         public async Task<IActionResult> Edit(Guid Id)
         {
-            string apiURL = $"https://localhost:7095/api/VaiTro/{Id}";
+            string apiURL = $"http://appapi/api/VaiTro/{Id}";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<VaiTro>(apiData);
@@ -106,7 +106,7 @@ namespace AppView.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid Id, VaiTro vaiTro)
         {
-            string apiURL = $"https://localhost:7095/api/VaiTro/{Id}?ten={vaiTro.Ten}&trnagthai={vaiTro.TrangThai}";
+            string apiURL = $"http://appapi/api/VaiTro/{Id}?ten={vaiTro.Ten}&trnagthai={vaiTro.TrangThai}";
             var content = new StringContent(JsonConvert.SerializeObject(vaiTro), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(apiURL, content);
             if (response.IsSuccessStatusCode)

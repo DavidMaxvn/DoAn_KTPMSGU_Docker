@@ -34,7 +34,7 @@ namespace AppView.Controllers
         {
             _logger = logger;
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
+            _httpClient.BaseAddress = new Uri("http://appapi/api/");
         }
         public async Task<IActionResult> Index()
         {
@@ -1626,7 +1626,7 @@ namespace AppView.Controllers
                     }
 
                     // Implement the code to save the new password in your QuanLyNguoiDungService
-                    string apiUrl = "https://localhost:7095/api/QuanLyNguoiDung/ResetPassword";
+                    string apiUrl = "http://appapi/api/QuanLyNguoiDung/ResetPassword";
                     var response = await _httpClient.PostAsync(apiUrl, new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
                     if (response.IsSuccessStatusCode)
                     {

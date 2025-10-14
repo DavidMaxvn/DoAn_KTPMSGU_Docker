@@ -19,7 +19,7 @@ namespace AppView.Controllers
         public AdminController(IWebHostEnvironment hostEnvironment, IFileService iFileService)
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
+            _httpClient.BaseAddress = new Uri("http://appapi/api/");
             _hostEnvironment = hostEnvironment;
             _iFileService = iFileService;
         }

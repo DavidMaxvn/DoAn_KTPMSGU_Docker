@@ -20,7 +20,7 @@ namespace AppView.Controllers
         public MauSacController()
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
+            _httpClient.BaseAddress = new Uri("http://appapi/api/");
             dBContext = new AssignmentDBContext();
         }
         public int PageSize = 8;
@@ -29,7 +29,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiUrl = $"https://localhost:7095/api/MauSac/GetAllMauSac";
+                string apiUrl = $"http://appapi/api/MauSac/GetAllMauSac";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<MauSac>>(apiData);
@@ -57,7 +57,7 @@ namespace AppView.Controllers
                     ViewData["SearchError"] = "Vui lòng nhập tên để tìm kiếm";
                     return RedirectToAction("Show");
                 }
-                string apiUrl = $"https://localhost:7095/api/MauSac/TimKiemMauSac?name={Ten}";
+                string apiUrl = $"http://appapi/api/MauSac/TimKiemMauSac?name={Ten}";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<MauSac>>(apiData);
@@ -101,7 +101,7 @@ namespace AppView.Controllers
                 else
                 {
                     string encodedMauSac = Uri.EscapeDataString(ms.Ma);
-                    string apiUrl = $"https://localhost:7095/api/MauSac/ThemMauSac?ten={ms.Ten}&ma={encodedMauSac}&trangthai={ms.TrangThai}";
+                    string apiUrl = $"http://appapi/api/MauSac/ThemMauSac?ten={ms.Ten}&ma={encodedMauSac}&trangthai={ms.TrangThai}";
                     ///*var content = new StringContent(JsonConvert.SerializeObject(ms), */Encoding.UTF8, "application/json");
                     var response = await _httpClient.PostAsync(apiUrl, null);
                     if (response.IsSuccessStatusCode)
@@ -123,7 +123,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            string apiUrl = $"https://localhost:7095/api/MauSac/GetMauSacById?id={id}";
+            string apiUrl = $"http://appapi/api/MauSac/GetMauSacById?id={id}";
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
 
@@ -135,7 +135,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiUrl = $"https://localhost:7095/api/MauSac/GetMauSacById?id={id}";
+                string apiUrl = $"http://appapi/api/MauSac/GetMauSacById?id={id}";
                 var response = _httpClient.GetAsync(apiUrl).Result;
                 var apiData = response.Content.ReadAsStringAsync().Result;
                 var user = JsonConvert.DeserializeObject<MauSac>(apiData);
@@ -163,7 +163,7 @@ namespace AppView.Controllers
                 else
                 {
                     string encodedMauSac = Uri.EscapeDataString(ms.Ma);
-                    string apiUrl = $"https://localhost:7095/api/MauSac/{id}?ten={ms.Ten}&ma={encodedMauSac}&trangthai={ms.TrangThai}";
+                    string apiUrl = $"http://appapi/api/MauSac/{id}?ten={ms.Ten}&ma={encodedMauSac}&trangthai={ms.TrangThai}";
                     var reponsen = await _httpClient.PutAsync(apiUrl, null);
                     if (reponsen.IsSuccessStatusCode)
                     {
@@ -177,7 +177,7 @@ namespace AppView.Controllers
         }
         public async Task<IActionResult> Delete(Guid id)
         {
-            string apiUrl = $"https://localhost:7095/api/MauSac/{id}";
+            string apiUrl = $"http://appapi/api/MauSac/{id}";
             var reposen = await _httpClient.DeleteAsync(apiUrl);
             if (reposen.IsSuccessStatusCode)
             {

@@ -18,6 +18,8 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=123  # đổi đúng mật khẩu bạn đã export
       # (nếu UI cần gọi API bằng HttpClient, bạn có thể đặt BASE_URL nội bộ)
       # - Api__BaseUrl=http://webapi:80
+      - ApiBaseUrl=http://appapi
+      - API_BASE_URL=http://appapi
     volumes:
       - ${USERPROFILE}\.aspnet\https:/https:ro
     depends_on:
@@ -33,7 +35,7 @@ services:
       args:
         - CONFIGURATION=Release
     image: doan_ktpm_appapi:latest
-    container_name: doan_appapi
+    container_name: appapi
     # Có thể không expose ra ngoài, chỉ cho UI gọi nội bộ.
     # Nếu cần test ngoài, mở port khác để tránh trùng UI:
     ports:
@@ -44,28 +46,42 @@ services:
       - ASPNETCORE_URLS=http://+:80;https://+:443
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/AppAPI.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=123
-      - ConnectionStrings__DBContext=Server=db;Database=AppDb;User=sa;Password=123;TrustServerCertificate=True;
+      - ConnectionStrings__DBContext=Server=tcp:doan_ktpmsgu-db-1,1433;Database=AppDb;User Id=sa;Password=S3cure!Pass2025;Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=True;TransparentNetworkIPResolution=False;
+    
+    networks:
+      default:
+        aliases:
+          - appapi
+
     volumes:
       - ${USERPROFILE}\.aspnet\https:/https:ro
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   # SQL Server
   db:
     image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: doan_db
+    # KHÔNG đặt container_name nếu bạn không cần; để compose tự đặt tên và giữ alias service là "db"
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=S3cure!Pass2025
     ports:
-      - "1433:1433"
-    volumes:
-      - dbdata:/var/opt/mssql
+      - "1433:1433"        # tuỳ chọn, chỉ để bạn kết nối từ host
     healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'S3cure!Pass2025' -Q 'SELECT 1' || exit 1"]
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P 'S3cure!Pass2025' -Q 'SELECT 1' || exit 1"]
       interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 15
+    networks:
+      default:
+        aliases:
+          - appapi
 
+
+networks:
+  default:
+    name: doan_ktpmsgu_default
+    
 volumes:
   dbdata:
