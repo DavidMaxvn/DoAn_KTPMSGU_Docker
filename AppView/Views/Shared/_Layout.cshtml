@@ -1,4 +1,11 @@
-﻿@using Newtonsoft.Json;
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Config
+@{
+    var apiBaseFromEnv = Config["API_BASE_URL"];
+    var apiBase = !string.IsNullOrWhiteSpace(apiBaseFromEnv)
+                  ? apiBaseFromEnv
+                  : $"{Context.Request.Scheme}://{Context.Request.Host}";
+}
+@using Newtonsoft.Json;
 @using AppData.ViewModels;
 @{
     var loginInfor = new LoginViewModel();

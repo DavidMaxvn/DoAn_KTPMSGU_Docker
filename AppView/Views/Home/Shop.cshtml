@@ -1,4 +1,12 @@
-﻿@using AppData.ViewModels.SanPham;
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Config
+@{
+    var apiBaseFromEnv = Config["API_BASE_URL"];
+    var apiBase = !string.IsNullOrWhiteSpace(apiBaseFromEnv)
+                  ? apiBaseFromEnv
+                  : $"{Context.Request.Scheme}://{Context.Request.Host}";
+}
+
+@using AppData.ViewModels.SanPham;
 @using AppData.Models;
 @{
     ViewData["Title"] = "Privacy Policy";
@@ -9,8 +17,12 @@
     Layout = "_Layout";
 }
 @{
-    var apiPublic = "http://localhost:5080"; // host public của API để render ảnh
+    // Base URL chính site hiện tại (tự động là http://localhost:5080 hoặc https://localhost:8443)
+    var siteBase = $"{Context.Request.Scheme}://{Context.Request.Host}";
+    // Nếu chỉ render ảnh tĩnh do chính webui phục vụ, dùng luôn siteBase
+    var apiPublic = siteBase;
 }
+
 
 <style>
     .stars-outer {
@@ -252,7 +264,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
                                 <div class="product__item__pic set-bg">
-                                    <a asp-action="ProductDetail" asp-route-idSanPham="@item.ID"><img style="width:260px;height:265px;" src="@($"{apiPublic}/img/product/{item.Image}")"></a>
+                                    <a asp-action="ProductDetail" asp-route-idSanPham="@item.ID"><img src="@($"{apiBase}/img/product/{item.Image}")" alt="@item.Ten" /></a>
                                 </div>
                                 <div class="product__item__text">
                                     <h6>@item.Ten</h6>

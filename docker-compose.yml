@@ -7,24 +7,25 @@ services:
     image: doan_ktpm_appview:latest
     container_name: doan_appview
     ports:
-      - "8080:80"      # HTTP -> UI
-      - "8443:443"     # HTTPS -> UI
+      - "8080:80"
+      - "8443:443"
     environment:
-      # Bật cả HTTP và HTTPS trong container
       - ASPNETCORE_URLS=http://+:80;https://+:443
       - ASPNETCORE_ENVIRONMENT=Development
-      # Mount dev cert từ Windows vào container (Cách B)
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/AppAPI.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=123  # đổi đúng mật khẩu bạn đã export
-      # (nếu UI cần gọi API bằng HttpClient, bạn có thể đặt BASE_URL nội bộ)
-      # - Api__BaseUrl=http://webapi:80
-      - ApiBaseUrl=http://appapi
-      - API_BASE_URL=http://appapi
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=123
+      # Base URL để View đọc từ env, không hard-code
+      - API_BASE_URL=https://localhost:5443
     volumes:
       - ${USERPROFILE}\.aspnet\https:/https:ro
+      - ./img:/app/wwwroot/img:ro   # ảnh tĩnh do webui phục vụ
     depends_on:
-      - db
-      - webapi
+      db:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+      webapi:
+        condition: service_started
 
   # Web API
   webapi:
@@ -36,8 +37,6 @@ services:
         - CONFIGURATION=Release
     image: doan_ktpm_appapi:latest
     container_name: appapi
-    # Có thể không expose ra ngoài, chỉ cho UI gọi nội bộ.
-    # Nếu cần test ngoài, mở port khác để tránh trùng UI:
     ports:
       - "5080:80"
       - "5443:443"
@@ -46,42 +45,68 @@ services:
       - ASPNETCORE_URLS=http://+:80;https://+:443
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/AppAPI.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=123
-      - ConnectionStrings__DBContext=Server=tcp:doan_ktpmsgu-db-1,1433;Database=AppDb;User Id=sa;Password=S3cure!Pass2025;Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=True;TransparentNetworkIPResolution=False;
-    
-    networks:
-      default:
-        aliases:
-          - appapi
-
+      # ✅ Đặt connection string đúng chuẩn ASP.NET
+      - ConnectionStrings__DBContext=Server=tcp:db,1433;Database=AppBanQuanAoThoiTrangNam;User Id=sa;Password=S3cure!Pass2025;Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=True;TransparentNetworkIPResolution=False;
     volumes:
       - ${USERPROFILE}\.aspnet\https:/https:ro
     depends_on:
       db:
         condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
 
   # SQL Server
   db:
     image: mcr.microsoft.com/mssql/server:2019-latest
-    # KHÔNG đặt container_name nếu bạn không cần; để compose tự đặt tên và giữ alias service là "db"
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=S3cure!Pass2025
+      - MSSQL_PID=Developer
     ports:
-      - "1433:1433"        # tuỳ chọn, chỉ để bạn kết nối từ host
+      - "1433:1433"
     healthcheck:
       test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P 'S3cure!Pass2025' -Q 'SELECT 1' || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 15
-    networks:
-      default:
-        aliases:
-          - appapi
+      start_period: 20s
+    volumes:
+      - dbdata:/var/opt/mssql
 
+  # Chạy 1 lần để tạo DB + import script
+  db-init:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./scriptquanao_new.sql:/seeds/script_appdb.sql:ro
+      # Nếu có script riêng cho AppBanQuanAoThoiTrangNam thì mở dòng dưới:
+      # - ./script_appbqtn.sql:/seeds/script_appbqtn.sql:ro
+    entrypoint: ["/bin/bash","-lc"]
+    command: >
+      '
+      set -e
+      echo "⏳ Chờ SQL sẵn sàng...";
+      until /opt/mssql-tools18/bin/sqlcmd -C -S db -U sa -P "S3cure!Pass2025" -Q "SELECT 1" >/dev/null 2>&1; do sleep 1; done;
+
+      echo "✅ Tạo DB nếu chưa có: AppBanQuanAoThoiTrangNam";
+      /opt/mssql-tools18/bin/sqlcmd -C -S db -U sa -P "S3cure!Pass2025" -Q "IF DB_ID(''AppBanQuanAoThoiTrangNam'') IS NULL CREATE DATABASE [AppBanQuanAoThoiTrangNam];"
+
+      echo "📥 Import script vào AppBanQuanAoThoiTrangNam";
+      if [ -f /seeds/script_appbqtn.sql ]; then
+        /opt/mssql-tools18/bin/sqlcmd -C -S db -U sa -P "S3cure!Pass2025" -d "AppBanQuanAoThoiTrangNam" -i /seeds/script_appbqtn.sql
+      else
+        /opt/mssql-tools18/bin/sqlcmd -C -S db -U sa -P "S3cure!Pass2025" -d "AppBanQuanAoThoiTrangNam" -i /seeds/script_appdb.sql
+      fi
+
+      echo "🎉 Seed xong!";
+      '
+    restart: "no"
 
 networks:
   default:
     name: doan_ktpmsgu_default
-    
+
 volumes:
   dbdata:

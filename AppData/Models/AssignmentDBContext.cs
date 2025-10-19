@@ -32,7 +32,7 @@ namespace AppData.Models
         public DbSet<Anh> Anhs { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=MSI-GF63-THIN\CAROT;Initial Catalog=AppBanQuanAoThoiTrangNam;Integrated Security=True");
+            optionsBuilder.UseSqlServer(@"Server=tcp:db,1433;Database=AppBanQuanAoThoiTrangNam;User Id=sa;Password=S3cure!Pass2025;Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=True;TransparentNetworkIPResolution=False;");
         }
         //THUYNHU\SQLEXPRESS
         //DESKTOP-UOIH77U\SQLEXPRESS
