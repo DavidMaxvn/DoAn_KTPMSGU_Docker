@@ -1,37 +1,31 @@
-# syntax=docker/dockerfile:1
-
-# ---------------------------------------
-# Build the Web API project
-# ---------------------------------------
+# Build the ASP.NET Core Web API
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
-COPY *.sln ./
-COPY AppAPI/*.csproj AppAPI/
-COPY AppData/*.csproj AppData/
-COPY AppView/*.csproj AppView/
+# Copy solution and project files to take advantage of Docker layer caching
+COPY DuAnTotNghiep.sln ./
+COPY AppAPI/AppAPI.csproj AppAPI/
+COPY AppData/AppData.csproj AppData/
+COPY AppView/AppView.csproj AppView/
 
+# Restore dependencies for the API project
 RUN dotnet restore AppAPI/AppAPI.csproj
 
+# Copy the full source tree and publish the application
 COPY . .
-
-ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish AppAPI/AppAPI.csproj \
-    -c ${BUILD_CONFIGURATION} \
+    -c Release \
     -o /app/publish \
     --no-restore \
     -p:UseAppHost=false
 
-# ---------------------------------------
-# Runtime image
-# ---------------------------------------
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+# Final runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 WORKDIR /app
 
 ENV ASPNETCORE_URLS=http://+:80
 
 COPY --from=build /app/publish .
-
 EXPOSE 80
 
 ENTRYPOINT ["dotnet", "AppAPI.dll"]

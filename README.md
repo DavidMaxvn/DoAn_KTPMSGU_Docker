@@ -1,4 +1,4 @@
-# ĐỒ ÁN C# (.cs) SGU
+# ĐỒ ÁN C# (ASP.NET) SGU
 Sử dụng ASP.NET, HTML,CSS,Bootstrap,JQuery, MS SQL server
 # CỬA HÀNG BÁN QUẦN ÁO TÍCH HỢP THANH TOÁN VNPAY
 

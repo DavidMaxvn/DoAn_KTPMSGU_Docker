@@ -1,72 +1,70 @@
+version: "3.9"
+
 services:
   db:
     build:
       context: .
       dockerfile: docker/database/Dockerfile
-    image: doan_ktpmsgu_db:latest
     container_name: doan_db
     environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_PID: Developer
-      SA_PASSWORD: S3cure!Pass2025
+      - SA_PASSWORD=${SA_PASSWORD:-S3cure!Pass2025}
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
     ports:
       - "1433:1433"
     volumes:
       - dbdata:/var/opt/mssql
-    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "(/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P '$$SA_PASSWORD' -Q 'SELECT 1' || /opt/mssql-tools/bin/sqlcmd -C -S localhost -U sa -P '$$SA_PASSWORD' -Q 'SELECT 1')"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
 
-  db-migrator:
+  migrations:
     build:
       context: .
       dockerfile: AppData/Dockerfile
-    image: doan_ktpmsgu_migrator:latest
+    container_name: doan_migrations
     depends_on:
       db:
         condition: service_healthy
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__DBContext: Server=tcp:db,1433;Database=AppBanQuanAoThoiTrangNam;User Id=sa;Password=S3cure!Pass2025;Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=True;TransparentNetworkIPResolution=False;
-      MIGRATION_MAX_RETRIES: "40"
-      MIGRATION_RETRY_DELAY: "5"
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DBContext=Server=tcp:db,1433;Database=AppBanQuanAoThoiTrangNam;User Id=sa;Password=${SA_PASSWORD:-S3cure!Pass2025};Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=True;TransparentNetworkIPResolution=False;
     restart: "no"
 
   webapi:
     build:
       context: .
       dockerfile: AppAPI/Dockerfile
-    image: doan_ktpmsgu_appapi:latest
-    container_name: doan_webapi
+    container_name: doan_api
     depends_on:
       db:
         condition: service_healthy
-      db-migrator:
+      migrations:
         condition: service_completed_successfully
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://+:80
-      ConnectionStrings__DBContext: Server=tcp:db,1433;Database=AppBanQuanAoThoiTrangNam;User Id=sa;Password=S3cure!Pass2025;Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=True;TransparentNetworkIPResolution=False;
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DBContext=Server=tcp:db,1433;Database=AppBanQuanAoThoiTrangNam;User Id=sa;Password=${SA_PASSWORD:-S3cure!Pass2025};Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=True;TransparentNetworkIPResolution=False;
     ports:
       - "5080:80"
-    restart: unless-stopped
 
   webui:
     build:
       context: .
       dockerfile: AppView/Dockerfile
-    image: doan_ktpmsgu_appview:latest
-    container_name: doan_webui
+    container_name: doan_view
     depends_on:
       webapi:
         condition: service_started
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://+:80
-      API_BASE_URL: http://localhost:5080
-    ports:
-      - "8080:80"
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ApiBaseUrl=http://webapi
     volumes:
       - ./img:/app/wwwroot/img
-    restart: unless-stopped
+    ports:
+      - "8080:80"
 
 volumes:
   dbdata:
