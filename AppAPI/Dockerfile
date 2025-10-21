@@ -1,35 +1,31 @@
-# Build stage
+# Build the ASP.NET Core Web API
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
-# Xoá sạch bin/obj (nếu lỡ bị copy vào)
-RUN find . -type d \( -name bin -o -name obj \) -prune -exec rm -rf {} +
+# Copy solution and project files to take advantage of Docker layer caching
+COPY DuAnTotNghiep.sln ./
+COPY AppAPI/AppAPI.csproj AppAPI/
+COPY AppData/AppData.csproj AppData/
+COPY AppView/AppView.csproj AppView/
 
-# (Tùy chọn) cấu hình mặc định
-ARG CONFIGURATION=Release
+# Restore dependencies for the API project
+RUN dotnet restore AppAPI/AppAPI.csproj
 
-# copy csproj và restore để tối ưu cache
-COPY AppAPI/*.csproj ./AppAPI/
-COPY AppData/*.csproj ./AppData/
-RUN dotnet restore "AppAPI/AppAPI.csproj"
-
-# copy toàn bộ source
+# Copy the full source tree and publish the application
 COPY . .
-
-# publish
-RUN dotnet publish "AppAPI/AppAPI.csproj" \
-    -c $CONFIGURATION \
+RUN dotnet publish AppAPI/AppAPI.csproj \
+    -c Release \
     -o /app/publish \
     -p:UseAppHost=false \
     --no-restore
 
-# Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+# Final runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 WORKDIR /app
+
+ENV ASPNETCORE_URLS=http://+:80
+
 COPY --from=build /app/publish .
-# Copy UI static files from the build stage into wwwroot so the API can serve them
-# (we copied the whole repo into /src during the build stage, so use --from=build)
-COPY --from=build /src/AppView/wwwroot /app/wwwroot
-COPY --from=build /src/img /app/wwwroot/img
-COPY --from=build /src/js /app/wwwroot/js
+EXPOSE 80
+
 ENTRYPOINT ["dotnet", "AppAPI.dll"]
