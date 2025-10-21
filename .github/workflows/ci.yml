@@ -7,320 +7,42 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-# Quyền tối thiểu
 permissions:
   contents: read
 
-# Tránh chạy trùng lặp khi push nhiều lần liên tiếp
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # =========================
-  # 1. Build front-end (React)
-  # =========================
-  web:
-    name: Web (React) • ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-
-    defaults:
-      run:
-        working-directory: frontend
+  build:
+    name: Build .NET solution
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          dotnet-version: '6.0.x'
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Restore solution
+        run: dotnet restore DuAnTotNghiep.sln
 
-      - name: Lint (optional)
-        run: npm run lint --if-present
+      - name: Build solution
+        run: dotnet build DuAnTotNghiep.sln --configuration Release --no-restore
 
-      - name: Test
-        run: npm test --if-present -- --ci --passWithNoTests
+      - name: Publish AppAPI
+        run: dotnet publish AppAPI/AppAPI.csproj --configuration Release --no-build --output publish/AppAPI
 
-      - name: Build
-        run: npm run build --if-present
+      - name: Publish AppView
+        run: dotnet publish AppView/AppView.csproj --configuration Release --no-build --output publish/AppView
 
-      - name: Upload web artifact
-        if: success()
+      - name: Upload publish artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: web-dist-${{ matrix.os }}
-          path: |
-            frontend/build
-            frontend/dist
-          if-no-files-found: ignore
-
-  # ==============================================
-  # 2. Build back-end (ASP.NET Core)
-  # ==============================================
-  backend:
-    name: Backend (ASP.NET Core) • ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-
-    defaults:
-      run:
-        working-directory: backend
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'  # Hoặc '7.0.x' hoặc '6.0.x' tùy project
-          cache: true
-          cache-dependency-path: backend/**/packages.lock.json
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Run tests
-        run: dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
-
-      - name: Publish
-        run: dotnet publish --configuration Release --no-build --output ./publish
-
-      - name: Upload backend artifact
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-publish-${{ matrix.os }}
-          path: backend/publish
-          if-no-files-found: ignore
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results-${{ matrix.os }}
-          path: backend/**/TestResults/*.trx
-          if-no-files-found: ignore
-
-  # =========================
-  # 3. Database validation (SQL Server)
-  # =========================
-  database:
-    name: Database Validation (SQL Server)
-    runs-on: ubuntu-latest
-
-    services:
-      sqlserver:
-        image: mcr.microsoft.com/mssql/server:2022-latest
-        env:
-          ACCEPT_EULA: Y
-          SA_PASSWORD: YourStrong!Passw0rd
-          MSSQL_PID: Developer
-        ports:
-          - 1433:1433
-        options: >-
-          --health-cmd "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q 'SELECT 1' || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    defaults:
-      run:
-        working-directory: backend
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Install EF Core tools
-        run: dotnet tool install --global dotnet-ef
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Apply migrations (if exists)
-        run: |
-          if [ -d "Migrations" ]; then
-            dotnet ef database update --connection "Server=localhost,1433;Database=TestDB;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
-          else
-            echo "No migrations found, skipping..."
-          fi
-        shell: bash
-        continue-on-error: true
-
-      - name: Validate database schema
-        run: echo "Database schema validation passed"
-
-  # =========================
-  # 4. Docker build (Ubuntu)
-  # =========================
-  docker:
-    name: Docker Build
-    runs-on: ubuntu-latest
-    needs: [web, backend, database]
-    if: ${{ always() && needs.web.result == 'success' && needs.backend.result == 'success' }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Download web artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: web-dist-ubuntu-latest
-          path: frontend/.ci-dist
-        continue-on-error: true
-
-      - name: Download backend artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-publish-ubuntu-latest
-          path: backend/.ci-publish
-        continue-on-error: true
-
-      # Build frontend Docker image
-      - name: Build Frontend image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
-          push: false
-          load: true
-          tags: local/web:ci
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      # Build backend Docker image (ASP.NET Core)
-      - name: Build Backend image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: false
-          load: true
-          tags: local/backend:ci
-          build-args: |
-            ASPNETCORE_ENVIRONMENT=Production
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      # Test Docker Compose stack
-      - name: Test Docker Compose
-        run: |
-          docker compose -f docker-compose.yml config
-          echo "Docker Compose configuration is valid"
-        continue-on-error: true
-
-  # =========================
-  # 5. Security & Code Quality
-  # =========================
-  security:
-    name: Security Scan
-    runs-on: ubuntu-latest
-    needs: [backend]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore dependencies
-        working-directory: backend
-        run: dotnet restore
-
-      # Scan for known vulnerabilities in NuGet packages
-      - name: Security scan (NuGet packages)
-        working-directory: backend
-        run: dotnet list package --vulnerable --include-transitive
-        continue-on-error: true
-
-      # Optional: Run code analysis
-      - name: Run code analysis
-        working-directory: backend
-        run: dotnet build --configuration Release /p:TreatWarningsAsErrors=false /p:AnalysisMode=AllEnabledByDefault
-        continue-on-error: true
-
-  # =========================
-  # 6. Integration Tests (Optional)
-  # =========================
-  integration-tests:
-    name: Integration Tests
-    runs-on: ubuntu-latest
-    needs: [backend]
-
-    services:
-      sqlserver:
-        image: mcr.microsoft.com/mssql/server:2022-latest
-        env:
-          ACCEPT_EULA: Y
-          SA_PASSWORD: YourStrong!Passw0rd
-          MSSQL_PID: Developer
-        ports:
-          - 1433:1433
-        options: >-
-          --health-cmd "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q 'SELECT 1' || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    defaults:
-      run:
-        working-directory: backend
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Run integration tests
-        env:
-          ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=IntegrationTestDB;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
-          VNPay__TmnCode: ${{ secrets.VNPAY_TMN_CODE }}
-          VNPay__HashSecret: ${{ secrets.VNPAY_HASH_SECRET }}
-        run: dotnet test --configuration Release --no-build --filter "Category=Integration" --verbosity normal
-        continue-on-error: true
+          name: dotnet-publish
+          path: publish
+          if-no-files-found: error
