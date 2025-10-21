@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using System;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace AppData.Models
@@ -32,13 +33,23 @@ namespace AppData.Models
         public DbSet<Anh> Anhs { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=tcp:db,1433;Database=AppBanQuanAoThoiTrangNam;User Id=sa;Password=S3cure!Pass2025;Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=True;TransparentNetworkIPResolution=False;");
+            if (!optionsBuilder.IsConfigured)
+            {
+                var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DBContext");
+
+                if (string.IsNullOrWhiteSpace(connectionString))
+                {
+                    connectionString = "Server=tcp:db,1433;Database=AppBanQuanAoThoiTrangNam;User Id=sa;Password=S3cure!Pass2025;Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=True;TransparentNetworkIPResolution=False;";
+                }
+
+                optionsBuilder.UseSqlServer(connectionString);
+            }
         }
-        //THUYNHU\SQLEXPRESS
-        //DESKTOP-UOIH77U\SQLEXPRESS
-        //LAPTOP-A15NGLBG\SQLEXPRESS
-        // lam DESKTOP-S6G7NFV\SQLEXPRESS // 1AppBanQuanAoThoiTrangNam
-        //LAPTOP-G189FU38\SQLEXPRESS
+        //THUYNHU\\SQLEXPRESS
+        //DESKTOP-UOIH77U\\SQLEXPRESS
+        //LAPTOP-A15NGLBG\\SQLEXPRESS
+        // lam DESKTOP-S6G7NFV\\SQLEXPRESS // 1AppBanQuanAoThoiTrangNam
+        //LAPTOP-G189FU38\\SQLEXPRESS
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
