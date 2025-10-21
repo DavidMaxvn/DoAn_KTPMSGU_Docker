@@ -16,8 +16,8 @@ COPY . .
 RUN dotnet publish AppAPI/AppAPI.csproj \
     -c Release \
     -o /app/publish \
-    -p:UseAppHost=false \
-    --no-restore
+    --no-restore \
+    -p:UseAppHost=false
 
 # Final runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
