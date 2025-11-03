@@ -48,7 +48,7 @@
             <div class="col">
                 <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="https://localhost:5001/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
                         <li class="breadcrumb-item"><a asp-action="Profile" asp-controller="Home">Thông tin cá nhân</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Lịch sử tiêu điểm</li>
                     </ol>
@@ -252,6 +252,6 @@
         });
     }
     function billDetail(id){
-        window.location = 'https://localhost:5001/Home/PurchaseOrderDetail?idHoaDon=';
+        window.location = '@Url.Action("PurchaseOrderDetail", "Home")?idHoaDon=' + id;
     }
 </script>

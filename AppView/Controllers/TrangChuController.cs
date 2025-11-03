@@ -1,6 +1,7 @@
 ﻿using AppData.ViewModels;
 using AppData.ViewModels.BanOffline;
 using AppData.ViewModels.SanPham;
+using AppView.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -11,8 +12,7 @@ namespace AppView.Controllers
         private readonly HttpClient _httpClient;
         public TrangChuController()
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
+            _httpClient = ApiClientFactory.CreateClient();
         }
         public async Task<IActionResult> Index()
         {
