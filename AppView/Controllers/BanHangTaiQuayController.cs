@@ -2,6 +2,7 @@
 using AppData.ViewModels;
 using AppData.ViewModels.BanOffline;
 using AppData.ViewModels.SanPham;
+using AppView.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
@@ -14,8 +15,7 @@ namespace AppView.Controllers
 
         public BanHangTaiQuayController()
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
+            _httpClient = ApiClientFactory.CreateClient();
 
         }
         //Giao diện bán hàng

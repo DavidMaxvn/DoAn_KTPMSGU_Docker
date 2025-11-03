@@ -1,6 +1,7 @@
 ﻿using AppData.Models;
 using AppData.ViewModels;
 using AppView.PhanTrang;
+using AppView.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -12,7 +13,7 @@ namespace AppView.Controllers
         private readonly AssignmentDBContext dbcontext;
         public QuyDoiDiemController()
         {
-            _httpClient = new HttpClient();
+            _httpClient = ApiClientFactory.CreateClient();
             dbcontext = new AssignmentDBContext();
         }
         public int PageSize = 10;
