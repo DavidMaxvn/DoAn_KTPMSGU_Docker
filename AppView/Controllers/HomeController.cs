@@ -1683,6 +1683,7 @@ namespace AppView.Controllers
         [HttpPost]
         public string Order(HoaDonViewModel hoaDon)
         {
+            var successUrl = Url.Action("CheckOutSuccess", "Home", values: null, protocol: Request.Scheme) ?? "/Home/CheckOutSuccess";
             try
             {
                 List<ChiTietHoaDonViewModel> lstChiTietHoaDon = new List<ChiTietHoaDonViewModel>();
