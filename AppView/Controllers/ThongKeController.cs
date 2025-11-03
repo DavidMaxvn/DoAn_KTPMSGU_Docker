@@ -1,6 +1,7 @@
 ﻿using AppData.ViewModels;
 using AppData.ViewModels.ThongKe;
 using AppView.PhanTrang;
+using AppView.Services;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ namespace AppView.Controllers
         private readonly HttpClient _httpClient;
         public ThongKeController()
         {
-            _httpClient = new HttpClient();
+            _httpClient = ApiClientFactory.CreateClient();
         }
       
         #region Thống Kê Sản Phẩm Được Mua nhiều Theo Ngày, Tháng, Năm 

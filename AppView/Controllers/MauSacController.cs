@@ -2,6 +2,7 @@
 using AppData.ViewModels;
 using AppData.ViewModels.SanPham;
 using AppView.PhanTrang;
+using AppView.Services;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,8 +20,7 @@ namespace AppView.Controllers
         private readonly AssignmentDBContext dBContext;
         public MauSacController()
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
+            _httpClient = ApiClientFactory.CreateClient();
             dBContext = new AssignmentDBContext();
         }
         public int PageSize = 8;
@@ -45,7 +45,7 @@ namespace AppView.Controllers
                     }
                 });
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("/"); }
         }
         [HttpGet]
         public async Task<IActionResult> SearchTheoTen(string? Ten, int ProductPage = 1)
@@ -77,7 +77,7 @@ namespace AppView.Controllers
                     }
                 });
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("/"); }
         }
 
         [HttpGet]
@@ -116,7 +116,7 @@ namespace AppView.Controllers
                     return View();
                 }
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("/"); }
         }
 
 
@@ -143,7 +143,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("/");
             }
         }
         [HttpPost]
@@ -173,7 +173,7 @@ namespace AppView.Controllers
                     return View();
                 }
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("/"); }
         }
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -202,7 +202,7 @@ namespace AppView.Controllers
                     return View();
                 }
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("/"); }
         }
 
         [HttpPost]

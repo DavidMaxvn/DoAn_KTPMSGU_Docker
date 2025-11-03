@@ -1,6 +1,7 @@
 ﻿using AppData.ViewModels;
 using AppView.PhanTrang;
 using Microsoft.AspNetCore.Mvc;
+using AppView.Services;
 using Newtonsoft.Json;
 
 namespace AppView.Controllers
@@ -10,7 +11,7 @@ namespace AppView.Controllers
         private readonly HttpClient _httpClient;
         public LichSuTichDiemController()
         {
-            _httpClient = new HttpClient();
+            _httpClient = ApiClientFactory.CreateClient();
         }
         public int PageSize = 8;
         // get all LSTD
