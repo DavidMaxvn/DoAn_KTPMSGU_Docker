@@ -2,6 +2,7 @@
 using AppData.ViewModels;
 using AppData.ViewModels.ThongKe;
 using AppView.PhanTrang;
+using AppView.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -13,7 +14,7 @@ namespace AppView.Controllers
         private readonly AssignmentDBContext dBContext;
         public VouchersController()
         {
-            _httpClient = new HttpClient();
+            _httpClient = ApiClientFactory.CreateClient();
             dBContext=new AssignmentDBContext();
         }
         public int PageSize = 8;

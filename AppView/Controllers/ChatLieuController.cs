@@ -1,6 +1,7 @@
 ﻿using AppData.Models;
 using AppData.ViewModels;
 using AppView.PhanTrang;
+using AppView.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +18,8 @@ namespace AppView.Controllers
         private readonly AssignmentDBContext dBContext;
         public ChatLieuController()
         {
-            _httpClient = new HttpClient();
+            _httpClient = ApiClientFactory.CreateClient();
             dBContext = new AssignmentDBContext();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
         }
         // GET: ChatLieuController
         public int PageSize = 8;
@@ -44,7 +44,7 @@ namespace AppView.Controllers
                     }
                 });
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("/"); }
         }
 
         [HttpGet]
@@ -77,7 +77,7 @@ namespace AppView.Controllers
                     }
                 });
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("/"); }
         }
 
         [HttpGet]
@@ -108,7 +108,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("/");
             }
 
         }
@@ -153,7 +153,7 @@ namespace AppView.Controllers
                 }
                 return View(nv);
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("/"); }
 
         }
         public async Task<IActionResult> Delete(Guid id)
@@ -186,7 +186,7 @@ namespace AppView.Controllers
             catch 
             {
 
-                return Redirect("https://localhost:5001/");
+                return Redirect("/");
             }
         }
 

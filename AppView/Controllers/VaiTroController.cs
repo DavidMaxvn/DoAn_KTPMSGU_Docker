@@ -1,5 +1,6 @@
 ﻿using AppData.Models;
 using AppView.PhanTrang;
+using AppView.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Data;
@@ -12,7 +13,7 @@ namespace AppView.Controllers
         private HttpClient _httpClient;
         public VaiTroController()
         {
-                _httpClient = new HttpClient();
+            _httpClient = ApiClientFactory.CreateClient();
         }
         public int PageSize = 8;
          

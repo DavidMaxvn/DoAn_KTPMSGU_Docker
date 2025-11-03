@@ -1,5 +1,6 @@
 ﻿using AppData.Models;
 using AppView.PhanTrang;
+using AppView.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -16,9 +17,8 @@ namespace AppView.Controllers
         public int PageSize = 8;
         public KichCoController()
         {
-            _httpClient = new HttpClient();
+            _httpClient = ApiClientFactory.CreateClient();
             dBContext = new AssignmentDBContext();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
         }
 
         public async Task<IActionResult> Show(int ProductPage = 1)
@@ -41,7 +41,7 @@ namespace AppView.Controllers
                     }
                 });
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("/"); }
         }
 
         [HttpGet]
@@ -74,7 +74,7 @@ namespace AppView.Controllers
                     }
                 });
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("/"); }
         }
 
         [HttpGet]
@@ -104,7 +104,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("/");
             }
         }
 
@@ -130,7 +130,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("/");
             }
         }
         [HttpPost]
@@ -155,7 +155,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("/");
             }
         }
         public async Task<IActionResult> Delete(Guid id)
@@ -187,7 +187,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("/");
             }
         }
         [HttpPost]
