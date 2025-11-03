@@ -1683,7 +1683,7 @@ namespace AppView.Controllers
         [HttpPost]
         public string Order(HoaDonViewModel hoaDon)
         {
-            var checkoutSuccessUrl = Url.Action("CheckOutSuccess", "Home", values: null, protocol: Request.Scheme) ?? "/Home/CheckOutSuccess";
+            var successUrl = Url.Action("CheckOutSuccess", "Home", values: null, protocol: Request.Scheme) ?? "/Home/CheckOutSuccess";
             try
             {
                 List<ChiTietHoaDonViewModel> lstChiTietHoaDon = new List<ChiTietHoaDonViewModel>();
@@ -1706,6 +1706,7 @@ namespace AppView.Controllers
                 }
                 TempData.Remove("TongTien");
                 TempData.Remove("Quantity");
+                var successUrl = Url.Action("CheckOutSuccess", "Home", values: null, protocol: Request.Scheme) ?? "/Home/CheckOutSuccess";
                 if (hoaDon.PhuongThucThanhToan == "COD")
                 {
                     HttpResponseMessage response = _httpClient.PostAsJsonAsync("HoaDon", hoaDon).Result;
@@ -1716,7 +1717,7 @@ namespace AppView.Controllers
                         // lam them
                         TempData["SoLuong"] = "0";
                         // lam end
-                        return checkoutSuccessUrl;
+                        return successUrl;
                     }
                     else return "";
                 }
@@ -1765,7 +1766,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return checkoutSuccessUrl;
+                return successUrl;
             }
         }
         [HttpGet]
