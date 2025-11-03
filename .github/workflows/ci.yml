@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, nhatquyen ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build .NET solution
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore solution
+        run: dotnet restore DuAnTotNghiep.sln
+
+      - name: Build solution
+        run: dotnet build DuAnTotNghiep.sln --configuration Release --no-restore
+
+      - name: Publish AppAPI
+        run: dotnet publish AppAPI/AppAPI.csproj --configuration Release --no-build --output publish/AppAPI
+
+      - name: Publish AppView
+        run: dotnet publish AppView/AppView.csproj --configuration Release --no-build --output publish/AppView
+
+      - name: Upload publish artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-publish
+          path: publish
+          if-no-files-found: error
