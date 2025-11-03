@@ -1,6 +1,7 @@
 ﻿using AppData.Models;
 using AppData.ViewModels;
 using AppView.PhanTrang;
+using AppView.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -13,7 +14,7 @@ namespace AppView.Controllers
 
         public KhachHangController()
         {
-            httpClients = new HttpClient();
+            httpClients = ApiClientFactory.CreateClient();
         }
 
         public int PageSize = 10;

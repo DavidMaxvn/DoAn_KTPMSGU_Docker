@@ -1,5 +1,6 @@
 ﻿using AppData.ViewModels;
 using AppData.ViewModels.BanOffline;
+using AppView.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -19,8 +20,7 @@ namespace AppView.Controllers
         private readonly ITempDataProvider _tempDataProvider;
         public QuanLyHoaDonController(IServiceProvider serviceProvider, ITempDataProvider tempDataProvider)
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
+            _httpClient = ApiClientFactory.CreateClient();
             _serviceProvider = serviceProvider;
             _tempDataProvider = tempDataProvider;
         }
