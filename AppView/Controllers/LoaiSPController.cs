@@ -6,6 +6,7 @@ using System.Text;
 using System.Net.Http;
 using Microsoft.EntityFrameworkCore;
 using AppView.PhanTrang;
+using AppView.Services;
 using AppData.ViewModels;
 using DocumentFormat.OpenXml.InkML;
 using System.Net;
@@ -18,7 +19,7 @@ namespace AppView.Controllers
         private readonly AssignmentDBContext dBContext;
         public LoaiSPController()
         {
-            _httpClient = new HttpClient();
+            _httpClient = ApiClientFactory.CreateClient();
             dBContext = new AssignmentDBContext();
         }
         public int PageSize = 8;
@@ -90,7 +91,7 @@ namespace AppView.Controllers
         {
             try
             {
-                var responseLoaiSP = _httpClient.GetAsync(_httpClient.BaseAddress + $"https://localhost:7095/api/LoaiSP/getAll").Result;
+                var responseLoaiSP = _httpClient.GetAsync("LoaiSP/getAll").Result;
                 if (responseLoaiSP.IsSuccessStatusCode)
                 {
                     ViewData["listLoaiSP"] = JsonConvert.DeserializeObject<List<LoaiSP>>(responseLoaiSP.Content.ReadAsStringAsync().Result);
@@ -263,7 +264,7 @@ namespace AppView.Controllers
         }
         public async Task<IActionResult> CreateLoaiSPCon()
         {
-            var responseLoaiSP = _httpClient.GetAsync(_httpClient.BaseAddress + $"https://localhost:7095/api/LoaiSP/getAll").Result;
+            var responseLoaiSP = _httpClient.GetAsync("LoaiSP/getAll").Result;
             if (responseLoaiSP.IsSuccessStatusCode)
             {
                 ViewData["listLoaiSP"] = JsonConvert.DeserializeObject<List<LoaiSP>>(responseLoaiSP.Content.ReadAsStringAsync().Result);
