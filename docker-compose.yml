@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  sql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Your_strong_password123!
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssqldata:/var/opt/mssql
+
+  api:
+    build:
+      context: .
+      dockerfile: AppAPI/Dockerfile
+    container_name: api
+    depends_on:
+      - sql
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:9000
+      - ConnectionStrings__DBContext=Data Source=sql,1433;Database=AppBanQuanAoThoiTrangNam;User ID=sa;Password=Your_strong_password123!;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=True
+    ports:
+      - "9000:9000"
+
+  appview:
+    build:
+      context: .
+      dockerfile: AppView/Dockerfile
+    container_name: appview
+    depends_on:
+      - api
+    environment:
+      - Api__BaseUrl=http://api:9000
+    ports:
+      - "7000:80"
+
+volumes:
+  mssqldata:
+

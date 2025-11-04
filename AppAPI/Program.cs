@@ -4,6 +4,7 @@ using AppData.Models;
 using AppData.ViewModels.Mail;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,10 +77,19 @@ app.UseSwaggerUI(option =>
     option.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
 });
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthorization();
 
 app.MapControllers();
 app.UseCors(AllowSpecificOrigins);
 app.Run();
+// Auto-apply EF Core migrations at startup (no .bak needed)
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AssignmentDBContext>();
+    db.Database.Migrate();
+}
