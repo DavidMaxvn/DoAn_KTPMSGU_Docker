@@ -9,10 +9,14 @@ namespace AppView.Controllers
     public class TrangChuController : Controller
     {
         private readonly HttpClient _httpClient;
-        public TrangChuController()
+        public TrangChuController(IConfiguration config)
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
+            var baseUrl = Environment.GetEnvironmentVariable("Api__BaseUrl")
+                          ?? config["Api:BaseUrl"]
+                          ?? "https://localhost:7000";
+            if (!baseUrl.EndsWith("/")) baseUrl += "/";
+            _httpClient.BaseAddress = new Uri(baseUrl + "api/");
         }
         public async Task<IActionResult> Index()
         {

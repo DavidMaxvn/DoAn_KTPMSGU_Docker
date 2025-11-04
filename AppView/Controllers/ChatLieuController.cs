@@ -15,11 +15,16 @@ namespace AppView.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly AssignmentDBContext dBContext;
-        public ChatLieuController()
+        private readonly string _apiBase;
+        public ChatLieuController(IConfiguration config)
         {
             _httpClient = new HttpClient();
             dBContext = new AssignmentDBContext();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
+            var baseUrl = Environment.GetEnvironmentVariable("Api__BaseUrl")
+                          ?? config["Api:BaseUrl"]
+                          ?? "https://localhost:7000";
+            if (!baseUrl.EndsWith("/")) baseUrl += "/";
+            _apiBase = baseUrl + "api";
         }
         // GET: ChatLieuController
         public int PageSize = 8;
@@ -28,7 +33,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiUrl = $"https://localhost:7095/api/ChatLieu/GetAllChatLieu";
+                string apiUrl = $"{_apiBase}/ChatLieu/GetAllChatLieu";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<ChatLieu>>(apiData);
@@ -57,7 +62,7 @@ namespace AppView.Controllers
                     ViewData["SearchError"] = "Vui lòng nhập tên để tìm kiếm";
                     return RedirectToAction("Show");
                 }
-                string apiUrl = $"https://localhost:7095/api/ChatLieu/TimKiemChatLieu?name={Ten}";
+                string apiUrl = $"{_apiBase}/ChatLieu/TimKiemChatLieu?name={Ten}";
                 var response = await _httpClient.GetAsync(apiUrl);
                 string apiData = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<ChatLieu>>(apiData);
@@ -93,7 +98,7 @@ namespace AppView.Controllers
             try
             {
                 mauSac.TrangThai = 1;
-                string apiUrl = $"https://localhost:7095/api/ChatLieu/ThemChatLieu?ten={mauSac.Ten}";
+                string apiUrl = $"{_apiBase}/ChatLieu/ThemChatLieu?ten={mauSac.Ten}";
                 var reponsen = await _httpClient.PostAsync(apiUrl, null);
                 if (reponsen.IsSuccessStatusCode)
                 {
@@ -116,7 +121,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            string apiUrl = $"https://localhost:7095/api/ChatLieu/GetChatLieuById?id={id}";
+            string apiUrl = $"{_apiBase}/ChatLieu/GetChatLieuById?id={id}";
             var response = await _httpClient.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
 
@@ -126,7 +131,7 @@ namespace AppView.Controllers
         [HttpGet]
         public IActionResult Edit(Guid id)
         {
-            string apiUrl = $"https://localhost:7095/api/ChatLieu/GetChatLieuById?id={id}";
+            string apiUrl = $"{_apiBase}/ChatLieu/GetChatLieuById?id={id}";
             var response = _httpClient.GetAsync(apiUrl).Result;
             var apiData = response.Content.ReadAsStringAsync().Result;
             var user = JsonConvert.DeserializeObject<ChatLieu>(apiData);
@@ -138,7 +143,7 @@ namespace AppView.Controllers
             try
             {
                 nv.TrangThai = 1;
-                string apiUrl = $"https://localhost:7095/api/ChatLieu/{id}?ten={nv.Ten}";
+                string apiUrl = $"{_apiBase}/ChatLieu/{id}?ten={nv.Ten}";
                 var content = new StringContent(JsonConvert.SerializeObject(nv), Encoding.UTF8, "application/json");
                 var reponsen = await _httpClient.PutAsync(apiUrl, content);
 
@@ -158,7 +163,7 @@ namespace AppView.Controllers
         }
         public async Task<IActionResult> Delete(Guid id)
         {
-            string apiUrl = $"https://localhost:7095/api/ChatLieu/{id}";
+            string apiUrl = $"{_apiBase}/ChatLieu/{id}";
             var reposen = await _httpClient.DeleteAsync(apiUrl);
             if (reposen.IsSuccessStatusCode)
             {

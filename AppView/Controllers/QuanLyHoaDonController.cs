@@ -17,10 +17,14 @@ namespace AppView.Controllers
         private readonly HttpClient _httpClient;
         private readonly IServiceProvider _serviceProvider;
         private readonly ITempDataProvider _tempDataProvider;
-        public QuanLyHoaDonController(IServiceProvider serviceProvider, ITempDataProvider tempDataProvider)
+        public QuanLyHoaDonController(IServiceProvider serviceProvider, ITempDataProvider tempDataProvider, IConfiguration config)
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
+            var baseUrl = Environment.GetEnvironmentVariable("Api__BaseUrl")
+                          ?? config["Api:BaseUrl"]
+                          ?? "https://localhost:7000";
+            if (!baseUrl.EndsWith("/")) baseUrl += "/";
+            _httpClient.BaseAddress = new Uri(baseUrl + "api/");
             _serviceProvider = serviceProvider;
             _tempDataProvider = tempDataProvider;
         }
@@ -178,7 +182,7 @@ namespace AppView.Controllers
                     var response = await _httpClient.PutAsync(url, null);
                     if (response.IsSuccessStatusCode)
                     {
-                        var stringURL = $"https://localhost:7095/api/HoaDon/UpdateGhichu?idhd={idhd}&idnv={loginInfor.Id}&ghichu={ghichu}";
+                        var stringURL = $"HoaDon/UpdateGhichu?idhd={idhd}&idnv={loginInfor.Id}&ghichu={ghichu}";
                         var responseghichu = await _httpClient.PutAsync(stringURL, null);
                         if (responseghichu.IsSuccessStatusCode)
                         {
@@ -211,7 +215,7 @@ namespace AppView.Controllers
                 var response = await _httpClient.PutAsync(url, null);
                 if (response.IsSuccessStatusCode)
                 {
-                    var stringURL = $"https://localhost:7095/api/HoaDon/UpdateGhichu?idhd={idhd}&idnv={loginInfor.Id}&ghichu={ghichu}";
+                    var stringURL = $"HoaDon/UpdateGhichu?idhd={idhd}&idnv={loginInfor.Id}&ghichu={ghichu}";
                     var responseghichu = await _httpClient.PutAsync(stringURL, null);
                     if (responseghichu.IsSuccessStatusCode)
                     {

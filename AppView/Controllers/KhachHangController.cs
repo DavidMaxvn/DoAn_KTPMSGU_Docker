@@ -10,17 +10,23 @@ namespace AppView.Controllers
     public class KhachHangController : Controller
     {
         private readonly HttpClient httpClients;
+        private readonly string _apiBase;
 
-        public KhachHangController()
+        public KhachHangController(IConfiguration config)
         {
             httpClients = new HttpClient();
+            var baseUrl = Environment.GetEnvironmentVariable("Api__BaseUrl")
+                          ?? config["Api:BaseUrl"]
+                          ?? "https://localhost:7000";
+            if (!baseUrl.EndsWith("/")) baseUrl += "/";
+            _apiBase = baseUrl + "api";
         }
 
         public int PageSize = 10;
         // Get ALl KH
         public async Task<IActionResult> GetAllKhachHang(int ProductPage = 1)
         {
-            string apiUrl = "https://localhost:7095/api/KhachHang";
+            string apiUrl = $"{_apiBase}/KhachHang";
             var response = await httpClients.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
             var kh = JsonConvert.DeserializeObject<List<KhachHangView>>(apiData);
@@ -41,17 +47,17 @@ namespace AppView.Controllers
         public async Task<IActionResult> GetAllLSTDByIDKH(Guid id)
         {
            
-            string apiURL = $"https://localhost:7095/api/LichSuTichDiem/TongDonThanhCong?id={id}";
+            string apiURL = $"{_apiBase}/LichSuTichDiem/TongDonThanhCong?id={id}";
             var response = await httpClients.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var DonThanhCong = JsonConvert.DeserializeObject<TongDon?>(apiData);
             ViewBag.DonThanhCong = DonThanhCong;
-            string apiURL1 = $"https://localhost:7095/api/LichSuTichDiem/TongDonHuy?id={id}";
+            string apiURL1 = $"{_apiBase}/LichSuTichDiem/TongDonHuy?id={id}";
             var response1 = await httpClients.GetAsync(apiURL1);
             var apiData1 = await response1.Content.ReadAsStringAsync();
             var DonHuy = JsonConvert.DeserializeObject<TongDon?>(apiData1);
             ViewBag.DonHuy = DonHuy;
-            string apiURL2 = $"https://localhost:7095/api/LichSuTichDiem/TongDonHoanHang?id={id}";
+            string apiURL2 = $"{_apiBase}/LichSuTichDiem/TongDonHoanHang?id={id}";
             var response2 = await httpClients.GetAsync(apiURL2);
             var apiData2 = await response2.Content.ReadAsStringAsync();
             var DonHoanHang = JsonConvert.DeserializeObject<TongDon?>(apiData2);
@@ -66,7 +72,7 @@ namespace AppView.Controllers
          public  async Task<IActionResult> DonThanhCong( int ProductPage = 1)
           {
             var id = Guid.Parse(HttpContext.Session.GetString("DonKH"));
-            string apiURL2 = $"https://localhost:7095/api/LichSuTichDiem/ListDonThanhCong?id={id}";
+            string apiURL2 = $"{_apiBase}/LichSuTichDiem/ListDonThanhCong?id={id}";
             var response2 = await httpClients.GetAsync(apiURL2);
             var apiData2 = await response2.Content.ReadAsStringAsync();
             var Don = JsonConvert.DeserializeObject<List<ListDon>>(apiData2); 
@@ -87,7 +93,7 @@ namespace AppView.Controllers
         public async Task<IActionResult> DonHuy( int ProductPage = 1)
         {
             var id = Guid.Parse(HttpContext.Session.GetString("DonKH"));
-            string apiURL2 = $"https://localhost:7095/api/LichSuTichDiem/ListDonHuy?id={id}";
+            string apiURL2 = $"{_apiBase}/LichSuTichDiem/ListDonHuy?id={id}";
             var response2 = await httpClients.GetAsync(apiURL2);
             var apiData2 = await response2.Content.ReadAsStringAsync();
             var Don = JsonConvert.DeserializeObject<List<ListDon>>(apiData2);
@@ -108,7 +114,7 @@ namespace AppView.Controllers
         public async Task<IActionResult> DonHoanHang(int ProductPage = 1)
         {
             var id = Guid.Parse(HttpContext.Session.GetString("DonKH"));
-            string apiURL2 = $"https://localhost:7095/api/LichSuTichDiem/ListDonHoanHang?id={id}";
+            string apiURL2 = $"{_apiBase}/LichSuTichDiem/ListDonHoanHang?id={id}";
             var response2 = await httpClients.GetAsync(apiURL2);
             var apiData2 = await response2.Content.ReadAsStringAsync();
             var Don = JsonConvert.DeserializeObject<List<ListDon>>(apiData2);
@@ -130,7 +136,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllKHTheoTimKiem(string? Ten, string? SDT,int ProductPage = 1)
         {
-            string apiUrl = $"https://localhost:7095/api/KhachHang/TimKiemKH?Ten={Ten?.Trim()}&SDT={SDT?.Trim()}";
+            string apiUrl = $"{_apiBase}/KhachHang/TimKiemKH?Ten={Ten?.Trim()}&SDT={SDT?.Trim()}";
             var response = await httpClients.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
             var kh = JsonConvert.DeserializeObject<List<KhachHangView>>(apiData);
@@ -157,7 +163,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiUrl1 = "https://localhost:7095/api/KhachHang";
+                string apiUrl1 = $"{_apiBase}/KhachHang";
                 var response1 = await httpClients.GetAsync(apiUrl1);
                 string apiData1 = await response1.Content.ReadAsStringAsync();
                 var kh1 = JsonConvert.DeserializeObject<List<KhachHangView>>(apiData1);
@@ -200,7 +206,7 @@ namespace AppView.Controllers
                     }
                     if ((kh.Email.Contains("@") && email == null && nhaplai == kh.Password) || (kh.Email.Contains("@") && email == null && nhaplai == kh.Password && kh.SDT.Length >= 10 && timkiem == null))
                     {
-                        var url = $"https://localhost:7095/api/KhachHang/PostKHView";
+                        var url = $"{_apiBase}/KhachHang/PostKHView";
                         var response = await httpClients.PostAsJsonAsync(url, kh);
                         if (response.IsSuccessStatusCode) return RedirectToAction("GetAllKhachHang");
                         return View();
@@ -219,7 +225,7 @@ namespace AppView.Controllers
         public async Task<IActionResult> Details(Guid id)
         {
 
-            string apiUrl = "https://localhost:7095/api/KhachHang/GetById?id=" + id;
+            string apiUrl = $"{_apiBase}/KhachHang/GetById?id=" + id;
             var response = await httpClients.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
             var NhaCungCaps = JsonConvert.DeserializeObject<KhachHangView>(apiData);
@@ -229,7 +235,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> Updates(Guid id)
         {
-            string apiUrl = $"https://localhost:7095/api/KhachHang/GetById?id={id}";
+            string apiUrl = $"{_apiBase}/KhachHang/GetById?id={id}";
             var response = await httpClients.GetAsync(apiUrl);
             string apiData = await response.Content.ReadAsStringAsync();
             var kh = JsonConvert.DeserializeObject<KhachHangView>(apiData);
@@ -241,7 +247,7 @@ namespace AppView.Controllers
         public async Task<IActionResult> Updates(KhachHangView kh)
         {
             var url =
-         $"https://localhost:7095/api/KhachHang/PutKhView";
+         $"{_apiBase}/KhachHang/PutKhView";
             var response = await httpClients.PutAsJsonAsync(url, kh);
             if (response.IsSuccessStatusCode) return RedirectToAction("GetAllKhachHang");
             return View();
@@ -250,7 +256,7 @@ namespace AppView.Controllers
 
         public async Task<IActionResult> Delete(Guid id)
         {
-            var url = $"https://localhost:7095/api/KhachHang/{id}";
+            var url = $"{_apiBase}/KhachHang/{id}";
             var response = await httpClients.DeleteAsync(url);
             if (response.IsSuccessStatusCode) return RedirectToAction("GetAllKhachHang");
             return BadRequest();

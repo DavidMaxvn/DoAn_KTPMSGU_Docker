@@ -20,7 +20,7 @@ namespace AppAPI.Services
             mailMessage.From = new MailAddress("nhuph20156@gmail.com");
             mailMessage.To.Add(new MailAddress(forgot.Email));
             mailMessage.Subject = "Reset Password";
-            mailMessage.Body = "Please click the link below to reset your password:<br><a href='https://localhost:7095/api/ResetPassword?email=" + forgot.Email + "&token=" + forgot.Token + "'>Reset Password</a>";
+            mailMessage.Body = "Please click the link below to reset your password:<br><a href='https://localhost:9000/api/ResetPassword?email=" + forgot.Email + "&token=" + forgot.Token + "'>Reset Password</a>";
 
             // Send the email
             await smtpClient.SendMailAsync(mailMessage);

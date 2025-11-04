@@ -4,6 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>0f5adec8-5ae6-4517-a271-93c073c02641</UserSecretsId>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,14 +16,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Rotativa\Windows\wkhtmltoimage.exe" />
-    <Content Include="Rotativa\Windows\wkhtmltopdf.exe" />
+  <Content Include="Rotativa\**\*">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Chart.js" Version="3.7.1" />
     <PackageReference Include="ClosedXML" Version="0.101.0" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="QRCoder" Version="1.4.1" />

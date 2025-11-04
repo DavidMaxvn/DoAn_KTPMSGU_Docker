@@ -23,7 +23,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Only redirect to HTTPS when running in Development where HTTPS is configured
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseDefaultFiles();
 app.UseStaticFiles();
 

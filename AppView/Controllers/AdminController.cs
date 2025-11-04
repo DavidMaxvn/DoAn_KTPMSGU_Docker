@@ -16,10 +16,14 @@ namespace AppView.Controllers
         private readonly HttpClient _httpClient;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IFileService _iFileService;
-        public AdminController(IWebHostEnvironment hostEnvironment, IFileService iFileService)
+        public AdminController(IWebHostEnvironment hostEnvironment, IFileService iFileService, IConfiguration config)
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/api/");
+            var baseUrl = Environment.GetEnvironmentVariable("Api__BaseUrl")
+                          ?? config["Api:BaseUrl"]
+                          ?? "https://localhost:7000";
+            if (!baseUrl.EndsWith("/")) baseUrl += "/";
+            _httpClient.BaseAddress = new Uri(baseUrl + "api/");
             _hostEnvironment = hostEnvironment;
             _iFileService = iFileService;
         }

@@ -11,9 +11,15 @@ namespace AppView.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly AssignmentDBContext dBContext;
-        public VouchersController()
+        private readonly string _apiBase;
+        public VouchersController(IConfiguration config)
         {
             _httpClient = new HttpClient();
+            var baseUrl = Environment.GetEnvironmentVariable("Api__BaseUrl")
+                          ?? config["Api:BaseUrl"]
+                          ?? "https://localhost:7000";
+            if (!baseUrl.EndsWith("/")) baseUrl += "/";
+            _apiBase = baseUrl + "api";
             dBContext=new AssignmentDBContext();
         }
         public int PageSize = 8;
@@ -21,7 +27,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllVoucher(int ProductPage = 1)
         {
-            string apiURL = $"https://localhost:7095/api/Voucher";
+            string apiURL = $"{_apiBase}/Voucher";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<VoucherView>>(apiData);
@@ -44,7 +50,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> TimKiemTenVC(string Ten, int ProductPage = 1)
         {
-            string apiURL = $"https://localhost:7095/api/Voucher";
+            string apiURL = $"{_apiBase}/Voucher";
             var response = await _httpClient.GetAsync(apiURL);
             var apiData = await response.Content.ReadAsStringAsync();
             var roles = JsonConvert.DeserializeObject<List<VoucherView>>(apiData);
@@ -75,7 +81,7 @@ namespace AppView.Controllers
         {
             try
             {
-                string apiURL = $"https://localhost:7095/api/Voucher";
+                string apiURL = $"{_apiBase}/Voucher";
                 var response1 = await _httpClient.GetAsync(apiURL);
                 var apiData = await response1.Content.ReadAsStringAsync();
                 var roles = JsonConvert.DeserializeObject<List<VoucherView>>(apiData);
@@ -118,7 +124,7 @@ namespace AppView.Controllers
                             {
                                 if (voucher.SoTienCan >= 0 && voucher.GiaTri > 0 && voucher.SoLuong > 0 && voucher.NgayKetThuc >= voucher.NgayApDung && timkiem == null)
                                 {
-                                    var response = await _httpClient.PostAsJsonAsync($"https://localhost:7095/api/Voucher", voucher);
+                                    var response = await _httpClient.PostAsJsonAsync($"{_apiBase}/Voucher", voucher);
                                     if (response.IsSuccessStatusCode)
                                     {
                                         return RedirectToAction("GetAllVoucher");
@@ -135,7 +141,7 @@ namespace AppView.Controllers
                                 {
                                     if (voucher.SoTienCan >= 0 && voucher.GiaTri > 0 && voucher.SoLuong > 0 && voucher.NgayKetThuc >= voucher.NgayApDung && timkiem == null)
                                     {
-                                        var response = await _httpClient.PostAsJsonAsync($"https://localhost:7095/api/Voucher", voucher);
+                                        var response = await _httpClient.PostAsJsonAsync($"{_apiBase}/Voucher", voucher);
                                         if (response.IsSuccessStatusCode)
                                         {
                                             return RedirectToAction("GetAllVoucher");
@@ -173,7 +179,7 @@ namespace AppView.Controllers
                             {
                                 if (voucher.SoTienCan >= 0 && voucher.GiaTri > 0 && voucher.SoLuong > 0 && voucher.NgayKetThuc >= voucher.NgayApDung && timkiem == null)
                                 {
-                                    var response = await _httpClient.PostAsJsonAsync($"https://localhost:7095/api/Voucher", voucher);
+                                    var response = await _httpClient.PostAsJsonAsync($"{_apiBase}/Voucher", voucher);
                                     if (response.IsSuccessStatusCode)
                                     {
                                         return RedirectToAction("GetAllVoucher");
@@ -195,7 +201,7 @@ namespace AppView.Controllers
                                 {
                                     if (voucher.SoTienCan >= 0 && voucher.GiaTri > 0 && voucher.SoLuong > 0 && voucher.NgayKetThuc >= voucher.NgayApDung && timkiem == null)
                                     {
-                                        var response = await _httpClient.PostAsJsonAsync($"https://localhost:7095/api/Voucher", voucher);
+                                        var response = await _httpClient.PostAsJsonAsync($"{_apiBase}/Voucher", voucher);
                                         if (response.IsSuccessStatusCode)
                                         {
                                             return RedirectToAction("GetAllVoucher");
@@ -229,7 +235,7 @@ namespace AppView.Controllers
         {
             try
             {
-                var url = $"https://localhost:7095/api/Voucher/{id}";
+                var url = $"{_apiBase}/Voucher/{id}";
                 var response = _httpClient.GetAsync(url).Result;
                 var result = response.Content.ReadAsStringAsync().Result;
                 var KhuyenMais = JsonConvert.DeserializeObject<VoucherView>(result);
@@ -252,7 +258,7 @@ namespace AppView.Controllers
                 {
                     if (voucher.SoLuong > 0 && voucher.NgayKetThuc >= voucher.NgayApDung)
                     {
-                        var response = await _httpClient.PutAsJsonAsync($"https://localhost:7095/api/Voucher/{voucher.Id}", voucher);
+                        var response = await _httpClient.PutAsJsonAsync($"{_apiBase}/Voucher/{voucher.Id}", voucher);
                         if (response.IsSuccessStatusCode)
                         {
                             return RedirectToAction("GetAllVoucher");
@@ -278,7 +284,7 @@ namespace AppView.Controllers
                     {
                         if (voucher.SoLuong > 0 && voucher.NgayKetThuc >= voucher.NgayApDung)
                         {
-                            var response = await _httpClient.PutAsJsonAsync($"https://localhost:7095/api/Voucher/{voucher.Id}", voucher);
+                            var response = await _httpClient.PutAsJsonAsync($"{_apiBase}/Voucher/{voucher.Id}", voucher);
                             if (response.IsSuccessStatusCode)
                             {
                                 return RedirectToAction("GetAllVoucher");
@@ -313,7 +319,7 @@ namespace AppView.Controllers
         // delete
         //public async Task<IActionResult> Delete(Guid id)
         //{
-        //    string apiURL = $"https://localhost:7095/api/Voucher/{id}";
+        //    string apiURL = $"https://localhost:7000/api/Voucher/{id}";
 
         //    var response = await _httpClient.DeleteAsync(apiURL);
         //    if (response.IsSuccessStatusCode)
