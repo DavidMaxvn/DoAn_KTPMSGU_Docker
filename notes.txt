@@ -1,0 +1,20 @@
+Chạy bằng CMD (khuyên dùng để tránh lỗi quote):
+
+cd /d C:\Users\CaRot\Downloads\DoAn_KTPMDocker_Original
+copy AppAPI\Dockerfile AppAPI\Dockerfile.bak
+cmd /c "echo RUN sed -i \"s/\r$//\" /app/entrypoint.sh>>AppAPI\Dockerfile"
+Gợi ý: dòng này nên nằm sau dòng COPY AppAPI/entrypoint.sh /app/entrypoint.sh. Appending ở cuối file vẫn build được vì RUN chạy lúc build.
+
+Xóa dòng sed lỗi và thêm block đúng (đặt lại sau COPY, trước ENTRYPOINT cuối cùng):
+
+copy AppAPI\Dockerfile AppAPI\Dockerfile.pre-sed
+findstr /v /c:"RUN sed -i" AppAPI\Dockerfile.pre-sed > AppAPI\Dockerfile
+echo COPY AppAPI/entrypoint.sh /app/entrypoint.sh>>AppAPI\Dockerfile
+echo RUN sed -i 's/\r$//' /app/entrypoint.sh ^&^& chmod +x /app/entrypoint.sh>>AppAPI\Dockerfile
+echo ENTRYPOINT ["/app/entrypoint.sh"]>>AppAPI\Dockerfile
+Build lại:
+
+docker compose build --no-cache api
+docker compose up -d --force-recreate
+
+sử dụng lệnh cmd để ra ip của nat và thay lại trong các file chứa chuỗi kết nối liên quan.
