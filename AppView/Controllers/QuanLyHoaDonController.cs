@@ -259,18 +259,27 @@ namespace AppView.Controllers
 
         //Xuất PDF
         [HttpGet("/Admin/QuanLyHoaDon/ExportPDF/{idhd}")]
+        [HttpGet("/QuanLyHoaDon/ExportPDF/{idhd}")]
         public async Task<IActionResult> ExportPDF(Guid idhd)
         {
             try
             {
                 var cthd = await _httpClient.GetFromJsonAsync<ChiTietHoaDonQL>($"HoaDon/ChiTietHoaDonQL/{idhd}");
+                if (cthd == null)
+                {
+                    return NotFound();
+                }
+
                 var view = new ViewAsPdf("ExportHD", cthd)
                 {
                     FileName = $"{cthd.MaHD}.pdf",
                     PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
                     PageSize = Rotativa.AspNetCore.Options.Size.A4,
                 };
-                return view;
+
+                var fileBytes = await view.BuildFile(ControllerContext);
+                var downloadName = string.IsNullOrEmpty(view.FileName) ? $"{cthd.MaHD}.pdf" : view.FileName;
+                return File(fileBytes, "application/pdf", downloadName);
             }
             catch (Exception ex)
             {

@@ -42,5 +42,10 @@ app.MapControllerRoute(
     pattern: "{controller=TrangChu}/{action=Index}");
 
 IWebHostEnvironment env = app.Environment;
-Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "../Rotativa/Windows");
+var rotativaPath = "../Rotativa/Windows";
+if (OperatingSystem.IsLinux())
+{
+    rotativaPath = "/usr/bin";
+}
+RotativaConfiguration.Setup(env.WebRootPath, rotativaPath);
 app.Run();
