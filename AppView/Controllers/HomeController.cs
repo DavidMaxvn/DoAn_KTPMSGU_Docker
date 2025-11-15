@@ -413,7 +413,7 @@ namespace AppView.Controllers
             }
             catch (Exception)
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
             
             
@@ -997,11 +997,11 @@ namespace AppView.Controllers
                         return View(loginViewModel);
                     }
                 }
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
             catch
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
            
         }
@@ -1073,12 +1073,12 @@ namespace AppView.Controllers
                 }
                 else
                 {
-                    return Redirect("https://localhost:5001/");
+                    return Redirect("https://localhost:7000/");
                 }
             }
             catch (Exception)
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
         }
         public IActionResult PurchaseOrderDetail(Guid idHoaDon)
@@ -1095,7 +1095,7 @@ namespace AppView.Controllers
             }
             catch (Exception)
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
             
         }
@@ -1252,7 +1252,7 @@ namespace AppView.Controllers
             }
             catch (Exception)
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
             
         }
@@ -1270,7 +1270,7 @@ namespace AppView.Controllers
             }
             catch (Exception)
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
             
         }
@@ -1311,7 +1311,7 @@ namespace AppView.Controllers
             }
             catch (Exception)
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
             
         }
@@ -1687,6 +1687,10 @@ namespace AppView.Controllers
         [HttpPost]
         public string Order(HoaDonViewModel hoaDon)
         {
+            var successUrl = Url.Action(nameof(CheckOutSuccess), "Home", null, Request.Scheme)
+                            ?? $"{Request.Scheme}://{Request.Host}{Request.PathBase}/Home/CheckOutSuccess";
+            var callbackUrl = Url.Action(nameof(PaymentCallBack), "Home", null, Request.Scheme)
+                            ?? $"{Request.Scheme}://{Request.Host}{Request.PathBase}/Home/PaymentCallBack";
             try
             {
                 List<ChiTietHoaDonViewModel> lstChiTietHoaDon = new List<ChiTietHoaDonViewModel>();
@@ -1719,14 +1723,14 @@ namespace AppView.Controllers
                         // lam them
                         TempData["SoLuong"] = "0";
                         // lam end
-                        return "https://localhost:5001/Home/CheckOutSuccess";
+                        return successUrl;
                     }
                     else return "";
                 }
                 else if (hoaDon.PhuongThucThanhToan == "VNPay")
                 {
                     TempData["HoaDon"] = JsonConvert.SerializeObject(hoaDon);
-                    string vnp_Returnurl = "https://localhost:5001/Home/PaymentCallBack"; //URL nhan ket qua tra ve 
+                    string vnp_Returnurl = callbackUrl; //URL nhan ket qua tra ve 
                     string vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; //URL thanh toan cua VNPAY 
                     string vnp_TmnCode = "MGGSDF52"; //Ma định danh merchant kết nối (Terminal Id)
                     string vnp_HashSecret = "AGWYEAZUADNU05SZ0UF58INWW0VENF4P"; //Secret Key
@@ -1768,7 +1772,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return "https://localhost:5001/Home/CheckOutSuccess";
+                return successUrl;
             }
         }
         [HttpGet]

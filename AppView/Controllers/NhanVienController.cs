@@ -51,7 +51,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
         }
 
@@ -85,7 +85,7 @@ namespace AppView.Controllers
                     }
                 });
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("https://localhost:7000/"); }
         }
 
         [HttpGet]
@@ -116,7 +116,7 @@ namespace AppView.Controllers
 
                 return View(nhanVien);
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("https://localhost:7000/"); }
 
         }
 
@@ -134,7 +134,7 @@ namespace AppView.Controllers
                 ViewBag.TenVaiTro = vt.Ten;
                 return View(user);
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("https://localhost:7000/"); }
         }
 
         public IActionResult Edit(Guid id)
@@ -164,7 +164,7 @@ namespace AppView.Controllers
                 return View(nv);
 
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("https://localhost:7000/"); }
         }
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -201,7 +201,7 @@ namespace AppView.Controllers
                     return View();
                 }
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("https://localhost:7000/"); }
         }
 
         [HttpPost]
@@ -230,7 +230,7 @@ namespace AppView.Controllers
             }
             catch (Exception)
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
             
         }

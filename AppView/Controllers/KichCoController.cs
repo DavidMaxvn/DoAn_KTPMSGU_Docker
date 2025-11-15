@@ -46,7 +46,7 @@ namespace AppView.Controllers
                     }
                 });
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("https://localhost:7000/"); }
         }
 
         [HttpGet]
@@ -79,7 +79,7 @@ namespace AppView.Controllers
                     }
                 });
             }
-            catch { return Redirect("https://localhost:5001/"); }
+            catch { return Redirect("https://localhost:7000/"); }
         }
 
         [HttpGet]
@@ -109,7 +109,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
         }
 
@@ -135,7 +135,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
         }
         [HttpPost]
@@ -160,7 +160,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
         }
         public async Task<IActionResult> Delete(Guid id)
@@ -192,7 +192,7 @@ namespace AppView.Controllers
             }
             catch
             {
-                return Redirect("https://localhost:5001/");
+                return Redirect("https://localhost:7000/");
             }
         }
         [HttpPost]
