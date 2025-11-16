@@ -32,11 +32,7 @@ namespace AppData.Models
         public DbSet<Anh> Anhs { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-<<<<<<< HEAD
-            optionsBuilder.UseSqlServer(@"Data Source=169.254.138.7,1433;Database=AppBanQuanAoThoiTrangNam;User ID=sa;Password=123456;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=True");
-=======
             optionsBuilder.UseSqlServer(@"Data Source=172.24.224.1,1433;Database=AppBanQuanAoThoiTrangNam;User ID=sa;Password=123456;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=True");
->>>>>>> 007a8195f3d220c72f5f70307b9d812864c2b433
         }
         //THUYNHU\SQLEXPRESS
         //DESKTOP-UOIH77U\SQLEXPRESS
