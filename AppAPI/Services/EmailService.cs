@@ -13,11 +13,11 @@ namespace AppAPI.Services
             var smtpClient = new SmtpClient("smtp.gmail.com", 587);
             smtpClient.UseDefaultCredentials = false;
             smtpClient.EnableSsl = true;
-            smtpClient.Credentials = new NetworkCredential("nhuph20156@gmail.com", "Nhucong2003.");
+            smtpClient.Credentials = new NetworkCredential("lesongnhatquyen.sgu.it.vn@gmail.com", "Nhucong2003.");
 
             // Create an instance of MailMessage
             var mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("nhuph20156@gmail.com");
+            mailMessage.From = new MailAddress("lesongnhatquyen.sgu.it.vn@gmail.com");
             mailMessage.To.Add(new MailAddress(forgot.Email));
             mailMessage.Subject = "Reset Password";
             mailMessage.Body = "Please click the link below to reset your password:<br><a href='https://localhost:9000/api/ResetPassword?email=" + forgot.Email + "&token=" + forgot.Token + "'>Reset Password</a>";

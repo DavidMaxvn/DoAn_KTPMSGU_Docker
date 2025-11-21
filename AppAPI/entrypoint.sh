@@ -2,7 +2,7 @@
 set -euo pipefail
 
 DB_HOST="${DB_HOST:-sql}"
-DB_PORT="${DB_PORT:-1433}"
+DB_PORT="${DB_PORT:-14330}"
 
 echo "Waiting for SQL Server at ${DB_HOST}:${DB_PORT}..."
 for i in {1..60}; do

@@ -162,9 +162,9 @@ namespace AppAPI.Services
                 var smtpClient = new SmtpClient("smtp.gmail.com", 465);
                 smtpClient.UseDefaultCredentials = false;
                 smtpClient.EnableSsl = true;
-                smtpClient.Credentials = new NetworkCredential("nhu3006a12@gmail.com", "nhucong.");
+                smtpClient.Credentials = new NetworkCredential("lesongnhatquyen.sgu.it.vn@gmail.com", "nhucong.");
                 var messsage = new MailMessage();
-                messsage.From = new MailAddress("nhu3006a12@gmail.com");
+                messsage.From = new MailAddress("lesongnhatquyen.sgu.it.vn@gmail.com");
                 messsage.To.Add(new MailAddress(email));
                 messsage.Subject = subject;
                 messsage.Body = body;
