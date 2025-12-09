@@ -13,6 +13,11 @@ namespace AppAPI.Services
             this.dBContext = new AssignmentDBContext();
         }
 
+        public VaiTroSevice(AssignmentDBContext context)
+        {
+            this.dBContext = context;
+        }
+
         public bool CreateVaiTro(string ten, int trangthai)
         {
             try
@@ -41,6 +46,7 @@ namespace AppAPI.Services
                 if (vt != null)
                 {
                     dBContext.VaiTros.Remove(vt);
+                    dBContext.SaveChanges();
                     return true;
                 }
                 return false;
