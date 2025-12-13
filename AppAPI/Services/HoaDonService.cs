@@ -43,6 +43,22 @@ namespace AppAPI.Services
             _iGioHangServices = new GioHangServices();
         }
 
+        public HoaDonService(AssignmentDBContext context, IGioHangServices gioHangServices)
+        {
+            this.context = context;
+            reposHoaDon = new AllRepository<HoaDon>(context, context.HoaDons);
+            reposChiTietHoaDon = new AllRepository<ChiTietHoaDon>(context, context.ChiTietHoaDons);
+            repsCTSanPham = new AllRepository<ChiTietSanPham>(context, context.ChiTietSanPhams);
+            reposVoucher = new AllRepository<Voucher>(context, context.Vouchers);
+            reposQuyDoiDiem = new AllRepository<QuyDoiDiem>(context, context.QuyDoiDiems);
+            reposLichSuTichDiem = new AllRepository<LichSuTichDiem>(context, context.LichSuTichDiems);
+            reposKhachHang = new AllRepository<KhachHang>(context, context.KhachHangs);
+            reposSanPham = new AllRepository<SanPham>(context, context.SanPhams);
+            reposDanhGia = new AllRepository<DanhGia>(context, context.DanhGias);
+            reposNhanVien = new AllRepository<NhanVien>(context, context.NhanViens);
+            _iGioHangServices = gioHangServices;
+        }
+
         public bool CheckHDHasLSGD(Guid idHoaDon)
         {
             var exist = reposLichSuTichDiem.GetAll().Any(c => c.IDHoaDon == idHoaDon);

@@ -16,6 +16,11 @@ namespace AppAPI.Services
             _context = new AssignmentDBContext();
         }
 
+        public SanPhamService(AssignmentDBContext context)
+        {
+            _context = context;
+        }
+
         #region SanPham
         public async Task<bool> UpdateSanPham(SanPhamUpdateRequest request)
         {

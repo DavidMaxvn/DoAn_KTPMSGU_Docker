@@ -17,6 +17,13 @@ namespace AppAPI.Services
             repos = new AllRepository<GioHang>(context, context.GioHangs);
             _iSanPhamService = new SanPhamService();
         }
+
+        public GioHangServices(AssignmentDBContext context, ISanPhamService sanPhamService)
+        {
+            this.context = context;
+            repos = new AllRepository<GioHang>(context, context.GioHangs);
+            _iSanPhamService = sanPhamService;
+        }
         public bool Add(Guid IdKhachHang, DateTime ngaytao)
         {
             GioHang gioHang = new GioHang();
