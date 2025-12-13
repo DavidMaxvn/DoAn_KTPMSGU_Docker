@@ -53,10 +53,90 @@ namespace AppAPI.Services
                 return false;
             }
         }
-        public Task<List<SanPhamViewModel>> TimKiemSanPham(SanPhamTimKiemNangCao sp)
+        // public Task<List<SanPhamViewModel>> TimKiemSanPham(SanPhamTimKiemNangCao sp)
+        // {
+        //     throw new NotImplementedException();
+        // }
+        public async Task<List<SanPhamViewModel>> TimKiemSanPham(SanPhamTimKiemNangCao sp)
         {
-            throw new NotImplementedException();
+            sp ??= new SanPhamTimKiemNangCao();
+
+            var keyword = (sp.KeyWord ?? "").Trim();
+            var idsLoai = sp.IdLoaiSP ?? new List<Guid>();
+
+            var min = sp.GiaMin;
+            var max = sp.GiaMax;
+            if (max <= 0) max = int.MaxValue;
+            if (max < min) (min, max) = (max, min);
+
+            // Base query
+            var query =
+                from a in _context.SanPhams.AsNoTracking()
+                join b in _context.ChiTietSanPhams.AsNoTracking() on a.ID equals b.IDSanPham
+                join e in _context.LoaiSPs.AsNoTracking() on a.IDLoaiSP equals e.ID
+                where a.TrangThai == 1 && b.TrangThai != 0
+                select new { a, b, e };
+
+            if (!string.IsNullOrEmpty(keyword))
+                query = query.Where(x => x.a.Ten.Contains(keyword));
+
+            if (idsLoai.Any())
+                query = query.Where(x => idsLoai.Contains(x.e.ID));
+
+            query = query.Where(x => x.b.GiaBan >= min && x.b.GiaBan <= max);
+
+            // Preload KM còn hiệu lực để tính giá bán
+            var now = DateTime.Now;
+            var khuyenMais = await _context.KhuyenMais
+                .AsNoTracking()
+                .Where(x => x.NgayKetThuc > now)
+                .ToListAsync();
+
+            var lst = await query.Select(x => new SanPhamViewModel
+            {
+                ID = x.a.ID,
+                Ten = x.a.Ten,
+                TrangThai = x.a.TrangThai,
+                TrangThaiCTSP = x.b.TrangThai,
+                LoaiSP = x.e.Ten,
+                IdChiTietSanPham = x.b.ID,
+
+                // Lấy ảnh an toàn (có thể null nếu không tìm thấy)
+                Image = _context.Anhs
+                    .AsNoTracking()
+                    .Where(img => img.IDMauSac == x.b.IDMauSac && img.IDSanPham == x.a.ID)
+                    .Select(img => img.DuongDan)
+                    .FirstOrDefault() ?? string.Empty,
+
+                IDMauSac = x.b.IDMauSac,
+                IDKichCo = x.b.IDKichCo,
+                IDChatLieu = x.a.IDChatLieu,
+
+                GiaGoc = x.b.GiaBan,
+                SoLuong = x.b.SoLuong,
+                IDKhuyenMai = x.b.IDKhuyenMai,
+                NgayTao = x.b.NgayTao
+            }).ToListAsync();
+
+            foreach (var item in lst)
+            {
+                // Nếu bạn có hàm GetKhuyenMai(giaTri, giaGoc, trangThai) như Copilot
+                if (item.IDKhuyenMai != null)
+                {
+                    var km = khuyenMais.FirstOrDefault(k => k.ID == item.IDKhuyenMai);
+                    item.GiaBan = (km != null && item.GiaGoc.HasValue)
+                        ? GetKhuyenMai(km.GiaTri, item.GiaGoc.Value, km.TrangThai)
+                        : item.GiaGoc ?? 0;
+                }
+                else
+                {
+                    item.GiaBan = item.GiaGoc ?? 0;
+                }
+            }
+
+            return lst;
         }
+
         public Task<List<SanPhamViewModel>> GetSanPhamByIdDanhMuc(Guid idloaisp)
         {
             throw new NotImplementedException();
