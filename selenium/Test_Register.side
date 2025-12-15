@@ -1,0 +1,1317 @@
+{
+  "id": "3f535965-2908-499f-a175-de7e53008aba",
+  "version": "2.0",
+  "name": "Test_Register",
+  "url": "http://localhost:7000",
+  "tests": [{
+    "id": "45c130bb-0c15-41be-8c27-4af4ad2c12e6",
+    "name": "TC-01",
+    "commands": [{
+      "id": "b88d5063-00e4-494d-bca5-3330adeb6152",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "45a67bae-1a5c-457f-8eb8-81e4f13f0500",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1053x800",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "aa101e77-43f0-454c-8ec0-31e007bea8cf",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Đăng nhập",
+      "targets": [
+        ["linkText=Đăng nhập", "linkText"],
+        ["css=.header__top__hover > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Đăng nhập')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/Home/Login?actionName=Index')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Đăng nhập')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "53164dda-6bc3-4148-a38f-45c96765eb1a",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Đăng ký!",
+      "targets": [
+        ["linkText=Đăng ký!", "linkText"],
+        ["css=p > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Đăng ký!')]", "xpath:link"],
+        ["xpath=//a[@type='reset']", "xpath:attributes"],
+        ["xpath=//a[contains(@href, '/Home/Register')]", "xpath:href"],
+        ["xpath=//p/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Đăng ký!')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e375b440-f809-4a51-b5d6-efe3defb0056",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-group:nth-child(1)",
+      "targets": [
+        ["css=.form-group:nth-child(1)", "css:finder"],
+        ["xpath=//form[@id='registerForm']/div", "xpath:idRelative"],
+        ["xpath=//form/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cd1fc275-cb62-43f0-aed6-5ed53991f2d8",
+      "comment": "",
+      "command": "click",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c3f6312b-1bb6-4259-864c-e4bfc2d94d52",
+      "comment": "",
+      "command": "type",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "customer@example.com"
+    }, {
+      "id": "1474b075-2a4f-4c19-8ff1-895c313a48b0",
+      "comment": "",
+      "command": "click",
+      "target": "id=Name",
+      "targets": [
+        ["id=Name", "id"],
+        ["name=Name", "name"],
+        ["css=#Name", "css:finder"],
+        ["xpath=//input[@id='Name']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0b66330f-d53d-4608-ae52-b37d6a361fda",
+      "comment": "",
+      "command": "type",
+      "target": "id=Name",
+      "targets": [
+        ["id=Name", "id"],
+        ["name=Name", "name"],
+        ["css=#Name", "css:finder"],
+        ["xpath=//input[@id='Name']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Bùi Văn Tiến"
+    }, {
+      "id": "d9b3b36b-e75c-4779-89f9-4898331bc74b",
+      "comment": "",
+      "command": "click",
+      "target": "id=registerForm",
+      "targets": [
+        ["id=registerForm", "id"],
+        ["css=#registerForm", "css:finder"],
+        ["xpath=//form[@id='registerForm']", "xpath:attributes"],
+        ["xpath=//div[@id='pills-login']/form", "xpath:idRelative"],
+        ["xpath=//form", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6b96d914-ff73-4a8c-800b-1d0854ffd2b5",
+      "comment": "",
+      "command": "click",
+      "target": "id=SDT",
+      "targets": [
+        ["id=SDT", "id"],
+        ["name=SDT", "name"],
+        ["css=#SDT", "css:finder"],
+        ["xpath=//input[@id='SDT']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "81377992-763f-4907-8bd3-f83d967911d4",
+      "comment": "",
+      "command": "type",
+      "target": "id=SDT",
+      "targets": [
+        ["id=SDT", "id"],
+        ["name=SDT", "name"],
+        ["css=#SDT", "css:finder"],
+        ["xpath=//input[@id='SDT']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "0983355421"
+    }, {
+      "id": "e1bc9aec-59ba-48f1-8e6b-b0d1777c338e",
+      "comment": "",
+      "command": "click",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "639925e8-e657-4af4-a926-16d7307bcba2",
+      "comment": "",
+      "command": "type",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "Tien@123"
+    }, {
+      "id": "86b98973-5c77-468a-8f00-717e94bbfefc",
+      "comment": "",
+      "command": "click",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "851a2903-04bf-4624-9091-a6c11f1b892b",
+      "comment": "",
+      "command": "type",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": "Tien@123"
+    }, {
+      "id": "45c3fa31-60bf-4f5b-8d38-e88269bc8702",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[6]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng ký')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "aa6976c5-b9b8-497b-a525-aead6c066011",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=h3",
+      "targets": [
+        ["css=h3", "css:finder"],
+        ["xpath=//h3", "xpath:position"],
+        ["xpath=//h3[contains(.,'Đăng ký thành công!')]", "xpath:innerText"]
+      ],
+      "value": "Đăng ký thành công!"
+    }]
+  }, {
+    "id": "ab0092d2-eb15-4cc6-804b-0cc210ed909e",
+    "name": "TC-04",
+    "commands": [{
+      "id": "5de189e2-8da6-40bb-be99-17cc2058d855",
+      "comment": "",
+      "command": "open",
+      "target": "/Home/Register",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "efba4a69-bee3-4491-a246-9916c9020d04",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1053x800",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "387d3df6-d99c-4b43-aa19-98fd69ae720a",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "css=.form-group:nth-child(1)",
+      "targets": [
+        ["css=.form-group:nth-child(1)", "css:finder"],
+        ["xpath=//form[@id='registerForm']/div", "xpath:idRelative"],
+        ["xpath=//form/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "95eb3b67-0f30-4b90-bc08-a1760b29242c",
+      "comment": "",
+      "command": "click",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7db47d39-694e-46de-9e2d-6ac2b275c267",
+      "comment": "",
+      "command": "type",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "quadayc@gmail.com"
+    }, {
+      "id": "795a71aa-1877-46e8-932e-58c9fb6d992f",
+      "comment": "",
+      "command": "click",
+      "target": "id=Name",
+      "targets": [
+        ["id=Name", "id"],
+        ["name=Name", "name"],
+        ["css=#Name", "css:finder"],
+        ["xpath=//input[@id='Name']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0cdc3fee-8a72-4855-9581-0759b8547557",
+      "comment": "",
+      "command": "type",
+      "target": "id=Name",
+      "targets": [
+        ["id=Name", "id"],
+        ["name=Name", "name"],
+        ["css=#Name", "css:finder"],
+        ["xpath=//input[@id='Name']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Nguyễn Lê Nhật Minh"
+    }, {
+      "id": "1aa5eb2e-a2f6-4fa4-a9c9-96497e945e7b",
+      "comment": "",
+      "command": "click",
+      "target": "id=SDT",
+      "targets": [
+        ["id=SDT", "id"],
+        ["name=SDT", "name"],
+        ["css=#SDT", "css:finder"],
+        ["xpath=//input[@id='SDT']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "203aefc8-e522-4de7-9e68-1e2d257aca1a",
+      "comment": "",
+      "command": "click",
+      "target": "id=SDT",
+      "targets": [
+        ["id=SDT", "id"],
+        ["name=SDT", "name"],
+        ["css=#SDT", "css:finder"],
+        ["xpath=//input[@id='SDT']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "68846304-d074-4297-971f-245516503c24",
+      "comment": "",
+      "command": "click",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a28802d3-f6a8-483c-9bce-2ed80d6a6124",
+      "comment": "",
+      "command": "type",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "Minh@123"
+    }, {
+      "id": "af5c549c-8df8-497f-8510-9c9bdd5ddcfa",
+      "comment": "",
+      "command": "click",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a54d4f3e-027f-475a-a773-91c3c9c9ca89",
+      "comment": "",
+      "command": "type",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": "Minh@123"
+    }, {
+      "id": "2df49a7d-798f-43b8-88fc-ef2ee401aece",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[6]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng ký')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f872507f-15d9-4b94-8224-0f8f752f86f0",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=SDT-error",
+      "targets": [
+        ["id=SDT-error", "id"],
+        ["css=#SDT-error", "css:finder"],
+        ["xpath=//span[@id='SDT-error']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[3]/span/span", "xpath:idRelative"],
+        ["xpath=//span/span", "xpath:position"]
+      ],
+      "value": "Vui lòng nhập số điện thoại"
+    }]
+  }, {
+    "id": "8eedb2b0-48c2-4a0f-b6bd-203b3942d5bb",
+    "name": "TC-05",
+    "commands": [{
+      "id": "791d517c-5a75-48d3-99e6-1d4c83a79f6a",
+      "comment": "",
+      "command": "open",
+      "target": "/Home/Register",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6d77af45-496a-4393-8112-0ea1d743f00b",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1053x800",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a96abe7d-7c90-44b7-a7d7-e859e0c5f9d8",
+      "comment": "",
+      "command": "click",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d8f3a6a0-3751-4fe7-be70-b667f2f5b1b2",
+      "comment": "",
+      "command": "type",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "quadayc@gmail.com"
+    }, {
+      "id": "77def422-04b1-4489-958c-43f0fbd0eba9",
+      "comment": "",
+      "command": "type",
+      "target": "id=Name",
+      "targets": [
+        ["id=Name", "id"],
+        ["name=Name", "name"],
+        ["css=#Name", "css:finder"],
+        ["xpath=//input[@id='Name']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Nguyễn Lê Nhật Minh"
+    }, {
+      "id": "c96d00c0-a95b-4173-958d-160d8da10e07",
+      "comment": "",
+      "command": "type",
+      "target": "id=SDT",
+      "targets": [
+        ["id=SDT", "id"],
+        ["name=SDT", "name"],
+        ["css=#SDT", "css:finder"],
+        ["xpath=//input[@id='SDT']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "0983377421"
+    }, {
+      "id": "81a9f686-e26e-436a-a4ec-6c65f54332ab",
+      "comment": "",
+      "command": "click",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4572c4e8-b936-46b3-80bf-8111693bfaa0",
+      "comment": "",
+      "command": "click",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3ffac15f-9709-4e4f-bb07-bc3d29b23b5e",
+      "comment": "",
+      "command": "type",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": "Minh@123"
+    }, {
+      "id": "2e9fa44f-511a-4761-9512-200825b7d6ff",
+      "comment": "",
+      "command": "mouseUp",
+      "target": "id=registerForm",
+      "targets": [
+        ["id=registerForm", "id"],
+        ["css=#registerForm", "css:finder"],
+        ["xpath=//form[@id='registerForm']", "xpath:attributes"],
+        ["xpath=//div[@id='pills-login']/form", "xpath:idRelative"],
+        ["xpath=//form", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a075bcba-58ab-4a39-8619-172ae2e20276",
+      "comment": "",
+      "command": "click",
+      "target": "id=registerForm",
+      "targets": [
+        ["id=registerForm", "id"],
+        ["css=#registerForm", "css:finder"],
+        ["xpath=//form[@id='registerForm']", "xpath:attributes"],
+        ["xpath=//div[@id='pills-login']/form", "xpath:idRelative"],
+        ["xpath=//form", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "27b00054-c9b8-4126-afc7-9934f4f2ef4a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[6]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng ký')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "60327e52-d551-4868-b35e-d9342bfec51f",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=Password-error",
+      "targets": [
+        ["id=Password-error", "id"],
+        ["css=#Password-error", "css:finder"],
+        ["xpath=//span[@id='Password-error']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/span/span", "xpath:idRelative"],
+        ["xpath=//span/span", "xpath:position"]
+      ],
+      "value": "Vui lòng nhập mật khẩu"
+    }]
+  }, {
+    "id": "f17e8ff4-cd29-4002-a83d-01e616b86155",
+    "name": "TC-06",
+    "commands": [{
+      "id": "a7510ded-3525-4f07-8056-6746d58131d3",
+      "comment": "",
+      "command": "open",
+      "target": "/Home/Register",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "60901344-0e99-4932-b38b-1c1b1ec53101",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1053x800",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2afdf21d-3485-45f1-b5cf-afaaa1df4819",
+      "comment": "",
+      "command": "click",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3f126a31-de33-4e43-b484-0da41106ae82",
+      "comment": "",
+      "command": "type",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "quadayc@gmail.com"
+    }, {
+      "id": "ee62b691-c62a-40ef-b766-238c2ff2cec3",
+      "comment": "",
+      "command": "type",
+      "target": "id=Name",
+      "targets": [
+        ["id=Name", "id"],
+        ["name=Name", "name"],
+        ["css=#Name", "css:finder"],
+        ["xpath=//input[@id='Name']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Nguyễn Lê Nhật Minh"
+    }, {
+      "id": "5af61bf3-b24b-49d9-8174-40109254519b",
+      "comment": "",
+      "command": "type",
+      "target": "id=SDT",
+      "targets": [
+        ["id=SDT", "id"],
+        ["name=SDT", "name"],
+        ["css=#SDT", "css:finder"],
+        ["xpath=//input[@id='SDT']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "0983377421"
+    }, {
+      "id": "641ec6c6-6787-44df-b4ec-f37b3e28bb36",
+      "comment": "",
+      "command": "type",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "Minh@123"
+    }, {
+      "id": "d2e41550-d31b-43b3-ac66-c12d0a38617e",
+      "comment": "",
+      "command": "click",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4f788b87-a1e2-4422-afea-d5c4bb2f4a70",
+      "comment": "",
+      "command": "type",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b6c46daa-5afd-48c8-af84-247d6442b092",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[6]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng ký')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "27bfe9bc-2452-4003-af5d-2e7693f9164f",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=ConfirmPassword-error",
+      "targets": [
+        ["id=ConfirmPassword-error", "id"],
+        ["css=#ConfirmPassword-error", "css:finder"],
+        ["xpath=//span[@id='ConfirmPassword-error']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/span/span", "xpath:idRelative"],
+        ["xpath=//span/span", "xpath:position"]
+      ],
+      "value": "Vui lòng nhập lại mật khẩu"
+    }]
+  }, {
+    "id": "a0aec07a-26db-43bd-89c7-a25bfc08fab8",
+    "name": "TC-07",
+    "commands": [{
+      "id": "b697e93a-21b9-4fcc-84fe-4b56ee53a762",
+      "comment": "",
+      "command": "open",
+      "target": "/Home/Register",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8b2610e2-2d4b-4e8a-998b-c3a29c00d7fa",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1055x800",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c25aa37a-53bf-4287-8469-f754fe387468",
+      "comment": "",
+      "command": "click",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3cc455c8-48be-4055-b0de-a493993e2792",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cd9e5fb9-c999-4e58-aa2d-208e2dc576e2",
+      "comment": "",
+      "command": "type",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "quadayc@gmail.com"
+    }, {
+      "id": "ff93d9b4-a27a-4d1e-b9e4-88cc26179c59",
+      "comment": "",
+      "command": "type",
+      "target": "id=Name",
+      "targets": [
+        ["id=Name", "id"],
+        ["name=Name", "name"],
+        ["css=#Name", "css:finder"],
+        ["xpath=//input[@id='Name']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Nguyễn Lê Nhật Minh"
+    }, {
+      "id": "ead6e608-272e-4a71-94e2-94f1730f828a",
+      "comment": "",
+      "command": "type",
+      "target": "id=SDT",
+      "targets": [
+        ["id=SDT", "id"],
+        ["name=SDT", "name"],
+        ["css=#SDT", "css:finder"],
+        ["xpath=//input[@id='SDT']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "0983377421"
+    }, {
+      "id": "f68b9fa0-2a02-4dec-86c9-538f7d6e19ee",
+      "comment": "",
+      "command": "click",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a1d3ff0d-7fee-4fc0-ba26-62534d2270ba",
+      "comment": "",
+      "command": "type",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "MInh@123"
+    }, {
+      "id": "ff251a3a-d50c-486f-b368-3521e7fdc51a",
+      "comment": "",
+      "command": "click",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f9093947-e86e-4223-aec4-97f136d62f52",
+      "comment": "",
+      "command": "type",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": "Minhh@12345"
+    }, {
+      "id": "4aa3a0e0-fc2e-4134-9fe9-de5a563f53d1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "75dd58ba-cde8-4cd1-8b47-f2e6169c87c1",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=ConfirmPassword-error",
+      "targets": [
+        ["id=ConfirmPassword-error", "id"],
+        ["css=#ConfirmPassword-error", "css:finder"],
+        ["xpath=//span[@id='ConfirmPassword-error']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/span/span", "xpath:idRelative"],
+        ["xpath=//span/span", "xpath:position"]
+      ],
+      "value": "Mật khẩu và nhập lại mật khẩu không khớp"
+    }]
+  }, {
+    "id": "aec40f5a-8e8e-4511-8a72-c27a2bcdacde",
+    "name": "TC-02",
+    "commands": [{
+      "id": "50e80779-ea1e-4ebd-b1b8-d5758d33e04f",
+      "comment": "",
+      "command": "open",
+      "target": "/Home/Register",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1faf57ac-cd42-4739-9d64-fd2607d95c92",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1055x800",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a55359ef-b78f-4f67-a6c5-e8517b55c355",
+      "comment": "",
+      "command": "click",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fffea238-b5af-4f75-bb63-e500b8fac23e",
+      "comment": "",
+      "command": "type",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "customer@example.com"
+    }, {
+      "id": "1dc4b34b-b9cf-4658-ac65-9dd381b27422",
+      "comment": "",
+      "command": "type",
+      "target": "id=Name",
+      "targets": [
+        ["id=Name", "id"],
+        ["name=Name", "name"],
+        ["css=#Name", "css:finder"],
+        ["xpath=//input[@id='Name']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Bùi Văn Tiến"
+    }, {
+      "id": "9d02b588-4a41-407e-882d-776dbd1b9535",
+      "comment": "",
+      "command": "type",
+      "target": "id=SDT",
+      "targets": [
+        ["id=SDT", "id"],
+        ["name=SDT", "name"],
+        ["css=#SDT", "css:finder"],
+        ["xpath=//input[@id='SDT']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "0983355421"
+    }, {
+      "id": "1b27a8f6-df8e-4753-b9da-93b2570b4da6",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "css=.col-4:nth-child(1)",
+      "targets": [
+        ["css=.col-4:nth-child(1)", "css:finder"],
+        ["xpath=//main/div/div", "xpath:position"]
+      ],
+      "value": "319,113"
+    }, {
+      "id": "465bf5ac-66cc-4412-95e0-8b1ead41ded8",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "css=.col-4:nth-child(1)",
+      "targets": [
+        ["css=.col-4:nth-child(1)", "css:finder"],
+        ["xpath=//main/div/div", "xpath:position"]
+      ],
+      "value": "319,113"
+    }, {
+      "id": "96f62875-5983-417a-b8ab-73b1d930ec59",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "css=.col-4:nth-child(1)",
+      "targets": [
+        ["css=.col-4:nth-child(1)", "css:finder"],
+        ["xpath=//main/div/div", "xpath:position"]
+      ],
+      "value": "319,113"
+    }, {
+      "id": "3b8bd87b-4783-47f7-b44e-b6926ae51733",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pb-3 > .row",
+      "targets": [
+        ["css=.pb-3 > .row", "css:finder"],
+        ["xpath=//main/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "00f437f3-9f36-414e-8962-d5d0b5ec7c0b",
+      "comment": "",
+      "command": "type",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9f184711-8334-49c4-a288-adbfd33ad5c6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-4:nth-child(1)",
+      "targets": [
+        ["css=.col-4:nth-child(1)", "css:finder"],
+        ["xpath=//main/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a651a2ec-c175-46b5-b520-255238303eab",
+      "comment": "",
+      "command": "click",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2435b7d9-afc1-44e6-9895-f96bf5f09999",
+      "comment": "",
+      "command": "type",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "Tien@123"
+    }, {
+      "id": "c5e33511-87a0-4ca0-9293-db85dec003f6",
+      "comment": "",
+      "command": "click",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d4ad4e80-ef28-4519-904c-136e630ec92c",
+      "comment": "",
+      "command": "type",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": "Tien@123"
+    }, {
+      "id": "7ca33a25-4224-427e-b97b-d1b969a24f15",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[6]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng ký')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0e314e19-1c79-4331-9fd3-fe82f090d0d4",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=Email-error",
+      "targets": [
+        ["id=Email-error", "id"],
+        ["css=#Email-error", "css:finder"],
+        ["xpath=//span[@id='Email-error']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/span/span", "xpath:idRelative"],
+        ["xpath=//span/span", "xpath:position"]
+      ],
+      "value": "Vui lòng nhập email"
+    }]
+  }, {
+    "id": "b64bd5dd-4904-4607-9efe-04cb275b645d",
+    "name": "TC-03",
+    "commands": [{
+      "id": "c08ed926-74d2-44e9-8ad1-b0f8ca19cd9d",
+      "comment": "",
+      "command": "open",
+      "target": "/Home/Register",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3968a9e1-67ea-4c25-98c3-047d42a45a01",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1053x800",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7e2ffdb8-4fe8-4c71-8072-73a9dab7c188",
+      "comment": "",
+      "command": "click",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ddb5c589-f216-426e-a266-897ea48048e6",
+      "comment": "",
+      "command": "type",
+      "target": "id=Email",
+      "targets": [
+        ["id=Email", "id"],
+        ["name=Email", "name"],
+        ["css=#Email", "css:finder"],
+        ["xpath=//input[@id='Email']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "customer@example.com"
+    }, {
+      "id": "70b7c2eb-0dc6-4c59-aec8-46e7f429b547",
+      "comment": "",
+      "command": "type",
+      "target": "id=SDT",
+      "targets": [
+        ["id=SDT", "id"],
+        ["name=SDT", "name"],
+        ["css=#SDT", "css:finder"],
+        ["xpath=//input[@id='SDT']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "0983355421"
+    }, {
+      "id": "9378bd9a-d5bd-4316-8895-56706e8877df",
+      "comment": "",
+      "command": "click",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2e13a23c-1992-471b-b03c-8c62fcbc853f",
+      "comment": "",
+      "command": "type",
+      "target": "id=Password",
+      "targets": [
+        ["id=Password", "id"],
+        ["name=Password", "name"],
+        ["css=#Password", "css:finder"],
+        ["xpath=//input[@id='Password']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "Demo@123"
+    }, {
+      "id": "46657976-01ed-495b-b170-a3aeba82f61b",
+      "comment": "",
+      "command": "click",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dd35c0cc-afc1-4da8-b270-dc4c411d7a8d",
+      "comment": "",
+      "command": "type",
+      "target": "id=ConfirmPassword",
+      "targets": [
+        ["id=ConfirmPassword", "id"],
+        ["name=ConfirmPassword", "name"],
+        ["css=#ConfirmPassword", "css:finder"],
+        ["xpath=//input[@id='ConfirmPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[5]/input", "xpath:idRelative"],
+        ["xpath=//div[5]/input", "xpath:position"]
+      ],
+      "value": "Demo@123"
+    }, {
+      "id": "dfa31cbb-02b6-4d3a-8975-77b81761857d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pb-3 > .row",
+      "targets": [
+        ["css=.pb-3 > .row", "css:finder"],
+        ["xpath=//main/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e47af692-e479-47be-89c1-3fafd54a84bb",
+      "comment": "",
+      "command": "type",
+      "target": "id=Name",
+      "targets": [
+        ["id=Name", "id"],
+        ["name=Name", "name"],
+        ["css=#Name", "css:finder"],
+        ["xpath=//input[@id='Name']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "06a1778a-e98c-47c1-97af-2c9dca16a355",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-4:nth-child(1)",
+      "targets": [
+        ["css=.col-4:nth-child(1)", "css:finder"],
+        ["xpath=//main/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bbfb7bea-596d-4a63-8850-2da1e27c5c30",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[6]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng ký')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "54d0411b-f3f6-4d67-8ee2-50ff3178996f",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=Name-error",
+      "targets": [
+        ["id=Name-error", "id"],
+        ["css=#Name-error", "css:finder"],
+        ["xpath=//span[@id='Name-error']", "xpath:attributes"],
+        ["xpath=//form[@id='registerForm']/div[2]/span/span", "xpath:idRelative"],
+        ["xpath=//span/span", "xpath:position"]
+      ],
+      "value": "Vui lòng nhập tên"
+    }]
+  }],
+  "suites": [{
+    "id": "41fd8f25-9c8e-4ccc-bb6a-f37cc1282540",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://localhost:7000/"],
+  "plugins": []
+}

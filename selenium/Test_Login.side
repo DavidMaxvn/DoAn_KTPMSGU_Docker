@@ -1,0 +1,653 @@
+{
+  "id": "eaa4c6ba-6a54-47db-9f31-1e350d675cee",
+  "version": "2.0",
+  "name": "Test_Login",
+  "url": "http://localhost:7000",
+  "tests": [{
+    "id": "db2676a0-6d83-414a-8052-55bbb1899bc8",
+    "name": "TC-02",
+    "commands": [{
+      "id": "c1d73c49-b389-4928-98e9-240fda1ed560",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "bdc418a3-a0da-46f4-b812-c791e31e78a1",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1053x800",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "08199388-4e71-4dba-8a1a-b2753998525e",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Đăng nhập",
+      "targets": [
+        ["linkText=Đăng nhập", "linkText"],
+        ["css=.header__top__hover > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Đăng nhập')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/Home/Login?actionName=Index')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Đăng nhập')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c0514dfb-fc58-4ef5-9be6-6b11adde9530",
+      "comment": "",
+      "command": "click",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3d0c03a6-0b7d-425c-a981-997ab0d2d0b7",
+      "comment": "",
+      "command": "type",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b6d1b3f6-98ef-4932-8cc2-31f43f73e3d3",
+      "comment": "",
+      "command": "click",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.form-outline:nth-child(2) > .form-control", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c9455ac1-680a-47e6-8028-086ce4b68e48",
+      "comment": "",
+      "command": "click",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.form-outline:nth-child(2) > .form-control", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d359c447-9a0d-4424-b1d2-dfa03f60f606",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.form-outline:nth-child(2) > .form-control", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6b4b5e76-ad42-484c-a85e-923dda4c34c7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-4:nth-child(1)",
+      "targets": [
+        ["css=.col-4:nth-child(1)", "css:finder"],
+        ["xpath=//main/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "96ad3114-7b1e-4ef4-9ed5-45b7b1cf81be",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng nhập')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2859fd12-73a8-45f8-9ea0-d8a4ef60b7e4",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pb-3 > .row",
+      "targets": [
+        ["css=.pb-3 > .row", "css:finder"],
+        ["xpath=//main/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "977ccc98-d346-4565-b665-de4fb5214a2c",
+      "comment": "",
+      "command": "type",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6229eedf-e083-4796-ae11-5d328763410b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-4:nth-child(1)",
+      "targets": [
+        ["css=.col-4:nth-child(1)", "css:finder"],
+        ["xpath=//main/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8c81aa34-0c4f-4467-9f12-59c11f50a2a2",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng nhập')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2b15418e-dd55-4f13-852c-a8328f153dfa",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pb-3 > .row",
+      "targets": [
+        ["css=.pb-3 > .row", "css:finder"],
+        ["xpath=//main/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5f8f6d7b-01e4-489e-b696-679b888add0f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pb-3 > .row",
+      "targets": [
+        ["css=.pb-3 > .row", "css:finder"],
+        ["xpath=//main/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "95c1e132-4f17-43bd-ae51-69cdb464c98e",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.form-outline:nth-child(2) > .form-control", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0b1fda08-6c45-4661-9cc2-930ed7f7814c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng nhập')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a7a06868-683b-4609-8311-df483ced2010",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.alert",
+      "targets": [
+        ["css=.alert", "css:finder"],
+        ["xpath=//div/div[2]/div/div/div", "xpath:position"]
+      ],
+      "value": "Vui lòng nhập đầy đủ thông tin đăng nhập."
+    }]
+  }, {
+    "id": "0b77d535-850f-4f3e-bd42-756058dd0d77",
+    "name": "TC-01'",
+    "commands": [{
+      "id": "538aedda-8355-4257-98b5-44b4800df1cd",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c9a17fc0-99ba-4996-a091-07fe698f1cea",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1053x800",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f156f5fb-e6e6-4d95-bca6-aad30e410cd7",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Đăng nhập",
+      "targets": [
+        ["linkText=Đăng nhập", "linkText"],
+        ["css=.header__top__hover > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Đăng nhập')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/Home/Login?actionName=Index')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Đăng nhập')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5411cd62-1d10-4399-a7fd-34ba4669a90d",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "192.60000610351562,12"
+    }, {
+      "id": "f0b6bc02-bc6b-4459-bc3c-4f024d2022e4",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "192.60000610351562,12"
+    }, {
+      "id": "1816a513-b9a1-4440-83b5-b2d09f1ff2d1",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "192.60000610351562,12"
+    }, {
+      "id": "c9d93bd1-c3b0-4103-8364-66349a0f1ab5",
+      "comment": "",
+      "command": "click",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cb024982-0ed1-4ccb-83c6-8e3159b250f7",
+      "comment": "",
+      "command": "click",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "901f2087-11e4-4301-b0c0-d3b065ce3f89",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pb-3 > .row",
+      "targets": [
+        ["css=.pb-3 > .row", "css:finder"],
+        ["xpath=//main/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8640b82f-2467-4d07-b4c8-13f4d0642edc",
+      "comment": "",
+      "command": "type",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "lesongnhatquyen@gmail.com"
+    }, {
+      "id": "d1a5521c-205e-44e8-9170-fb4f09441d31",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-4:nth-child(1)",
+      "targets": [
+        ["css=.col-4:nth-child(1)", "css:finder"],
+        ["xpath=//main/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "50b05de1-2a7c-45cf-afa9-1ddd80ce9d93",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng nhập')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7f267648-5d5a-458e-9b23-c920a0433745",
+      "comment": "",
+      "command": "type",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "lesongnhatquyen.sgu.it.vn@gmail.com"
+    }, {
+      "id": "eb1fe85f-1da1-41d1-9039-106319dad3b8",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.form-outline:nth-child(2) > .form-control", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Demo@123"
+    }, {
+      "id": "edfb84f5-c4d4-498a-a7cb-eeb354aa7778",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pb-3 > .row",
+      "targets": [
+        ["css=.pb-3 > .row", "css:finder"],
+        ["xpath=//main/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8fc94c33-e48d-4b5a-8489-c24328e780ee",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.form-outline:nth-child(2) > .form-control", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "abc1234"
+    }, {
+      "id": "39cd59a0-5418-4a0b-8e5b-09f4c05e0a3f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng nhập')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "43d1b4e1-787a-449b-b6da-e6e605d1eafb",
+      "comment": "",
+      "command": "type",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "lesongnhatquyen.sgu.it.vn@gmail.com"
+    }, {
+      "id": "757e8f21-6a2e-4f81-b4c8-a0173dac5938",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.form-outline:nth-child(2) > .form-control", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Demo@123"
+    }, {
+      "id": "f7206546-aabb-4b7c-bb41-8435ccba1e95",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.alert",
+      "targets": [
+        ["css=.alert", "css:finder"],
+        ["xpath=//div/div[2]/div/div/div", "xpath:position"]
+      ],
+      "value": "Email hoặc password không chính xác."
+    }]
+  }, {
+    "id": "96e357c8-3aae-4313-a534-4a230127431a",
+    "name": "TC-04",
+    "commands": [{
+      "id": "7b8f8001-92c4-40b6-83ba-3a23f507140e",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b8c9ee6f-fa3c-4414-989f-6e506d0cd5a0",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1053x800",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8012a7a0-926a-4aaa-ab84-0f89d77c5653",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Đăng nhập",
+      "targets": [
+        ["linkText=Đăng nhập", "linkText"],
+        ["css=.header__top__hover > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Đăng nhập')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/Home/Login?actionName=Index')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Đăng nhập')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "bca37b78-9bc5-41a7-8fe8-3821e4fde706",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pb-3 > .row",
+      "targets": [
+        ["css=.pb-3 > .row", "css:finder"],
+        ["xpath=//main/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4d523dfb-858c-4807-a65b-6af830198583",
+      "comment": "",
+      "command": "type",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin@gmail.com"
+    }, {
+      "id": "aae22caa-d337-408e-b81f-866f4c80042c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-4:nth-child(1)",
+      "targets": [
+        ["css=.col-4:nth-child(1)", "css:finder"],
+        ["xpath=//main/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "90d054af-91f5-4fde-927c-9c67615da91b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pb-3 > .row",
+      "targets": [
+        ["css=.pb-3 > .row", "css:finder"],
+        ["xpath=//main/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1f80fe72-acf6-497a-9132-01465ca4a645",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.form-outline:nth-child(2) > .form-control", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Admin@123"
+    }, {
+      "id": "e4293951-e932-4620-afef-20a3e8727b12",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng nhập')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "63f8ba14-51af-4559-9106-bb74ec6fcc9a",
+    "name": "TC-03",
+    "commands": [{
+      "id": "6a94ca5c-94cd-4c3d-bb03-f3cc5a840543",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "39aaaddf-49f7-403e-bf8f-14e73e76d363",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1053x800",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "bed613dc-a196-4085-a90f-9cb9010d0625",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Đăng nhập",
+      "targets": [
+        ["linkText=Đăng nhập", "linkText"],
+        ["css=.header__top__hover > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Đăng nhập')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/Home/Login?actionName=Index')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Đăng nhập')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "aa0e45e5-c57a-4979-9085-f94f84730d04",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pb-3 > .row",
+      "targets": [
+        ["css=.pb-3 > .row", "css:finder"],
+        ["xpath=//main/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "89dc82b1-7af2-4ed9-93e2-b302d24f2f46",
+      "comment": "",
+      "command": "type",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "lesongnhatquyen.sgu.it.vn@gmail.com"
+    }, {
+      "id": "b62f615b-159b-49d7-b427-9c83b8e38c75",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-4:nth-child(1)",
+      "targets": [
+        ["css=.col-4:nth-child(1)", "css:finder"],
+        ["xpath=//main/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b0a3adb5-2de2-4c57-a0fe-c716152cad63",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pb-3 > .row",
+      "targets": [
+        ["css=.pb-3 > .row", "css:finder"],
+        ["xpath=//main/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "12d947f7-5ddc-418b-8c77-2b10ab0edc90",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.form-outline:nth-child(2) > .form-control", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Demo@123"
+    }, {
+      "id": "29d07c24-805b-488a-851d-f3c05932c48c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Đăng nhập')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "4d614236-0745-4b29-a60e-d3c2de50a73e",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://localhost:7000/"],
+  "plugins": []
+}
