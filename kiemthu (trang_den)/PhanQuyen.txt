@@ -1,0 +1,77 @@
+public async Task<ActionResult> Login(string login, string password) {
+    ...
+    HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"QuanLyNguoiDung/DangNhap?lg={login}&password={password}").Result;
+    if (response.IsSuccessStatusCode) {
+        string result = await response.Content.ReadAsStringAsync();
+        HttpContext.Session.SetString("LoginInfor", result);
+        var user = JsonConvert.DeserializeObject<LoginViewModel>(result);
+        if (user.vaiTro == 1) {
+            return RedirectToAction("Index", "TrangChu");          // giao diện khách hàng
+        } else return RedirectToAction("BanHang", "BanHangTaiQuay"); // giao diện admin/nhân viên
+    }
+    ...
+}
+
+public IActionResult Register(KhachHangViewModel khachHang) {
+    khachHang.Id = Guid.NewGuid();
+    khachHang.DiemTich = 0;
+    khachHang.TrangThai = 1;
+    HttpResponseMessage response = _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + $"QuanLyNguoiDung/DangKyKhachHang", khachHang).Result;
+    if (response.IsSuccessStatusCode) return View("RegisterSuccess");
+    ViewBag.ErrorMessage = "Tài khoản đã được đăng ký với email hoặc số điện thoại này!";
+    return View();
+}
+
+<h3><strong>Đăng nhập</strong></h3>
+<form method="post">
+  <label>Email hoặc SDT</label><input type="text" name="login" class="form-control" />
+  <label>Mật khẩu</label><input type="password" name="password" class="form-control" />
+  <button type="submit" class="btn btn-primary btn-block mb-4">Đăng nhập</button>
+  <div class="text-center"><p>Bạn chưa có tài khoản <a asp-action="Register">Đăng ký!</a></p></div>
+</form>
+
+<h3><strong>Đăng ký</strong></h3>
+<form asp-action="Register" id="registerForm">
+  <label>Email</label><input asp-for="Email" class="form-control" />
+  <label>Tên</label><input asp-for="Name" class="form-control" />
+  <label>SDT</label><input asp-for="SDT" class="form-control" />
+  <label>Mật khẩu</label><input asp-for="Password" type="password" class="form-control" />
+  <label>Nhập lại mật khẩu</label><input asp-for="ConfirmPassword" type="password" class="form-control" />
+  <input type="hidden" asp-for="DiemTich" value="0" />
+  <input type="hidden" asp-for="TrangThai" value="1" />
+  <button type="submit" class="btn btn-primary btn-block mb-4">Đăng ký</button>
+</form>
+
+@if (loginInfor.Ten != null) {
+    ... <li><a class="dropdown-item" asp-action="PurchaseOrder">Đơn mua</a></li>
+    @if (loginInfor.vaiTro == 0) {
+        <li><a class="dropdown-item" asp-controller="BanHangTaiQuay" asp-action="BanHang">Quản lý cửa hàng</a></li>
+    }
+    <li><a class="dropdown-item" asp-controller="Home" asp-action="LogOut">Đăng xuất</a></li>
+} else {
+    <a asp-controller="Home" asp-action="Login" asp-route-actionName="Index">Đăng nhập</a>
+}
+
+var loginInfor = new LoginViewModel();
+string? session = Context.Session.GetString("LoginInfor");
+if (session != null) { loginInfor = JsonConvert.DeserializeObject<LoginViewModel>(session); }
+...
+<span class="d-none d-md-block dropdown-toggle ps-2">@loginInfor.Ten</span>
+@if (phanquyen1.Ten == "Admin") { <span id="ChucVu">Admin</span> } else { <span id="ChucVu">Nhân viên</span> }
+<a class="dropdown-item" asp-controller="NhanVien" asp-action="ProfileNhanVien_Admin">Thông tin cá nhân</a>
+<a class="dropdown-item" asp-controller="Home" asp-action="LogOut">Đăng xuất</a>
+
+public async Task<IActionResult> Login(string lg, string password) { ... return Ok(login); }
+
+public async Task<IActionResult> DangKyKhachHang(KhachHangViewModel khachHang) {
+    var kh = await service.RegisterKhachHang(khachHang);
+    if (kh == null) return BadRequest();
+    return Ok("Dang ky thanh cong");
+}
+
+var nv = await context.NhanViens.FirstOrDefaultAsync(a => a.Email == lg || a.SDT == lg);
+if (nv != null && KiemTraMatKhau(...)) return new LoginViewModel { ..., vaiTro = 0 };
+var kh = await context.KhachHangs.FirstOrDefaultAsync(x => x.Email == lg || x.SDT == lg);
+if (kh != null && KiemTraMatKhau(...)) return new LoginViewModel { ..., vaiTro = 1 };
+
+Những đoạn trên bao quát: trang/logic đăng nhập cho admin & khách, layout phân quyền hiển thị menu, và đăng ký chỉ áp dụng cho khách hàng.

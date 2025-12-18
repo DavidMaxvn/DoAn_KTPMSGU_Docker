@@ -1,0 +1,125 @@
+Các đoạn code liên quan đến luồng khách hàng tìm kiếm sản phẩm:
+
+AppView/Views/Home/Shop.cshtml (lines 113-116) ô nhập từ khóa, gọi lọc ngay khi gõ:
+<form id="search-filter">
+    <input type="text" oninput="LocSort()" placeholder="Tìm kiếm theo tên..." autocomplete="off" name="ten" id="search">
+</form>
+AppView/Views/Home/Shop.cshtml:276-286,425-427 đưa từ khóa vào payload AJAX và hàm đọc giá trị nhập:
+function loadsp() {
+    var searchfilter = Search();
+    var request = { page: pageIndex, pageSize: pagesize, priceRange: PriceRange, search: searchfilter, loaiSP: idloaiSp, mauSac: idMauSac, kichCo: idKichCo, chatLieu: idChatLieu, sortSP: idsortSP };
+    $.ajax({ url: "/Home/ShowProduct", type: "POST", data: request, ... });
+}
+function Search() {
+    var name = document.getElementById("search").value
+    return name
+}
+AppView/Views/Home/_ReturnProducts.cshtml (lines 35-44) partial dùng lại Search() và gửi search lên /Home/ShowProduct:
+function loadsp() {
+    var searchfilter = Search();
+    var request = { page: pageIndex, pageSize: pagesize, priceRange: PriceRange, search: searchfilter, loaiSP: idloaiSp, mauSac: idMauSac, kichCo: idKichCo, chatLieu: idChatLieu, sortSP: idsortSP };
+    $.ajax({ url: "/Home/ShowProduct", type: "POST", data: request, ... });
+}
+AppView/Controllers/HomeController.cs (lines 131-218) API phía View nhận FilterData và lọc theo tên sản phẩm:
+[HttpPost]
+public JsonResult ShowProduct(FilterData filter) {
+    ...
+    if (filter.search != null) {
+        lstSanphamfn = lstSanphamfn.Where(p => p.Ten.ToLower().Contains(filter.search.ToLower())).ToList();
+    }
+    ...
+}
+AppData/ViewModels/FilterData.cs (lines 9-22) model nhận tham số lọc từ frontend, gồm string? search.
+AppAPI/Controllers/SanPhamController.cs (lines 60-64) endpoint tìm kiếm nâng cao cho sản phẩm:
+[HttpPost("timKiemNC")]
+public async Task<IActionResult> TimKiemSanPham(SanPhamTimKiemNangCao sp) {
+    var listSP = await _sanPhamServices.TimKiemSanPham(sp);
+    return Ok(listSP);
+}
+AppAPI/Services/SanPhamService.cs (lines 65-117) (hàm tìm kiếm nâng cao):
+public async Task<List<SanPhamViewModel>> TimKiemSanPham(SanPhamTimKiemNangCao sp)
+{
+    sp ??= new SanPhamTimKiemNangCao();
+
+    var keyword = (sp.KeyWord ?? "").Trim();
+    var idsLoai = sp.IdLoaiSP ?? new List<Guid>();
+
+    var min = sp.GiaMin;
+    var max = sp.GiaMax;
+    if (max <= 0) max = int.MaxValue;
+    if (max < min) (min, max) = (max, min);
+
+    // Base query
+    var query =
+        from a in _context.SanPhams.AsNoTracking()
+        join b in _context.ChiTietSanPhams.AsNoTracking() on a.ID equals b.IDSanPham
+        join e in _context.LoaiSPs.AsNoTracking() on a.IDLoaiSP equals e.ID
+        where a.TrangThai == 1 && b.TrangThai != 0
+        select new { a, b, e };
+
+    if (!string.IsNullOrEmpty(keyword))
+        query = query.Where(x => x.a.Ten.Contains(keyword));
+
+    if (idsLoai.Any())
+        query = query.Where(x => idsLoai.Contains(x.e.ID));
+
+    query = query.Where(x => x.b.GiaBan >= min && x.b.GiaBan <= max);
+
+    // Preload KM còn hiệu lực để tính giá bán
+    var now = DateTime.Now;
+    var khuyenMais = await _context.KhuyenMais
+        .AsNoTracking()
+        .Where(x => x.NgayKetThuc > now)
+        .ToListAsync();
+
+    var lst = await query.Select(x => new SanPhamViewModel
+    {
+        ID = x.a.ID,
+        Ten = x.a.Ten,
+        TrangThai = x.a.TrangThai,
+        TrangThaiCTSP = x.b.TrangThai,
+        LoaiSP = x.e.Ten,
+        IdChiTietSanPham = x.b.ID,
+
+        // Lấy ảnh an toàn (có thể null nếu không tìm thấy)
+        Image = _context.Anhs
+            .AsNoTracking()
+            .Where(img => img.IDMauSac == x.b.IDMauSac && img.IDSanPham == x.a.ID)
+            .Select(img => img.DuongDan)
+            .FirstOrDefault() ?? string.Empty,
+
+        IDMauSac = x.b.IDMauSac,
+        IDKichCo = x.b.IDKichCo,
+        IDChatLieu = x.a.IDChatLieu,
+
+        GiaGoc = x.b.GiaBan,
+        SoLuong = x.b.SoLuong,
+        IDKhuyenMai = x.b.IDKhuyenMai,
+        NgayTao = x.b.NgayTao
+    }).ToListAsync();
+
+    foreach (var item in lst)
+    {
+        if (item.IDKhuyenMai != null)
+        {
+            var km = khuyenMais.FirstOrDefault(k => k.ID == item.IDKhuyenMai);
+            item.GiaBan = (km != null && item.GiaGoc.HasValue)
+                ? GetKhuyenMai(km.GiaTri, item.GiaGoc.Value, km.TrangThai)
+                : item.GiaGoc ?? 0;
+        }
+        else
+        {
+            item.GiaBan = item.GiaGoc ?? 0;
+        }
+    }
+
+    return lst;
+}
+AppData/ViewModels/SanPham/SanPhamTimKiemNangCao.cs (lines 9-15) (model tham số tìm kiếm):
+public class SanPhamTimKiemNangCao
+{
+    public string KeyWord { get; set; }
+    public List<Guid> IdLoaiSP { get; set; }
+    public int GiaMin { get; set; }
+    public int GiaMax { get; set; }
+}

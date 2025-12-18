@@ -1,0 +1,371 @@
+public ActionResult AddToCart(string id, int? sl)
+{
+    try
+    {
+        List<GioHangRequest> lstGioHang;
+        string? result = Request.Cookies["Cart"];
+        var session = HttpContext.Session.GetString("LoginInfor");
+        if (session == null)
+        {
+            if (string.IsNullOrEmpty(result))
+            {
+                lstGioHang = new List<GioHangRequest>() { new GioHangRequest() { IDChiTietSanPham = new Guid(id), SoLuong = (sl != null) ? sl.Value : 1 } };
+            }
+            else
+            {
+                lstGioHang = JsonConvert.DeserializeObject<List<GioHangRequest>>(result);
+                var tempBienThe = lstGioHang.FirstOrDefault(x => x.IDChiTietSanPham == new Guid(id));
+                if (tempBienThe != null)
+                {
+                    if (sl == null) tempBienThe.SoLuong++;
+                    else tempBienThe.SoLuong = tempBienThe.SoLuong + sl.Value;
+                }
+                else
+                {
+                    lstGioHang.Add(new GioHangRequest() { IDChiTietSanPham = new Guid(id), SoLuong = (sl != null) ? sl.Value : 1 });
+                }
+            }
+            CookieOptions cookie = new CookieOptions();
+            cookie.Expires = DateTime.Now.AddDays(30);
+            Response.Cookies.Append("Cart", JsonConvert.SerializeObject(lstGioHang), cookie);
+            return Json(new { success = true, message = "Thêm vào giỏ hàng thành công" });
+        }
+        else
+        {
+            var loginInfor = JsonConvert.DeserializeObject<LoginViewModel>(session);
+            if (loginInfor.vaiTro == 1)
+            {
+                var chiTietGioHang = new ChiTietGioHang() { ID = Guid.NewGuid(), SoLuong = (sl != null) ? sl.Value : 1, IDCTSP = new Guid(id), IDNguoiDung = loginInfor.Id };
+                var response = _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "GioHang/AddCart", chiTietGioHang).Result;
+
+                if (response.IsSuccessStatusCode) return Json(new { success = true, message = "Thêm vào giỏ hàng thành công" });
+                else return Json(new { success = false, message = "Thêm vào giỏ hàng thất bại" });
+            }
+            else return Json(new { success = false, message = "Chỉ khách hàng mới thêm được vào giỏ hàng" });
+        }
+    }
+    catch
+    {
+        return Json(new { success = false, message = "Thêm vào giỏ hàng thất bại" });
+    }
+}
+
+public IActionResult UpdateCart(List<string> dssl)
+{
+    try
+    {
+        int cout = 0;
+        var session = HttpContext.Session.GetString("LoginInfor");
+        if (session == null)
+        {
+            List<GioHangRequest> chiTietSanPhams;
+            string? result = Request.Cookies["Cart"];
+            chiTietSanPhams = JsonConvert.DeserializeObject<List<GioHangRequest>>(result);
+            foreach (var item in dssl)
+            {
+                Guid id = Guid.Parse(item.Substring(0, 36));
+                int sl = Convert.ToInt32(item.Substring(36, item.Length - 36));
+                foreach (var x in chiTietSanPhams)
+                {
+                    if (x.IDChiTietSanPham == id)
+                    {
+                        x.SoLuong = sl;
+                    }
+                }
+            }
+            CookieOptions cookie = new CookieOptions();
+            cookie.Expires = DateTime.Now.AddDays(30);
+            Response.Cookies.Append("Cart", JsonConvert.SerializeObject(chiTietSanPhams), cookie);
+            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "GioHang/GetCart?request=" + JsonConvert.SerializeObject(chiTietSanPhams)).Result;
+            var temp = JsonConvert.DeserializeObject<GioHangViewModel>(response.Content.ReadAsStringAsync().Result);
+            TempData["TongTien"] = temp.TongTien.ToString();
+            cout = temp.GioHangs.Sum(x => x.SoLuong);
+            TempData["SoLuong"] = cout.ToString();
+            TempData["ListBienThe"] = JsonConvert.SerializeObject(temp.GioHangs);
+            return Json(new { success = true, message = "Cập nhật giỏ hàng thành công", data = temp.GioHangs, cout });
+        }
+        else
+        {
+            var loginInfor = JsonConvert.DeserializeObject<LoginViewModel>(session);
+            if (loginInfor.vaiTro == 1)
+            {
+                foreach (var item in dssl)
+                {
+                    Guid id = Guid.Parse(item.Substring(0, 36));
+                    int sl = Convert.ToInt32(item.Substring(36, item.Length - 36));
+                    var response = _httpClient.PutAsync(_httpClient.BaseAddress + $"GioHang/UpdateCart?idctsp={id}&soluong={sl}&idNguoiDung={loginInfor.Id}", null).Result;
+                    var responses = _httpClient.GetAsync(_httpClient.BaseAddress + "GioHang/GetCartLogin?idNguoiDung=" + loginInfor.Id).Result;
+                    var temp = JsonConvert.DeserializeObject<GioHangViewModel>(responses.Content.ReadAsStringAsync().Result);
+                    TempData["TongTien"] = temp.TongTien.ToString();
+                    cout = temp.GioHangs.Sum(x => x.SoLuong);
+                    TempData["SoLuong"] = cout.ToString();
+                }
+                var responses1 = _httpClient.GetAsync(_httpClient.BaseAddress + "GioHang/GetCartLogin?idNguoiDung=" + loginInfor.Id).Result;
+                var temp1 = JsonConvert.DeserializeObject<GioHangViewModel>(responses1.Content.ReadAsStringAsync().Result);
+                TempData["ListBienThe"] = JsonConvert.SerializeObject(temp1.GioHangs);
+                return Json(new { success = true, message = "Cập nhật giỏ hàng thành công", data = temp1.GioHangs, cout });
+            }
+            else return Json(new { success = false, message = "Chỉ khách hàng mới thêm được vào giỏ hàng" });
+        }
+    }
+    catch (Exception)
+    {
+        return Json(new { success = true, message = "Cập nhật giỏ hàng thất bại" });
+    }
+}
+
+public ActionResult DeleteFromCart(Guid id)
+{
+    try
+    {
+        List<GioHangRequest> bienThes = new List<GioHangRequest>();
+        string? result = Request.Cookies["Cart"];
+        if (result != null)
+        {
+            bienThes = JsonConvert.DeserializeObject<List<GioHangRequest>>(result);
+        }
+        bienThes.Remove(bienThes.Find(p => p.IDChiTietSanPham == id));
+        var session = HttpContext.Session.GetString("LoginInfor");
+        if (session == null)
+        {
+            CookieOptions cookie = new CookieOptions();
+            cookie.Expires = DateTime.Now.AddDays(30);
+            Response.Cookies.Append("Cart", JsonConvert.SerializeObject(bienThes), cookie);
+            return RedirectToAction("ShoppingCart");
+        }
+        else
+        {
+            var loginInfor = JsonConvert.DeserializeObject<LoginViewModel>(session);
+            if (loginInfor.vaiTro == 1)
+            {
+                var response = _httpClient.DeleteAsync(_httpClient.BaseAddress + $"GioHang/Deletebyid?idctsp={id}&idNguoiDung={loginInfor.Id}").Result;
+                if (response.IsSuccessStatusCode) return RedirectToAction("ShoppingCart");
+                else return RedirectToAction("ShoppingCart");
+            }
+            else return RedirectToAction("ShoppingCart");
+        }
+    }
+    catch
+    {
+        return RedirectToAction("ShoppingCart");
+    }
+}
+
+public async Task<IActionResult> ShoppingCart()
+{
+    try
+    {
+        var session = HttpContext.Session.GetString("LoginInfor");
+        if (String.IsNullOrEmpty(session))
+        {
+            List<GioHangRequest> lstGioHang = new List<GioHangRequest>();
+            if (Request.Cookies["Cart"] != null)
+            {
+                lstGioHang = JsonConvert.DeserializeObject<List<GioHangRequest>>(Request.Cookies["Cart"]);
+            }
+            int cout = lstGioHang.Sum(c => c.SoLuong);
+            TempData["SoLuong"] = cout.ToString();
+
+            if (Request.Cookies["Cart"] != null)
+            {
+                var response = await _httpClient.GetAsync(_httpClient.BaseAddress + "GioHang/GetCart?request=" + Request.Cookies["Cart"]);
+                if (response.IsSuccessStatusCode)
+                {
+                    var temp = JsonConvert.DeserializeObject<GioHangViewModel>(response.Content.ReadAsStringAsync().Result);
+                    TempData["TongTien"] = temp.TongTien.ToString();
+                    TempData["ListBienThe"] = JsonConvert.SerializeObject(temp.GioHangs);
+                    TempData["TrangThai"] = "false";
+                    TempData["Quantity"] = temp.GioHangs.Sum(x => x.SoLuong).ToString();
+                    return View(temp.GioHangs);
+                }
+                else return BadRequest();
+            }
+            else
+            {
+                TempData["TongTien"] = "0";
+                return View(new List<GioHangRequest>());
+            }
+        }
+        else
+        {
+            var loginInfor = JsonConvert.DeserializeObject<LoginViewModel>(session);
+            if (loginInfor.vaiTro == 1)
+            {
+                var response = await _httpClient.GetAsync(_httpClient.BaseAddress + "GioHang/GetCartLogin?idNguoiDung=" + loginInfor.Id);
+                if (response.IsSuccessStatusCode)
+                {
+                    var temp = JsonConvert.DeserializeObject<GioHangViewModel>(response.Content.ReadAsStringAsync().Result);
+                    TempData["TongTien"] = temp.TongTien.ToString();
+                    TempData["ListBienThe"] = JsonConvert.SerializeObject(temp.GioHangs);
+                    int cout = temp.GioHangs.Sum(c => c.SoLuong);
+                    TempData["SoLuong"] = cout.ToString();
+                    TempData["TrangThai"] = "true";
+                    TempData["Quantity"] = temp.GioHangs.Sum(x => x.SoLuong).ToString();
+                    return View(temp.GioHangs);
+                }
+                else return BadRequest();
+            }
+            else
+            {
+                TempData["SoLuong"] = "0";
+                return View(new List<GioHangRequest>());
+            }
+        }
+    }
+    catch
+    {
+        return View(new List<GioHangRequest>());
+    }
+}
+
+public bool Deletebyidctsp(Guid idctsp, Guid idNguoiDung)
+{
+    return gioHangServices.DeleteCartbyIDCTSP(idctsp,idNguoiDung).Result;
+}
+
+public bool UpdateCart(Guid idctsp, int soluong, Guid idNguoiDung)
+{
+    return gioHangServices.UpdateCart(idctsp,soluong, idNguoiDung).Result;
+}
+
+public GioHangViewModel GetCart(string request)
+{
+    var lst = JsonConvert.DeserializeObject<List<GioHangRequest>>(request); 
+    return gioHangServices.GetCart(lst);
+}
+
+public GioHangViewModel GetCartLogin(string idNguoiDung)
+{
+    return gioHangServices.GetCartLogin(idNguoiDung);
+}
+
+public bool AddCart(ChiTietGioHang chiTietGioHang)
+{
+    return gioHangServices.AddCart(chiTietGioHang).Result;
+}
+
+function addCart(idBT) {
+    $.ajax({
+        async: true,
+        type: 'POST',
+        dataType: "json",
+        data: { id: idBT },
+        url: '/Home/AddToCart',
+        success: function (response) {
+            if (response.success == true) {
+                toastr.success(response.message, 'Success Alert', { timeOut: 300 });
+            } else {
+                toastr.error(response.message, 'Error Alert', { timeOut: 300 });
+            }
+        },
+        error: function (response) {
+            console.log(response);
+            toastr.error(response.message, 'Error Alert', { timeOut: 300 });
+        }
+    });
+    $.ajax({
+        async: true,
+        type: 'POST',
+        dataType: "json",
+        data: { sl:1 },
+        url: '/Home/TongSoLuong',
+        success: function (response) {
+            if (response.success == true) {
+                $('#tongsoluong').text(response.sl);
+            }
+        }
+    });
+}
+
+function addCart() {
+    var ctsp = chiTietSanPhams.find(p => p.maCTSP == document.getElementById("maSP").innerHTML);
+    var idctsp = ctsp.id;
+    var soLuong = parseInt(document.getElementById("sl").value);
+    var kichco = KichCo();
+    var mausac = MauSac();
+
+    if(mausac.length != 0 && kichco.length!=0){
+        if (ctsp.soLuong < soLuong) {
+            toastr.error('Số lượng không đủ vui lòng giảm số lượng', 'Error Alert', { timeOut: 1000 });
+        } else if (soLuong == 0 || isNaN(soLuong) == true) {
+            toastr.error('Vui lòng chọn lại số lượng', 'Error Alert', { timeOut: 1000 });
+        } else {
+            $.ajax({
+                async: true,
+                type: 'POST',
+                dataType: "json",
+                data: { id: idctsp, sl: document.getElementById("sl").value },
+                url: '/Home/AddToCart',
+                success: function (response) {
+                    if (response.success == true) {
+                        toastr.success(response.message, 'Success Alert', { timeOut: 1000 });
+                    } else {
+                        toastr.error(response.message, 'Error Alert', { timeOut: 1000 });
+                    }
+                },
+                error: function (response) {
+                    toastr.error(response.message, 'Error Alert', { timeOut: 1000 });
+                }
+            });
+            $.ajax({
+                async: true,
+                type: 'POST',
+                dataType: "json",
+                data: { sl: document.getElementById("sl").value },
+                url: '/Home/TongSoLuong',
+                success: function (response) {
+                    if (response.success == true) {
+                        $('#tongsoluong').text(response.sl);
+                    }
+                }
+            });
+        }
+    } else {
+        toastr.error('Vui lòng chọn biến thể', 'Error Alert', { timeOut: 1000 });
+    }
+}
+
+function addCart(idBT) {
+    $.ajax({
+        async: true,
+        type: 'POST',
+        dataType: "json",
+        data: { id: idBT },
+        url: '/Home/AddToCart',
+        ...
+    });
+}
+
+function UpdateCart(){
+    var dl = document.getElementsByClassName("soLuongCart");
+    var list = [];
+    for (var i = 0; i < dl.length; i++) {
+        list.push(dl[i].name + dl[i].value); // ghép idCTSP + số lượng
+    }
+    $.ajax({
+        async: true,
+        type: 'POST',
+        dataType: "json",
+        data: { dssl: list },
+        url: '/Home/UpdateCart',
+        success: function (response) {
+            if (response.success == true) {
+                var subCart = document.getElementsByClassName("cart__price__sub");
+                for (var i = 0; i < subCart.length; i++) {
+                    var tongTienHang = subCart[i].innerHTML.replaceAll(".", "");
+                    subCart[i].innerHTML = (response.data[i].giaBan * response.data[i].soLuong).toLocaleString('vn-VN');
+                }
+                $("#TongTien").text(response.data[0].tongTienHang.toLocaleString('vn-VN'));
+            } else {
+                alert("Cập nhật giỏ hàng thất bại");
+            }
+        }
+    });
+}
+
+public string Post(Guid IdBienThe, Guid IdKhachHang, int soluong)
+{
+    return chiTietGioHangServices.Add(IdBienThe, IdKhachHang, soluong);
+}
+
+Các đoạn trên bao trùm luồng khách chọn sản phẩm, gửi yêu cầu thêm vào giỏ, lưu cookie cho khách vãng lai hoặc gọi API để lưu DB khi đã đăng nhập, và cập nhật/xóa giỏ hàng.

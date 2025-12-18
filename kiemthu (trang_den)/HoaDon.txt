@@ -1,0 +1,73 @@
+function createhoadon() {
+    var objHoaDon = { Ten: ten, Email: email, SDT: sdt, DiaChi: diachi + ", " + xa + ", " + huyen + ", " + tinh,
+        TienShip: tienShip, PhuongThucThanhToan: pttt,
+        TongTien: tienShip + @tongtien - tienVoucher - tienDiem,
+        TenVoucher: voucher, Diem: diemTich, GhiChu: ghiChu };
+    $.ajax({ type: 'POST', dataType: 'text', url: '/Home/Order', data: objHoaDon,
+        success: function (response) { location.href = response; } });
+}
+
+public string Order(HoaDonViewModel hoaDon) {
+    var successUrl = Url.Action(nameof(CheckOutSuccess), "Home", null, Request.Scheme) ?? ".../Home/CheckOutSuccess";
+    ...
+    foreach (var item in JsonConvert.DeserializeObject<List<GioHangRequest>>(temp)) {
+        lstChiTietHoaDon.Add(new ChiTietHoaDonViewModel { IDChiTietSanPham = item.IDChiTietSanPham, SoLuong = item.SoLuong, DonGia = item.DonGia.Value });
+    }
+    hoaDon.ChiTietHoaDons = lstChiTietHoaDon;
+    hoaDon.TrangThai = Convert.ToBoolean(trangThai);
+    if (hoaDon.PhuongThucThanhToan == "COD") {
+        var response = _httpClient.PostAsJsonAsync("HoaDon", hoaDon).Result;
+        if (response.IsSuccessStatusCode) { TempData["CheckOutSuccess"] = response.Content.ReadAsStringAsync().Result; if (!hoaDon.TrangThai) Response.Cookies.Delete("Cart"); TempData["SoLuong"] = "0"; return successUrl; }
+        else return "";
+    } else if (hoaDon.PhuongThucThanhToan == "VNPay") {
+        TempData["HoaDon"] = JsonConvert.SerializeObject(hoaDon);
+        // build vnpay request URL...
+        string paymentUrl = vnpay.CreateRequestUrl(...);
+        return paymentUrl;
+    }
+    return "";
+}
+
+var data = { TrangThaiGiaoHang: x, page: pageIndex, pageSize: pagesize, Search: y };
+$.ajax({
+    url: "/Home/GetHoaDonByTrangThai", type: "GET", data: data,
+    success: function (response) {
+        $("#DShoaDon").append(`<td>${
+            response.data[i].trangThaiGiaoHang === 2 ? '<label>Chờ xác nhận</label>' :
+            response.data[i].trangThaiGiaoHang === 10 ? '<label>Chờ đóng hàng</label>' :
+            response.data[i].trangThaiGiaoHang === 3 ? '<label>Đang giao hàng</label>' :
+            response.data[i].trangThaiGiaoHang === 6 ? '<label>Hoàn thành</label>' :
+            response.data[i].trangThaiGiaoHang === 7 ? '<label>Đơn hủy</label>' :
+            response.data[i].trangThaiGiaoHang === 5 ? '<label>Hoàn hàng</label>' :
+            response.data[i].trangThaiGiaoHang === 8 ? '<label>Chờ xác nhận hủy</label>' :
+            response.data[i].trangThaiGiaoHang === 9 ? '<label>Chờ xác nhận hoàn hàng</label>' : '<label>Chờ xác nhận</label>'}</td>`);
+    }
+});
+
+public IActionResult GetHoaDonByTrangThai(HoaDon dto, int page, int pageSize, string Search) {
+    var response = _httpClient.GetAsync(_httpClient.BaseAddress + $"LichSuTichDiem/GetAllDonMua?IDkhachHang={loginViewModel.Id}").Result;
+    ... // lọc theo Search và TrangThaiGiaoHang (2,3,4,5,6,7,8,9,10)
+    return Json(new { data = listResult, total = listResult.Count });
+}
+
+public IActionResult HuyDonHang(Guid idHoaDon)            => _httpClient.PutAsync(_httpClient.BaseAddress + $"HoaDon?idhoadon={idHoaDon}&trangthai=8", null).Result;
+public IActionResult HoanTacHuyDonHang(Guid idHoaDon)     => _httpClient.PutAsync(_httpClient.BaseAddress + $"HoaDon?idhoadon={idHoaDon}&trangthai=2", null).Result;
+public IActionResult DoiTraHang(Guid idHoaDon)            => _httpClient.PutAsync(_httpClient.BaseAddress + $"HoaDon?idhoadon={idHoaDon}&trangthai=9", null).Result;
+public IActionResult HoanTacDoiTraHang(Guid idHoaDon)     => _httpClient.PutAsync(_httpClient.BaseAddress + $"HoaDon?idhoadon={idHoaDon}&trangthai=6", null).Result;
+public IActionResult XacNhanGHTC(Guid idHoaDon)           => _httpClient.PutAsync(_httpClient.BaseAddress + $"HoaDon?idhoadon={idHoaDon}&trangthai=6", null).Result;
+
+<a asp-action="HuyDonHang" asp-route-idHoaDon="@Model.First().ID">Hủy đơn hàng</a>
+<a asp-action="DoiTraHang" asp-route-idHoaDon="@Model.First().ID">Hoàn hàng</a>
+<a asp-action="HoanTacHuyDonHang" asp-route-idHoaDon="@Model.First().ID">Hoàn tác hủy</a>
+<a asp-action="HoanTacDoiTraHang" asp-route-idHoaDon="@Model.First().ID">Hoàn tác hoàn hàng</a>
+<a asp-action="XacNhanGHTC" asp-route-idHoaDon="@Model.First().ID">Xác nhận giao hàng thành công</a>
+
+public DonMuaSuccessViewModel CreateHoaDon(HoaDonViewModel hoaDon) => _iHoaDonService.CreateHoaDon(hoaDon.ChiTietHoaDons, hoaDon);
+public bool UpdateTrangThai(Guid idhoadon, int trangthai, Guid? idnhanvien) => _iHoaDonService.UpdateTrangThaiGiaoHang(idhoadon, trangthai, idnhanvien);
+public bool UpDateHoaDon(HoaDonThanhToanRequest hoaDon) => _iHoaDonService.UpdateHoaDon(hoaDon);
+public bool HuyHD(Guid idhd, Guid? idnv) => _iHoaDonService.HuyHD(idhd,idnv);
+public bool ThanhCong(Guid idhd, Guid? idnv) => _iHoaDonService.ThanhCong(idhd, idnv);
+public bool HoanHang(Guid idhd, Guid? idnv) => _iHoaDonService.HoanHang(idhd, idnv);
+public bool HoanHangThanhCong(Guid idhd, Guid? idnv) => _iHoaDonService.HoanHangThanhCong(idhd, idnv);
+
+Các đoạn trên bao quát: tạo đơn sau checkout/thanh toán, lưu chi tiết, và giao diện/logic cho khách xem, lọc, và thao tác với đơn theo các trạng thái (chờ xác nhận, chờ đóng hàng, đang giao, hoàn thành, đã hủy, hoàn hàng).
