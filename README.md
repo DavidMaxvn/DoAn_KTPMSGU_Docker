@@ -16,13 +16,11 @@ Sử dụng ASP.NET, HTML,CSS,Bootstrap,JQuery, MS SQL server
 ## ADMIN
 ![alt text](./img/admin_dashboard.jpeg)
 
-# Lưu ý: 
-- Link repository: https://github.com/DavidMaxvn/DoAn-CSharp-SGU/
-- Link video demo: https://drive.google.com/file/d/19IioqYZsi4WnFOncRgqvTMJoSish5JRI/preview
-
 # Các tài khoản và lưu ý:
 - tài khoản VNPAY: ngân hàng NCB, số thẻ: 9704198526191432198, tên chủ tk: NGUYEN VAN A, hạn thẻ: 07/15, mã OTP: 123456
 - tài khoản admin: admin@gmail.com, pass: Admin@123
 - tài khoản client: lesongnhatquyen.sgu.it.vn@gmail.com, pass: Demo@123
 - Sửa dòng tại: ...\DoAn-KTPM-SGU\AppAPI\appsettings.json và ...\DoAn-KTPM-SGU\AppData\Models\AssignmentDBContext.cs với String-Connection url hợp lệ trong SQL server!
 - File SQL sửa C:\Program File\...\Data theo đường dẫn thư mục trên máy của bạn
+- Link repository: https://github.com/DavidMaxvn/DoAn_KTPMSGU_Docker
+- Link video demo: 
