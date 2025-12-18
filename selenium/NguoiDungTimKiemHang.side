@@ -84,20 +84,6 @@
       ],
       "value": "Quần"
     }, {
-      "id": "9b08d216-6166-4828-b540-0c7ef058e5ef",
-      "comment": "",
-      "command": "click",
-      "target": "id=search",
-      "targets": [
-        ["id=search", "id"],
-        ["name=ten", "name"],
-        ["css=#search", "css:finder"],
-        ["xpath=//input[@id='search']", "xpath:attributes"],
-        ["xpath=//form[@id='search-filter']/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "c09709ca-d5ec-4e12-8dca-88fd78c29b37",
       "comment": "",
       "command": "doubleClick",

@@ -59,18 +59,6 @@
       ],
       "value": ""
     }, {
-      "id": "b6d1b3f6-98ef-4932-8cc2-31f43f73e3d3",
-      "comment": "",
-      "command": "click",
-      "target": "name=password",
-      "targets": [
-        ["name=password", "name"],
-        ["css=.form-outline:nth-child(2) > .form-control", "css:finder"],
-        ["xpath=//input[@name='password']", "xpath:attributes"],
-        ["xpath=//div[2]/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "c9455ac1-680a-47e6-8028-086ce4b68e48",
       "comment": "",
       "command": "click",
@@ -161,16 +149,6 @@
       ],
       "value": ""
     }, {
-      "id": "2b15418e-dd55-4f13-852c-a8328f153dfa",
-      "comment": "",
-      "command": "click",
-      "target": "css=.pb-3 > .row",
-      "targets": [
-        ["css=.pb-3 > .row", "css:finder"],
-        ["xpath=//main/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "5f8f6d7b-01e4-489e-b696-679b888add0f",
       "comment": "",
       "command": "click",
@@ -247,42 +225,6 @@
       ],
       "value": ""
     }, {
-      "id": "5411cd62-1d10-4399-a7fd-34ba4669a90d",
-      "comment": "",
-      "command": "mouseDownAt",
-      "target": "name=login",
-      "targets": [
-        ["name=login", "name"],
-        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
-        ["xpath=//input[@name='login']", "xpath:attributes"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": "192.60000610351562,12"
-    }, {
-      "id": "f0b6bc02-bc6b-4459-bc3c-4f024d2022e4",
-      "comment": "",
-      "command": "mouseMoveAt",
-      "target": "name=login",
-      "targets": [
-        ["name=login", "name"],
-        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
-        ["xpath=//input[@name='login']", "xpath:attributes"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": "192.60000610351562,12"
-    }, {
-      "id": "1816a513-b9a1-4440-83b5-b2d09f1ff2d1",
-      "comment": "",
-      "command": "mouseUpAt",
-      "target": "name=login",
-      "targets": [
-        ["name=login", "name"],
-        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
-        ["xpath=//input[@name='login']", "xpath:attributes"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": "192.60000610351562,12"
-    }, {
       "id": "c9d93bd1-c3b0-4103-8364-66349a0f1ab5",
       "comment": "",
       "command": "click",
@@ -351,18 +293,6 @@
       ],
       "value": ""
     }, {
-      "id": "7f267648-5d5a-458e-9b23-c920a0433745",
-      "comment": "",
-      "command": "type",
-      "target": "name=login",
-      "targets": [
-        ["name=login", "name"],
-        ["css=.form-outline:nth-child(1) > .form-control", "css:finder"],
-        ["xpath=//input[@name='login']", "xpath:attributes"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": "lesongnhatquyen.sgu.it.vn@gmail.com"
-    }, {
       "id": "eb1fe85f-1da1-41d1-9039-106319dad3b8",
       "comment": "",
       "command": "type",
@@ -419,7 +349,7 @@
         ["xpath=//input[@name='login']", "xpath:attributes"],
         ["xpath=//input", "xpath:position"]
       ],
-      "value": "lesongnhatquyen.sgu.it.vn@gmail.com"
+      "value": "abc@gmail.com"
     }, {
       "id": "757e8f21-6a2e-4f81-b4c8-a0173dac5938",
       "comment": "",
