@@ -1,5 +1,8 @@
 # ĐỒ ÁN KIỂM THỬ PHẦN MỀM TẠI SGU
 Sử dụng ASP.NET, HTML,CSS,Bootstrap,JQuery, MS SQL server
+
+# BÁO CÁO PHÂN CÔNG VÀ TIẾN ĐỘ CÔNG VIỆC TRONG LÚC LÀM VIỆC NHÓM: https://docs.google.com/spreadsheets/d/1Bph0KScJxOQ74LiEVoaVNeS7SvfVkPf979GYsxpvPug/edit?usp=sharing
+
 # CỬA HÀNG BÁN QUẦN ÁO TÍCH HỢP THANH TOÁN VNPAY
 
 ### THÀNH VIÊN NHÓM
