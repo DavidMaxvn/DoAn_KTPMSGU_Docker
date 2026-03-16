@@ -34,7 +34,7 @@ namespace AppData.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Data Source=172.29.208.1,14330;Database=AppBanQuanAoThoiTrangNam;User ID=sa;Password=123456;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer(@"Data Source=172.24.144.1,1433;Database=AppBanQuanAoThoiTrangNam;User ID=sa;Password=123456;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=True");
             }
         }
         //THUYNHU\SQLEXPRESS
