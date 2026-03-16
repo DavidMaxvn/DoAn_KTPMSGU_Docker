@@ -34,7 +34,11 @@ namespace AppData.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Data Source=172.24.144.1,1433;Database=AppBanQuanAoThoiTrangNam;User ID=sa;Password=123456;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=True");
+                var connectionString =
+                    Environment.GetEnvironmentVariable("ConnectionStrings__DBContext")
+                    ?? "Data Source=172.24.144.1,1433;Database=AppBanQuanAoThoiTrangNam;User ID=sa;Password=123456;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=True";
+
+                optionsBuilder.UseSqlServer(connectionString);
             }
         }
         //THUYNHU\SQLEXPRESS

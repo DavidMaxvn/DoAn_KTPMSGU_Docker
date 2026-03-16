@@ -4,7 +4,7 @@ services:
     container_name: sql
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Your_strong_password123!
+      - SA_PASSWORD=StrongPass@123
       - MSSQL_PID=Express
     ports:
       - "1433:1433"
@@ -17,7 +17,7 @@ services:
     depends_on:
       - sql
     environment:
-      - SA_PASSWORD=Your_strong_password123!
+      - SA_PASSWORD=StrongPass@123
       - DB_HOST=sql
       - DB_PORT=1433
       - DB_USER=sa
@@ -39,7 +39,7 @@ services:
         condition: service_completed_successfully
     environment:
       - ASPNETCORE_URLS=http://0.0.0.0:9000
-      - ConnectionStrings__DBContext=Data Source=sql,1433;Database=AppBanQuanAoThoiTrangNam;User ID=sa;Password=Your_strong_password123!;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=True
+      - ConnectionStrings__DBContext=Data Source=sql,1433;Database=AppBanQuanAoThoiTrangNam;User ID=sa;Password=StrongPass@123;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=True
     ports:
       - "9000:9000"
 
@@ -57,4 +57,3 @@ services:
 
 volumes:
   mssqldata:
-
